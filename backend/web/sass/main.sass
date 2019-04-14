@@ -2,12 +2,13 @@
 @import '_smart-grid'
 @import '_var'
 
+//menu 
 .menu
 	border: 1px solid #ccc
 	position: fixed
 	top: 0
 	left: 0
-	width: 200px
+	width: $menu_left
 	height: 100vh
 	padding: 20px 10px
 	background: lighten(#ccc, 10%)
@@ -18,3 +19,55 @@
 			color: #000
 			&:hover
 				color: #888
+
+// category
+.category
+	+wrap
+	+flex
+	min-height: 50vh
+	margin-top: 50px
+	margin-left: $menu_left + 10px
+	&__main
+		+size(6)
+		+col
+		border: 1px solid #cccccc
+		box-shadow: 1px 1px 1px #000
+		background: lighten(#ccc, 15%)
+		border-radius: $radius
+		padding: 10px
+		padding-left: 0
+	&__list
+		margin-left: 20px
+.main-block
+	height: 25px
+	width: 100%
+	border: 1px solid #ccc
+	box-shadow: 1px 1px 1px #000
+	border-radius: $radius
+	margin-bottom: 15px
+	background: #ffffff
+	font: 16px/25px sans-serif
+	padding: 0 10px
+	display: flex
+.name-category
+	user-select: none
+.add-category
+	width: auto
+	display: inline-block
+	cursor: pointer
+	margin-left: auto
+	font-size: 25px
+.form-add
+	margin-left: 20px
+	transition: all .3s
+	input
+		height: 25px
+		padding-left: 10px
+		width: 80%
+	button
+		height: 25px
+		background: lighten(green, 65%)
+		cursor: pointer
+		font: bold 14px sans-serif
+		border: 1px solid #cccccc
+		box-shadow: 1px 1px 1px #000
