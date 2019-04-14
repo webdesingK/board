@@ -4,8 +4,6 @@ $this->title = 'Манагер меню';
 
 <div class="category">
 
-<<<<<<< HEAD
-=======
 	<div class="category__main">
 		<div class="category__list" data-id="1">
 			<div class="main-block">
@@ -17,4 +15,3 @@ $this->title = 'Манагер меню';
 
 </div>
 <!-- /.category -->
->>>>>>> frontend
