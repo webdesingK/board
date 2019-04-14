@@ -3,4 +3,7 @@ $this->title = 'Манагер меню';
 ?>
 
 
-tree
+<div class="category">
+	
+</div>
+<!-- /.category -->
