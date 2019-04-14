@@ -8,8 +8,6 @@ use creocoder\nestedsets\NestedSetsBehavior;
 
 class Categories extends ActiveRecord {
 
-    public $parent;
-
     /**
      * {@inheritdoc}
      */
@@ -38,13 +36,11 @@ class Categories extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-//    public function rules() {
-//        return [
-//            [['lft', 'rgt', 'depth', 'name'], 'required'],
-//            [['lft', 'rgt', 'depth'], 'integer'],
-//            [['name'], 'string', 'max' => 255],
-//        ];
-//    }
+    public function rules() {
+        return [
+            ['name', 'required']
+        ];
+    }
 
     /**
      * {@inheritdoc}

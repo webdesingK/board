@@ -21,11 +21,17 @@ $(document).ready(function(){
 		var id   = $(this).parents('.category__list').data('id');
 		var data = {
 			name: name,
-			id: id
+			parentId: id
 		};
 		$.ajax({
 			type: 'POST',
-			data: data
+			data: data,
+			success: function (resp) {
+				$('.main-block').after(resp);
+			},
+			error: function (resp) {
+				console.log(resp.responseText);
+			}
 		});
 		$('.form-add').remove();
 	});

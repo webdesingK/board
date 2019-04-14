@@ -10,6 +10,7 @@ $this->title = 'Манагер меню';
 				<span class="name-category">Категории</span>
 				<span class="add-category">&plus;</span>
 			</div>
+
 		</div>
 	</div>
 
