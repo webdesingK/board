@@ -17,8 +17,8 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
-						'baseUrl' => '/admin',
-						'enableCsrfValidation' => false,
+            'baseUrl' => '/admin',
+            'enableCsrfValidation' => false,
         ],
         'user' => [
             'identityClass' => 'common\models\User',

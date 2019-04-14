@@ -15,8 +15,6 @@ class AdminController extends Controller {
 
         $model = new Categories();
 
-
-
         return $this->render('tree-manager', compact(
             'model'
         ));
