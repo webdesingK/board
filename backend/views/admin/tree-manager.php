@@ -4,6 +4,7 @@ $this->title = 'Манагер меню';
 
 
 <div class="category">
-	categorys
+
+    vasa
 </div>
 <!-- /.category -->
