@@ -9,5 +9,16 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'assetManager' => [
+//            'appendTimestamp' => true,                 // временная метка для файлов ресурсов
+//            'linkAssets' => true,                    // вкл ссылки на внешние файлы ресурсов
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js' => [
+                        'jquery.min.js'
+                    ]
+                ]
+            ]
+        ],
     ],
 ];
