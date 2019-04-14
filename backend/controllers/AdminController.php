@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\controllers;
+use common\models\Categories;
 use yii\web\Controller;
 
 
@@ -11,7 +12,20 @@ class AdminController extends Controller {
     }
 
     public function actionTreeManager() {
-        return $this->render('tree-manager');
+
+        $model = new Categories();
+
+
+
+        return $this->render('tree-manager', compact(
+            'model'
+        ));
     }
+
+//    public function actionRoot() {
+//        $model = new Categories(['name' => 'Категории']);
+//        $model->makeRoot();
+//
+//    }
 
 }
