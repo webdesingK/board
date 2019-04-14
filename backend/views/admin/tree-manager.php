@@ -3,7 +3,7 @@ $this->title = 'Манагер меню';
 ?>
 
 
-<div class="category cat">
+<div class="category categ">
 	<div class="category__list">
  Lorem ipsum dolor sit amet.
 	</div>
