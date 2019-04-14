@@ -5,7 +5,7 @@ $this->title = 'Манагер меню';
 
 <div class="category">
 	<div class="category__list">
-	sdsd
+	adasfafsdgsdfgdfgsdf
 	</div>
 	<!-- /.category__list -->
 
