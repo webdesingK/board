@@ -1,0 +1,245 @@
+@import 'app/sass/smart-grid';
+
+// burger ==================================================
+
+$big: $break_big!default;
+$lg: $break_lg!default;
+$md: $break_md!default;
+$sm: $break_sm!default;
+$xs: $break_xs!default;
+
+$media: $md!default;
+
+@mixin my-burger(
+	$border: true,
+	$size: 30px,
+	$border_size: 2px,
+	$border_style: solid,
+	$border_color: #000,
+	$border_radius: 4px,
+	$background: transparent,
+	$position: (position: relative),
+	$line_height: 2px,
+	$line_width: 70%,
+	$line_color: #000,
+	$line_border-radius: null,
+	$text: false,
+	$text_right: false,
+	)
+{
+	min-width: $size;
+	min-height: $size;
+	@if $border == true{
+		border: $border_size $border_style $border_color;
+		border-radius: $border_radius;
+	}
+	background: $background;
+	position: map-get($position, position);
+	top: map-get($position, top);
+	right: map-get($position, right);
+	bottom: map-get($position, bottom);
+	left: map-get($position, left);
+	box-sizing: content-box;
+	cursor: pointer;
+	display: none;
+	z-index: 9999;
+	@if $text == true{
+		$position: left;
+		@if $text_right == true{
+			$position: right;
+		}
+		$padding: null;
+		@if $line_width == 70%{
+			$padding: $size;
+		} @else{
+			@if unit($line_width) == '%' or
+				unit($line_width) == 'rem' or
+				unit($line_width) == 'em'
+				{
+			    @error "$line_width должно быть только в пикселях";
+			  }
+			$padding: $line_width;
+		}
+		padding-#{$position}: $padding + 5px;
+	}
+	@media screen and (max-width: $media){
+		display: block;
+	}
+	&__line{
+		position: absolute;
+		@if $text == false{
+			width: $line_width;
+			left: 50%;
+			margin-left: -$line_width / 2;
+		} @else{
+			$position: left;
+			@if $text_right == true{
+				$position: right;
+			}
+			$size_width: null;
+			@if $line_width == 70%{
+				$size_width: $size;
+			} @else{
+				$size_width: $line_width;
+			}
+			width: $size_width;
+			#{$position}: 5px;
+		}
+		height: $line_height;
+		background: $line_color;
+		border-radius: $line_border_radius;
+		transition: transform .3s, top .3s .3s, opacity .3s .3s;
+		&:nth-child(1){
+			top: 25%;
+			margin-top: -$line_height / 2;
+		}
+		&:nth-child(2){
+			top: 50%;
+			margin-top: -$line_height / 2;
+		}
+		&:nth-child(3){
+			top: 75%;
+			margin-top: -$line_height / 2;
+		}
+	}
+	@if $text == true{
+		& p{
+			padding: 0 10px;
+			line-height: $size;
+		}
+	}
+	&-active{
+		& .my-burger__line{
+			top: 50%;
+			transition: top .3s, transform .3s .3s, opacity .3s .3s;
+			&:nth-child(1){
+				transform: rotate(45deg);
+			}
+			&:nth-child(2){
+				opacity: 0;
+			}
+			&:nth-child(3){
+				transform: rotate(-45deg);
+			}
+		}
+	}
+}
+
+// my-menu------------------------------------------------
+@mixin my-menu(){
+	@media screen and (max-width: $media){
+		display: none;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 9999;
+		background: rgba(#000, .8);
+		padding: 10px;
+		& ul{
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}
+
+// center======================================================
+// center-absolute---------------------------------------------
+@mixin center-absolute(
+		$positionX: top,
+		$positionY: left,
+		$x: 50%,
+		$y: 50%,
+		$translateX: -50%,
+		$translateY: -50%,
+	){
+	@if $x == top{
+		$x: 0;
+		$translateX: 0;
+	}
+	@if $x == bottom{
+		$translateX: 0;
+		$positionX: bottom;
+		$x: 0;
+	}
+	@if $y == left{
+		$y: 0;
+		$translateY: 0;
+	}
+	@if $y == right{
+		$translateY: 0;
+		$positionY: right;
+		$y: 0;
+	}
+	position: absolute;
+	#{$positionX}: $x;
+	#{$positionY}: $y;
+	transform: translate(#{$translateY}, #{$translateX});
+}
+
+// center-flex----------------------------------------
+@mixin center-flex(
+		$x: center,
+		$y: center,
+	){
+	@if $x == left{
+		$x: flex-start;
+	}
+	@if $x == right{
+		$x: flex-end;
+	}
+	@if $y == top{
+		$y: flex-start;
+	}
+	@if $y == bottom{
+		$y: flex-end;
+	}
+	display: flex;
+	justify-content: $x;
+	align-items: $y;
+}
+// center-middle---------------------------------------
+@mixin center-middle(
+		$name: after,
+		$x: center,
+	){
+	text-align: $x;
+	font-size: 0;
+	&:#{$name}{
+		content: '';
+		display: inline-block;
+		width: 0;
+		height: 100%;
+		vertical-align: middle;
+		overflow: hidden;
+		visibility: hidden;
+	}
+}
+
+// circle================================================
+@mixin circle($size: 30px){
+	width: $size;
+	height: $size;
+	border-radius: 50%;
+}
+
+
+// ie9 & ie10
+
+// =ie10()
+//     @media screen and (min-width:0\0)
+//         @content
+// // ie10 & ie11
+
+// =ie11()
+//     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none)
+//         @content
+
+// // media
+
+// =media_minmax($min, $max)
+// 	@media (min-width: #{$min + px}) and (max-width: #{$max + px})
+// 		@content
+
+// =media($minmax, $num)
+// 	@media screen and (#{$minmax}-width: #{$num + px})
+// 		@content

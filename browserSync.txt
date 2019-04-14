@@ -1,5 +1,6 @@
-устоновить Node.js 
-потом установить глобально bwoserSync командой - npm install -g browser-sync 
-затем запускаем в выбранной папке окно команды через правую кнопку мыши командой -
+пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Node.js 
+пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ bwoserSync пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - npm install -g browser-sync 
+пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -
 browser-sync start --server --files "php/*.php,css/*.css,js/*.js,html/*.html,*.*"
 browser-sync start --proxy board --files "frontend/**/*.php,frontend/**/*.css,frontend/**/*.js"
+browser-sync start --proxy board --files "backend/**/*.php,backend/**/*.css,backend/**/*.js"
