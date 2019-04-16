@@ -15,5 +15,11 @@ $this->title = 'Манагер меню';
 		
 	</div>
 
+	<div class="arr_obj">
+
+		<div class="block-js"></div>
+
+	</div>
+
 </div>
 <!-- /.category -->
