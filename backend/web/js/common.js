@@ -65,11 +65,11 @@ $(document).ready(function () {
 						name: 'first-one'
 					},
 					{
-						id: '2.2',
+						id: '1.2',
 						name: 'first-twoo',
 						enclus: [
 							{
-								id: '1.1.1',
+								id: '1.2.1',
 								name: 'first-twoo-one'
 							}
 						]
@@ -104,31 +104,16 @@ $(document).ready(function () {
 			}
 		];
 
-		function testHtml(obj){
-			var objHtml = '';
-			for(key in obj) {
-				objHtml += `\
-				<div class="category__list" data-id="${obj[key].id}">
-					<div class="main-block">
-						<span class="name-category">${obj[key].name}</span>
-						<span class="add-category">&plus;</span>
-					</div>
-					${obj[key].enclus !== undefined ? testHtml(obj[key].enclus) : ''}
-				</div>`;
-			}
-			return objHtml;
-		};
-
 		function test (obj) {
 			var dataHtml = '';		
 			for(key in obj) {
 				dataHtml += `
 				<div class="category__list" data-id="${obj[key].id}">
 					<div class="main-block">
-						<span class="name-category">${obj[key].name}</span>
+						<span class="name-category">${obj[key].id}</span>
 						<span class="add-category">&plus;</span>
 					</div>
-					${obj[key].enclus !== undefined ? testHtml(obj[key].enclus) : ''}
+					${obj[key].enclus !== undefined ? test(obj[key].enclus) : ''}
 				</div>
 				`;
 			}
