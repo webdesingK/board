@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e49b312d14b408b3b7091e599a672f80",
+    "content-hash": "39e4f3b3feda9ed30400adb76a8c7dab",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -319,6 +319,226 @@
                 "html"
             ],
             "time": "2018-02-23T01:58:20+00:00"
+        },
+        {
+            "name": "leafo/scssphp",
+            "version": "v0.7.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafo/scssphp.git",
+                "reference": "1d656f8c02a3a69404bba6b28ec4e06edddf0f49"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/1d656f8c02a3a69404bba6b28ec4e06edddf0f49",
+                "reference": "1d656f8c02a3a69404bba6b28ec4e06edddf0f49",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6",
+                "squizlabs/php_codesniffer": "~2.5"
+            },
+            "bin": [
+                "bin/pscss"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Leafo\\ScssPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "scssphp is a compiler for SCSS written in PHP.",
+            "homepage": "http://leafo.github.io/scssphp/",
+            "keywords": [
+                "css",
+                "less",
+                "sass",
+                "scss",
+                "stylesheet"
+            ],
+            "time": "2018-07-22T01:22:08+00:00"
+        },
+        {
+            "name": "nizsheanez/yii2-asset-converter",
+            "version": "v1.5.0",
+            "target-dir": "nizsheanez/assetConverter",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nizsheanez/yii2-asset-converter.git",
+                "reference": "1583e25ddc7b86d4f959037a6167887568e6ccda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nizsheanez/yii2-asset-converter/zipball/1583e25ddc7b86d4f959037a6167887568e6ccda",
+                "reference": "1583e25ddc7b86d4f959037a6167887568e6ccda",
+                "shasum": ""
+            },
+            "require": {
+                "leafo/scssphp": "0.*",
+                "oyejorge/less.php": "1.7.0.*",
+                "php": ">=5.4.0",
+                "richthegeek/phpsass": "1.*",
+                "yiisoft/yii2": "2.*",
+                "yiisoft/yii2-composer": "2.*",
+                "yourilima/scssphp-compass": "1.*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-0": {
+                    "nizsheanez\\assetConverter\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Sharov",
+                    "email": "www.pismeco@gmail.com",
+                    "role": "Author"
+                }
+            ],
+            "description": "Less, Sass, Scss and Phamlp converter for Yii2. No system requires. yii2-composer support, Less autoupdate, customizing of output directory",
+            "keywords": [
+                "asset",
+                "compass",
+                "converter",
+                "less",
+                "phamlp",
+                "sass",
+                "scss",
+                "yii",
+                "yii2"
+            ],
+            "time": "2018-12-12T02:46:03+00:00"
+        },
+        {
+            "name": "oyejorge/less.php",
+            "version": "v1.7.0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oyejorge/less.php.git",
+                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
+                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8.24"
+            },
+            "bin": [
+                "bin/lessc"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Less": "lib/"
+                },
+                "classmap": [
+                    "lessc.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Agar",
+                    "homepage": "https://github.com/agar"
+                },
+                {
+                    "name": "Martin Jantošovič",
+                    "homepage": "https://github.com/Mordred"
+                },
+                {
+                    "name": "Josh Schmidt",
+                    "homepage": "https://github.com/oyejorge"
+                }
+            ],
+            "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
+            "homepage": "http://lessphp.gpeasy.com",
+            "keywords": [
+                "css",
+                "less",
+                "less.js",
+                "lesscss",
+                "php",
+                "stylesheet"
+            ],
+            "time": "2017-03-28T22:19:25+00:00"
+        },
+        {
+            "name": "richthegeek/phpsass",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/richthegeek/phpsass.git",
+                "reference": "96923ffb2acd942426a48631e95a99a38456106d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/richthegeek/phpsass/zipball/96923ffb2acd942426a48631e95a99a38456106d",
+                "reference": "96923ffb2acd942426a48631e95a99a38456106d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "script/",
+                    "renderers/",
+                    "tree/",
+                    "SassException.php",
+                    "SassFile.php",
+                    "SassParser.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Richard Lyon",
+                    "homepage": "https://github.com/richthegeek"
+                },
+                {
+                    "name": "Sebastian Siemssen",
+                    "homepage": "https://twitter.com/thefubhy"
+                },
+                {
+                    "name": "Steve Jones",
+                    "homepage": "https://github.com/darthsteven"
+                },
+                {
+                    "name": "Sam Richard",
+                    "homepage": "https://github.com/snugug"
+                }
+            ],
+            "description": "PHPSass is a PHP compiler for SASS, a popular CSS pre-processor language.",
+            "homepage": "http://phpsass.com",
+            "time": "2014-11-06T13:25:54+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -880,6 +1100,41 @@
                 "yii2"
             ],
             "time": "2018-09-23T22:00:47+00:00"
+        },
+        {
+            "name": "yourilima/scssphp-compass",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yourilima/scssphp-compass.git",
+                "reference": "02917fe54bcc65ab925e2b9d85f6059640cab095"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yourilima/scssphp-compass/zipball/02917fe54bcc65ab925e2b9d85f6059640cab095",
+                "reference": "02917fe54bcc65ab925e2b9d85f6059640cab095",
+                "shasum": ""
+            },
+            "require": {
+                "leafo/scssphp": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "compass.inc.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "Compass for scssphp",
+            "homepage": "http://leafo.net/scssphp/",
+            "time": "2015-12-14T10:54:53+00:00"
         }
     ],
     "packages-dev": [

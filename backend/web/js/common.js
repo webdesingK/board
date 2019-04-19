@@ -57,15 +57,15 @@ $(document).ready(function () {
 
 		var data = [
 			{
-				id: 1,
+				id: '1.1',
 				name: 'first',
 				enclus: [
 					{
-						id: '1.1',
+						id: '1.1.1',
 						name: 'first-one'
 					},
 					{
-						id: '1.2',
+						id: '1.1.2',
 						name: 'first-twoo',
 						enclus: [
 							{
@@ -77,23 +77,49 @@ $(document).ready(function () {
 				]
 			},
 			{
-				id: 2,
+				id: '1.2',
 				name: 'twoo',
 				enclus: [
 					{
-						id: '2.1',
+						id: '1.2.1',
 						name: 'twoo-one'
 					},
 					{
-						id: '2.2',
+						id: '1.2.2',
 						name: 'twoo-twoo',
 						enclus: [
 							{
-								id: '2.2.1',
+								id: '1.2.2.1',
 								name: 'twoo-twoo-one',
 								enclus: [
 									{
-										id: '2.2.1.1',
+										id: '1.2.2.2',
+										name: 'twoo-twoo-one-one'
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				id: '1.2',
+				name: 'twoo',
+				enclus: [
+					{
+						id: '1.2.1',
+						name: 'twoo-one'
+					},
+					{
+						id: '1.2.2',
+						name: 'twoo-twoo',
+						enclus: [
+							{
+								id: '1.2.2.1',
+								name: 'twoo-twoo-one',
+								enclus: [
+									{
+										id: '1.2.2.2',
 										name: 'twoo-twoo-one-one'
 									}
 								]
@@ -109,7 +135,7 @@ $(document).ready(function () {
 			for(key in obj) {
 				dataHtml += `
 				<div class="category__list" data-id="${obj[key].id}">
-					<div class="main-block">
+					<div class="category__list-block">
 						<span class="name-category">${obj[key].id}</span>
 						<span class="add-category">&plus;</span>
 					</div>
@@ -120,7 +146,29 @@ $(document).ready(function () {
 			return dataHtml;
 		};
 
-		block.html(test(data));
+		block.html(
+			`<div class="category__list" data-id="1">
+					<div class="category__list-block">
+						<span class="name-category">1</span>
+						<span class="add-category">&plus;</span>
+					</div>
+					${test(data)}
+				</div>
+				`);
+
+		var catList = $('.category__list');
+
+		(function delLastBorder(arr) {
+
+			for (var i = 0; i < arr.length; i++) {
+				if(arr.eq(i).children('.category__list').length == 0) {
+					arr.eq(i).addClass('after_none');
+				}
+				arr.eq(i).children('.category__list:last').addClass('after_hide');
+			}
+
+		})(catList);
+
 	});
 
 });

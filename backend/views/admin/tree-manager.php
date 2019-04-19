@@ -7,7 +7,7 @@ $this->title = 'Манагер меню';
 	<div class="category__main">
 
 		<div class="category__list" data-id="1">
-			<div class="main-block">
+			<div class="category__list-block">
 				<span class="name-category">Категории</span>
 				<span class="add-category">&plus;</span>
 			</div>

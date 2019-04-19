@@ -3,6 +3,12 @@
 /yii_test
 /yii_test.bat
 
+#gulp
+/node_modules
+gulpfile.js
+package.json
+package-lock.json
+
 # phpstorm project files
 .idea
 
