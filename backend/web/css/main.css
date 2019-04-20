@@ -60,11 +60,11 @@
 .category__list > div.category__list > [class=category__list-block]:after {
   content: '';
   height: 1px;
-  width: 30px;
+  width: 20px;
   background: #a6a6a6;
   position: absolute;
   top: 12px;
-  left: -30px;
+  left: -20px;
 }
 
 .category__list:nth-child(1) {
@@ -81,7 +81,7 @@
   position: absolute;
   width: 1px;
   height: 100%;
-  left: -5px;
+  left: 5px;
 }
 
 .category__list-block {
@@ -154,5 +154,5 @@
   background: #f2f2f2;
   position: absolute;
   top: 14px;
-  left: -33px;
+  left: -23px;
 }
