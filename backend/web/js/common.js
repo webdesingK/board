@@ -4,20 +4,27 @@ $(document).ready(function () {
 	$(function () {
 
 		function addCategory() {
+			console.log('dsf')
+			if ($(this).text() == '+') {
+				
+				$(this).html('&minus;');
+				// добовляем форму 
+				$(this).parent().after('<form class="form-add">\
+						<input type="text" class="input-text" placeholder="Имя категории">\
+						<button class="submit-btn">Сохранить</button></form>');
 
-			// добовляем форму 
-			$(this).parent().after('<form class="form-add">\
-					<input type="text" class="input-text" placeholder="Имя категории">\
-					<button class="submit-btn">Сохранить</button></form>');
+			} else{
+
+				$(this).parent().siblings('.form-add').remove();
+				$(this).html('&plus;');
+
+			}
 
 			// добавляем класс для анимации после динамического добавления элемента (form)
 			setTimeout(function () {
 				$('.form-add').addClass('visible');
 			}, 25);
-
-			// отменяем событие click на кнопке - добавления категории (+)
-			$('.category').off('click', '.add-category', addCategory);
-
+			// $('.category').on('click', '.not', addCategory);
 		};
 
 		// делегированное события клика на динамически добаленого элемента
@@ -41,13 +48,15 @@ $(document).ready(function () {
 				data: data
 			});
 
-			$('.form-add').remove(); // удаляем форму после отправки запроса на сервер
-			$('.category').on('click', '.add-category', addCategory); // возобновляем событие click на кнопку добавить категорию (+)
-
+			$(this).parent().siblings('.add-category').html('&plus;');
+			$(this).parent().siblings('.category__list-block').children('.add-category').html('&plus;');
+			$(this).parent().remove(); // удаляем форму после отправки запроса на сервер
+			// $('.category').on('click', '.add-category', addCategory);
 		};
 
 		// при клике на кнопку вызываем функцию отправки формы на сервер
 		$('.category').on('click', 'button', categoryAjax);
+
 
 	});
 
