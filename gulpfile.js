@@ -31,6 +31,7 @@ function watchFile() {
 	watch('backend/web/sass', sassFile);
 	watch('backend/**/*.php', browserSyncReload);
 	watch('backend/web/js/*.js', browserSyncReload);
+	watch('common/**/*.php', browserSyncReload);
 }
 
 exports.watch = parallel(watchFile, browserSync);
