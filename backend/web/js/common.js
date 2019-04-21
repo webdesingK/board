@@ -49,6 +49,7 @@ $(document).ready(function () {
 				data: data,
 				success: function(resp) {
 					$('.category__main').html(resp);
+					delLastBorder($('.category__list'));
 				}
 			});
 
@@ -60,120 +61,10 @@ $(document).ready(function () {
 		// при клике на кнопку вызываем функцию отправки формы на сервер
 		$('.category').on('click', 'button', categoryAjax);
 
-
-	});
-
-	$(function() {
-
-	// 	var block = $('.block-js');
-
-	// 	var data = [
-	// 		{
-	// 			id: '1.1',
-	// 			name: 'first',
-	// 			enclus: [
-	// 				{
-	// 					id: '1.1.1',
-	// 					name: 'first-one'
-	// 				},
-	// 				{
-	// 					id: '1.1.2',
-	// 					name: 'first-twoo',
-	// 					enclus: [
-	// 						{
-	// 							id: '1.1.3',
-	// 							name: 'first-twoo-one'
-	// 						}
-	// 					]
-	// 				}
-	// 			]
-	// 		},
-	// 		{
-	// 			id: '1.2',
-	// 			name: 'twoo',
-	// 			enclus: [
-	// 				{
-	// 					id: '1.2.1',
-	// 					name: 'twoo-one'
-	// 				},
-	// 				{
-	// 					id: '1.2.2',
-	// 					name: 'twoo-twoo',
-	// 					enclus: [
-	// 						{
-	// 							id: '1.2.2.1',
-	// 							name: 'twoo-twoo-one',
-	// 							enclus: [
-	// 								{
-	// 									id: '1.2.2.2',
-	// 									name: 'twoo-twoo-one-one'
-	// 								}
-	// 							]
-	// 						}
-	// 					]
-	// 				}
-	// 			]
-	// 		},
-	// 		{
-	// 			id: '1.3',
-	// 			name: 'twoo',
-	// 			enclus: [
-	// 				{
-	// 					id: '1.3.1',
-	// 					name: 'twoo-one'
-	// 				},
-	// 				{
-	// 					id: '1.3.2',
-	// 					name: 'twoo-twoo',
-	// 					enclus: [
-	// 						{
-	// 							id: '1.3.2.1',
-	// 							name: 'twoo-twoo-one',
-	// 							enclus: [
-	// 								{
-	// 									id: '1.3.2.2',
-	// 									name: 'twoo-twoo-one-one'
-	// 								}
-	// 							]
-	// 						}
-	// 					]
-	// 				}
-	// 			]
-	// 		}
-	// 	];
-
-	// 	function test (obj) {
-	// 		var dataHtml = '';		
-	// 		for(key in obj) {
-	// 			dataHtml += `
-	// 			<div class="category__list" data-id="${obj[key].id}">
-	// 				<div class="category__list-block">
-	// 					<span class="name-category">${obj[key].id}</span>
-	// 					<span class="add-category" title="Добавить новую категорию">&plus;</span>
-	// 					<span class="tabs-category" title="Развернуть">▼</span>
-	// 				</div>
-	// 				${obj[key].enclus !== undefined ? test(obj[key].enclus) : ''}
-	// 			</div>
-	// 			`;
-	// 		}
-	// 		return dataHtml;
-	// 	};
-
-	// 	block.html(
-	// 		`<div class="category__list" data-id="1">
-	// 				<div class="category__list-block">
-	// 					<span class="name-category">1</span>
-	// 					<span class="add-category" title="Добавить новую категорию">&plus;</span>
-	// 					<span class="tabs-category" title="Развернуть">▼</span>
-	// 				</div>
-	// 				${test(data)}
-	// 			</div>
-	// 			`);
-
 		// nested
 		var nestedList = $('.category__list');
 
-		(function delLastBorder(arr) {
+		function delLastBorder(arr) {
 
 			for (var i = 0; i < arr.length; i++) {
 
@@ -186,7 +77,8 @@ $(document).ready(function () {
 
 			}
 
-		})(nestedList);
+		};
+		delLastBorder(nestedList);
 
 		$('.category__list:not(:first)').addClass('none');
 		// tabs
@@ -194,7 +86,13 @@ $(document).ready(function () {
 
 		tabs.on('click', function() {
 
+			$('.form-add').remove();
+
 			for (var i = 0; i < tabs.length; i++) {
+
+				if ($(this).parents('.category').siblings().eq(i).find('.add-category').html() == '-') {
+					console.log(i)
+				}
 
 				if ($(this).parent().siblings().eq(i).find('.tabs-category').html() == '▲') {
 					$(this).parent().siblings().eq(i).find('.tabs-category').click();
@@ -203,12 +101,120 @@ $(document).ready(function () {
 			}
 			if ($(this).html() == '▼') {
 				$(this).html('▲').attr('title', 'Свернуть');
+				$(this).parents('.category__list').addClass('add-before');
 			} else{
 				$(this).html('▼').attr('title', 'Развернуть');
+				$(this).parent().parent().removeClass('add-before');
 			}
 			$(this).parent().siblings().toggleClass('none');
 
 		});
+
 	});
+
+		var block = $('.block-js');
+
+		var data = [
+			{
+				id: '1.1',
+				name: 'first',
+				enclus: [
+					{
+						id: '1.1.1',
+						name: 'first-one'
+					},
+					{
+						id: '1.1.2',
+						name: 'first-twoo',
+						enclus: [
+							{
+								id: '1.1.3',
+								name: 'first-twoo-one'
+							}
+						]
+					}
+				]
+			},
+			{
+				id: '1.2',
+				name: 'twoo',
+				enclus: [
+					{
+						id: '1.2.1',
+						name: 'twoo-one'
+					},
+					{
+						id: '1.2.2',
+						name: 'twoo-twoo',
+						enclus: [
+							{
+								id: '1.2.2.1',
+								name: 'twoo-twoo-one',
+								enclus: [
+									{
+										id: '1.2.2.2',
+										name: 'twoo-twoo-one-one'
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				id: '1.3',
+				name: 'twoo',
+				enclus: [
+					{
+						id: '1.3.1',
+						name: 'twoo-one'
+					},
+					{
+						id: '1.3.2',
+						name: 'twoo-twoo',
+						enclus: [
+							{
+								id: '1.3.2.1',
+								name: 'twoo-twoo-one',
+								enclus: [
+									{
+										id: '1.3.2.2',
+										name: 'twoo-twoo-one-one'
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		];
+
+		function test (obj) {
+			var dataHtml = '';		
+			for(key in obj) {
+				dataHtml += `
+				<div class="category__list" data-id="${obj[key].id}">
+					<div class="category__list-block">
+						<span class="name-category">${obj[key].id}</span>
+						<span class="add-category" title="Добавить новую категорию">&plus;</span>
+						<span class="tabs-category" title="Развернуть">▼</span>
+					</div>
+					${obj[key].enclus !== undefined ? test(obj[key].enclus) : ''}
+				</div>
+				`;
+			}
+			return dataHtml;
+		};
+
+		block.html(
+			`<div class="category__list" data-id="1">
+					<div class="category__list-block">
+						<span class="name-category">1</span>
+						<span class="add-category" title="Добавить новую категорию">&plus;</span>
+						<span class="tabs-category" title="Развернуть">▼</span>
+					</div>
+					${test(data)}
+				</div>
+				`);
 
 });
