@@ -21,3 +21,155 @@
 .menu li a:hover {
   color: #888;
 }
+
+.category {
+  max-width: 1260px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 50vh;
+  margin-top: 50px;
+  margin-left: 210px;
+}
+
+.category__main,
+.arr_obj {
+  width: 47.5%;
+  margin-left: 1.25%;
+  margin-right: 1.25%;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #000;
+  background: #f2f2f2;
+  border-radius: 5px;
+  padding: 10px;
+  padding-left: 0;
+  padding-right: 20px;
+  overflow: hidden;
+}
+
+.category__list {
+  margin-left: 25px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.category__list > div.category__list > [class=category__list-block] {
+  position: relative;
+}
+
+.category__list > div.category__list > [class=category__list-block]:after {
+  content: '';
+  height: 1px;
+  width: 20px;
+  background: #a6a6a6;
+  position: absolute;
+  top: 12px;
+  left: -20px;
+}
+
+.category__list:nth-child(1) {
+  margin-left: 15px;
+}
+
+.category__list:nth-child(1):after {
+  display: none;
+}
+
+.category__list-block {
+  height: 25px;
+  width: 100%;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #000;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  background: #ffffff;
+  font: 16px/25px sans-serif;
+  padding: 0 10px;
+  display: flex;
+  position: relative;
+}
+
+.name-category {
+  user-select: none;
+}
+
+.add-category,
+.tabs-category {
+  width: auto;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: auto;
+  font-size: 25px;
+  cursor: pointer;
+  color: #666666;
+}
+
+.add-category:hover,
+.tabs-category:hover {
+  filter: drop-shadow(1px 1px 1px blue);
+}
+
+.tabs-category {
+  margin-left: 5px;
+  font-size: 15pt;
+}
+
+.form-add {
+  max-height: 0px;
+  overflow: hidden;
+  padding: 2px;
+  margin-left: 20px;
+}
+
+.visible {
+  max-height: 80px;
+  transition: max-height .4s;
+}
+
+.visible input {
+  height: 25px;
+  padding-left: 10px;
+  width: 80%;
+  margin-bottom: 5px;
+}
+
+.visible button {
+  height: 25px;
+  background: #cdffcd;
+  cursor: pointer;
+  font: bold 14px sans-serif;
+  border: 1px solid #ccc;
+  box-shadow: 1px 1px 1px #000;
+}
+
+.after_none:before {
+  display: none;
+}
+
+.after_hide {
+  position: relative;
+}
+
+.after_hide:after {
+  content: '';
+  display: block;
+  height: 125%;
+  width: 10px;
+  background: #f2f2f2;
+  position: absolute;
+  top: 14px;
+  left: -23px;
+}
+
+.none {
+  display: none;
+}
+
+.add-before:before {
+  content: '';
+  background: #a6a6a6;
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  left: 5px;
+}

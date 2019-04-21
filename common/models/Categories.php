@@ -2,13 +2,12 @@
 
 namespace common\models;
 
-use Yii;
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 class Categories extends ActiveRecord {
-
-    public $parent;
 
     /**
      * {@inheritdoc}
@@ -38,20 +37,59 @@ class Categories extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-//    public function rules() {
-//        return [
-//            [['lft', 'rgt', 'depth', 'name'], 'required'],
-//            [['lft', 'rgt', 'depth'], 'integer'],
-//            [['name'], 'string', 'max' => 255],
-//        ];
-//    }
+    public function rules() {
+        return [
+            [['name', 'parent_id'], 'safe']
+        ];
+    }
 
     /**
      * {@inheritdoc}
      */
 //    public function attributeLabels() {
 //        return [
-//            'name' => 'Name',
+//            'name' => 'Название',
+//            'parent_id' => 'Родительская категория'
 //        ];
 //    }
+
+    static public function createTree() {
+
+        $allCats = self::find()->all();
+        $cats = [];
+
+        foreach ($allCats as $cat) {
+            $cats[$cat->parent_id][] = [
+                'name' => $cat->name,
+                'id' => $cat->id,
+            ];
+        }
+
+        function create($cats, $parentId) {
+
+            if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
+                $tree = '';
+
+                foreach ($cats[$parentId] as $cat) {
+                    $tree .= '
+                        <div class="category__list" data-id="' . $cat['id'] . '">
+                            <div class="category__list-block">
+				                <span class="name-category">' . $cat['name'] . '</span>
+				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
+				                <span class="tabs-category" title="Развернуть">▼</span>
+			                </div>
+                        ';
+                    $tree .= create($cats, $cat['id']);
+                    $tree .= '</div>';
+                }
+            }
+            else {
+                return null;
+            }
+            return $tree;
+        }
+
+        return create($cats, 0);
+
+    }
 }
