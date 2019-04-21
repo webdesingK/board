@@ -4,6 +4,8 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
+use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
 
 class Categories extends ActiveRecord {
 
@@ -53,25 +55,33 @@ class Categories extends ActiveRecord {
 
     static public function createTree() {
 
-        $all = self::find()->all();
+        $allCats = self::find()->all();
         $cats = [];
 
-        foreach ($all as $v) {
-            $cats[$v->parent_id][] = [
-                'name' => $v->name,
-                'id' => $v->id,
-                'depth' => $v->depth
+        foreach ($allCats as $cat) {
+            $cats[$cat->parent_id][] = [
+                'name' => $cat->name,
+                'id' => $cat->id,
             ];
         }
 
         function create($cats, $parentId) {
+
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
-                $tree = '<div class="parent">';
-                foreach ($cats[$parentId] as $k => $v) {
-                    $tree .= '<div class="name" data-depth="'.$v['depth'].'" data-id="'.$v['id'].'">'.$v['name'].' - id: '.$v['id'].'<button>удалить</button></div>';
-                    $tree .= create($cats, $v['id']);
+                $tree = '';
+
+                foreach ($cats[$parentId] as $cat) {
+                    $tree .= '
+                        <div class="category__list" data-id="' . $cat['id'] . '">
+                            <div class="category__list-block">
+				                <span class="name-category">' . $cat['name'] . '</span>
+				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
+				                <span class="tabs-category" title="Развернуть">▼</span>
+			                </div>
+                        ';
+                    $tree .= create($cats, $cat['id']);
+                    $tree .= '</div>';
                 }
-                $tree .= '</div>';
             }
             else {
                 return null;
@@ -79,7 +89,7 @@ class Categories extends ActiveRecord {
             return $tree;
         }
 
-        return create($cats, 1);
+        return create($cats, 0);
 
     }
 }
