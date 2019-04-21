@@ -4,8 +4,6 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 
 class Categories extends ActiveRecord {
 
@@ -42,16 +40,6 @@ class Categories extends ActiveRecord {
             [['name', 'parent_id'], 'safe']
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-//    public function attributeLabels() {
-//        return [
-//            'name' => 'Название',
-//            'parent_id' => 'Родительская категория'
-//        ];
-//    }
 
     static public function createTree() {
 
