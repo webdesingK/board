@@ -80,15 +80,6 @@
   display: none;
 }
 
-.category__list:before {
-  content: '';
-  background: #a6a6a6;
-  position: absolute;
-  width: 1px;
-  height: 100%;
-  left: 5px;
-}
-
 .category__list-block {
   height: 25px;
   width: 100%;
@@ -107,20 +98,14 @@
   user-select: none;
 }
 
-<<<<<<< HEAD
-.add-category {
-=======
 .add-category,
 .tabs-category,
 .del-category {
->>>>>>> ace60650183fdadcb300c225f9cfac0f1126c907
   width: auto;
   display: inline-block;
   cursor: pointer;
   margin-left: auto;
   font-size: 25px;
-<<<<<<< HEAD
-=======
   cursor: pointer;
   color: #666666;
 }
@@ -135,7 +120,6 @@
 .del-category {
   margin-left: 5px;
   font-size: 15pt;
->>>>>>> ace60650183fdadcb300c225f9cfac0f1126c907
 }
 
 .form-add {
@@ -182,9 +166,6 @@
   background: #f2f2f2;
   position: absolute;
   top: 14px;
-<<<<<<< HEAD
-  left: -23px;
-=======
   left: -18px;
 }
 
@@ -199,5 +180,4 @@
   width: 1px;
   height: 100%;
   left: 10px;
->>>>>>> ace60650183fdadcb300c225f9cfac0f1126c907
 }
