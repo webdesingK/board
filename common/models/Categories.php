@@ -4,8 +4,6 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
-use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 
 class Categories extends ActiveRecord {
 
@@ -43,16 +41,6 @@ class Categories extends ActiveRecord {
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-//    public function attributeLabels() {
-//        return [
-//            'name' => 'Название',
-//            'parent_id' => 'Родительская категория'
-//        ];
-//    }
-
     static public function createTree() {
 
         $allCats = self::find()->all();
@@ -69,14 +57,16 @@ class Categories extends ActiveRecord {
 
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
                 $tree = '';
-
+                $class = null;
                 foreach ($cats[$parentId] as $cat) {
+                    if ($cat['id'] != 1) $class = 'none';
                     $tree .= '
-                        <div class="category__list" data-id="' . $cat['id'] . '">
+                        <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                             <div class="category__list-block">
 				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
 				                <span class="tabs-category" title="Развернуть">▼</span>
+                                <span class="del-category" title="Удалить категорию и подкатегории">&#9746;</span>
 			                </div>
                         ';
                     $tree .= create($cats, $cat['id']);

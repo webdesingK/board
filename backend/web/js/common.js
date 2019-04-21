@@ -13,6 +13,8 @@ $(document).ready(function () {
 						<input type="text" class="input-text" placeholder="Имя категории">\
 						<button class="submit-btn">Сохранить</button></form>');
 
+				$('.input-text').focus();
+
 			} else{
 
 				$(this).parent().siblings('.form-add').remove();
@@ -40,7 +42,7 @@ $(document).ready(function () {
 			var data = {
 				nameOfAction: 'create', 
 				name: name, // значение инпута
-				parentId: id // значение атрибута id
+				id: id // значение атрибута id
 			};
 
 			// отправляем ajax запрос на сервер
@@ -53,10 +55,26 @@ $(document).ready(function () {
 				}
 			});
 
-			$(this).parent().siblings('.add-category').html('&plus;');
-			$(this).parent().siblings('.category__list-block').children('.add-category').html('&plus;');
-			$(this).parent().remove(); // удаляем форму после отправки запроса на сервер
 		};
+
+		$('.category').on('click', '.del-category', function() {
+
+			var id = $(this).parents('.category__list').data('id');
+			var data = {
+				nameOfAction: 'delete',
+				id: id
+			};
+
+			$.ajax({
+				type: 'POST',
+				data: data,
+				success: function(resp) {
+					$('.category__main').html(resp);
+					delLastBorder($('.category__list'));
+				}
+			});
+
+		});
 
 		// при клике на кнопку вызываем функцию отправки формы на сервер
 		$('.category').on('click', 'button', categoryAjax);
@@ -80,11 +98,10 @@ $(document).ready(function () {
 		};
 		delLastBorder(nestedList);
 
-		$('.category__list:not(:first)').addClass('none');
 		// tabs
 		var tabs = $('.tabs-category');
 
-		tabs.on('click', function() {
+		$('.category').on('click', '.tabs-category' ,function() {
 
 			$('.form-add').remove();
 
@@ -110,111 +127,16 @@ $(document).ready(function () {
 
 		});
 
-	});
+		function tab(arr) {
 
-		var block = $('.block-js');
-
-		var data = [
-			{
-				id: '1.1',
-				name: 'first',
-				enclus: [
-					{
-						id: '1.1.1',
-						name: 'first-one'
-					},
-					{
-						id: '1.1.2',
-						name: 'first-twoo',
-						enclus: [
-							{
-								id: '1.1.3',
-								name: 'first-twoo-one'
-							}
-						]
-					}
-				]
-			},
-			{
-				id: '1.2',
-				name: 'twoo',
-				enclus: [
-					{
-						id: '1.2.1',
-						name: 'twoo-one'
-					},
-					{
-						id: '1.2.2',
-						name: 'twoo-twoo',
-						enclus: [
-							{
-								id: '1.2.2.1',
-								name: 'twoo-twoo-one',
-								enclus: [
-									{
-										id: '1.2.2.2',
-										name: 'twoo-twoo-one-one'
-									}
-								]
-							}
-						]
-					}
-				]
-			},
-			{
-				id: '1.3',
-				name: 'twoo',
-				enclus: [
-					{
-						id: '1.3.1',
-						name: 'twoo-one'
-					},
-					{
-						id: '1.3.2',
-						name: 'twoo-twoo',
-						enclus: [
-							{
-								id: '1.3.2.1',
-								name: 'twoo-twoo-one',
-								enclus: [
-									{
-										id: '1.3.2.2',
-										name: 'twoo-twoo-one-one'
-									}
-								]
-							}
-						]
-					}
-				]
+			for (var i = 0; i < arr.length; i++) {
+				if(arr.eq(i).html() == '▼'){
+					arr.eq(i).parents('.category__list').addClass('add-before');
+				}
 			}
-		];
 
-		function test (obj) {
-			var dataHtml = '';		
-			for(key in obj) {
-				dataHtml += `
-				<div class="category__list" data-id="${obj[key].id}">
-					<div class="category__list-block">
-						<span class="name-category">${obj[key].id}</span>
-						<span class="add-category" title="Добавить новую категорию">&plus;</span>
-						<span class="tabs-category" title="Развернуть">▼</span>
-					</div>
-					${obj[key].enclus !== undefined ? test(obj[key].enclus) : ''}
-				</div>
-				`;
-			}
-			return dataHtml;
 		};
 
-		block.html(
-			`<div class="category__list" data-id="1">
-					<div class="category__list-block">
-						<span class="name-category">1</span>
-						<span class="add-category" title="Добавить новую категорию">&plus;</span>
-						<span class="tabs-category" title="Развернуть">▼</span>
-					</div>
-					${test(data)}
-				</div>
-				`);
+	});
 
 });

@@ -38,16 +38,26 @@ class AdminController extends Controller {
 
         if (Yii::$app->request->isAjax) {
             $post = Yii::$app->request->post();
+            $id = $post['id'];
+            $result = null;
             if ($post['nameOfAction'] == 'create') {
-                $parentId = $post['parentId'];
-                $parent = $model::find()->andWhere(['id' => $parentId])->one();
+                $parent = $model::find()->andWhere(['id' => $id])->one();
                 $data = [
-                    'parent_id' => $post['parentId'],
+                    'parent_id' => $id,
                     'name' => $post['name']
                 ];
-                if ($model->load($data, '') && $model->prependTo($parent)) {
-                    return $model::createTree();
-                }
+                $result = ($model->load($data, '') && $model->prependTo($parent));
+            }
+            if ($post['nameOfAction'] == 'delete') {
+                $elem = $model::find()->andWhere(['id' => $id])->one();
+                $result = $elem->deleteWithChildren();
+            }
+
+            if ($result) {
+                return $model::createTree();
+            }
+            else {
+                return 'db_error';
             }
 
         }
