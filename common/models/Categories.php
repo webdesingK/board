@@ -46,12 +46,12 @@ class Categories extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() {
-        return [
-            'name' => 'Название',
-            'parent_id' => 'Родительская категория'
-        ];
-    }
+//    public function attributeLabels() {
+//        return [
+//            'name' => 'Название',
+//            'parent_id' => 'Родительская категория'
+//        ];
+//    }
 
     static public function createTree() {
 
