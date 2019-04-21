@@ -57,13 +57,13 @@
 			margin-left: 15px
 			&:after
 				display: none
-		// &:before
-		// 	content: ''
-		// 	background: $nested_color_line_G
-		// 	position: absolute
-		// 	width: 1px
-		// 	height: 100%
-		// 	left: $nested_margin_left_G - $nested_left_G
+		&:before
+			content: ''
+			background: $nested_color_line_G
+			position: absolute
+			width: 1px
+			height: 100%
+			left: $nested_margin_left_G - $nested_left_G
 .category__list-block
 	height: 25px
 	width: 100%
@@ -84,14 +84,6 @@
 	cursor: pointer
 	margin-left: auto
 	font-size: 25px
-	cursor: pointer
-	color: $icon_color_G
-	&:hover
-		filter: drop-shadow(1px 1px 1px blue)
-.tabs-category
-	@extend .add-category
-	margin-left: 5px
-	font-size: 15pt
 .form-add
 	max-height: 0px
 	overflow: hidden
@@ -129,13 +121,3 @@
 		position: absolute
 		top: $nested_top_G + 2px
 		left: -($nested_left_G + 3px)
-.none
-	display: none
-.add-before
-	&:before
-		content: ''
-		background: $nested_color_line_G
-		position: absolute
-		width: 1px
-		height: 100%
-		left: $nested_margin_left_G - $nested_left_G
