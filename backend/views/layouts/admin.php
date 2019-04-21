@@ -19,10 +19,10 @@ AdminAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-		<ul class="menu">
-			<li><a href="/admin">Главная</a></li>
-			<li><a href="/admin/tree-manager">Менджер меню</a></li>
-		</ul>
+<!--		<ul class="menu">-->
+<!--			<li><a href="/admin">Главная</a></li>-->
+<!--			<li><a href="/admin/tree-manager">Менджер меню</a></li>-->
+<!--		</ul>-->
     <?= $content ?>
 
 <?php $this->endBody() ?>

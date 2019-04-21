@@ -32,13 +32,16 @@ $(document).ready(function(){
 
 			var data = {
 				name: name,// значение инпута
-				id: id// значение атрибута id
+				parentId: id// значение атрибута id
 			};
 
 			// отправляем ajax запрос на сервер
 			$.ajax({
 				type: 'POST',
-				data: data
+				data: data,
+                success: function (resp) {
+                    $('.category__main').html(resp);
+                }
 			});
 
 			$('.form-add').remove();// удаляем форму после отправки запроса на сервер
