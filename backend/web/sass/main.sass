@@ -28,7 +28,7 @@
 	margin-top: 50px
 	margin-left: $menu_left + 10px
 	&__main
-		+size(6)
+		+size(10)
 		+col
 		border: 1px solid $border_color_total_G
 		box-shadow: 1px 1px 1px #000
@@ -84,6 +84,14 @@
 	cursor: pointer
 	margin-left: auto
 	font-size: 25px
+	cursor: pointer
+	color: $icon_color_G
+	&:hover
+		filter: drop-shadow(1px 1px 1px blue)
+.tabs-category
+	@extend .add-category
+	margin-left: 5px
+	font-size: 15pt
 .form-add
 	max-height: 0px
 	overflow: hidden
@@ -121,3 +129,5 @@
 		position: absolute
 		top: $nested_top_G + 2px
 		left: -($nested_left_G + 3px)
+.none
+	display: none
