@@ -57,10 +57,11 @@ class Categories extends ActiveRecord {
 
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
                 $tree = '';
-
+                $class = null;
                 foreach ($cats[$parentId] as $cat) {
+                    if ($cat['id'] != 1) $class = 'none';
                     $tree .= '
-                        <div class="category__list" data-id="' . $cat['id'] . '">
+                        <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                             <div class="category__list-block">
 				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
