@@ -28,7 +28,7 @@
 	margin-top: 50px
 	margin-left: $menu_left + 10px
 	&__main
-		+size(10)
+		+size(6)
 		+col
 		border: 1px solid $border_color_total_G
 		box-shadow: 1px 1px 1px #000
@@ -57,13 +57,13 @@
 			margin-left: 15px
 			&:after
 				display: none
-		&:before
-			content: ''
-			background: $nested_color_line_G
-			position: absolute
-			width: 1px
-			height: 100%
-			left: $nested_margin_left_G - $nested_left_G
+		// &:before
+		// 	content: ''
+		// 	background: $nested_color_line_G
+		// 	position: absolute
+		// 	width: 1px
+		// 	height: 100%
+		// 	left: $nested_margin_left_G - $nested_left_G
 .category__list-block
 	height: 25px
 	width: 100%
@@ -131,3 +131,11 @@
 		left: -($nested_left_G + 3px)
 .none
 	display: none
+.add-before
+	&:before
+		content: ''
+		background: $nested_color_line_G
+		position: absolute
+		width: 1px
+		height: 100%
+		left: $nested_margin_left_G - $nested_left_G
