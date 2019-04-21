@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 		};
 
-		$('.category').on('click', '.del-caategory', function() {
+		$('.category').on('click', '.del-category', function() {
 
 			var id = $(this).parents('.category__list').data('id');
 			var data = {
