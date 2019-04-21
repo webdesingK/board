@@ -28,7 +28,7 @@
 	margin-top: 50px
 	margin-left: $menu_left + 10px
 	&__main
-		+size(6)
+		+size(12)
 		+col
 		border: 1px solid $border_color_total_G
 		box-shadow: 1px 1px 1px #000
@@ -38,6 +38,9 @@
 		padding-left: 0
 		padding-right: 20px
 		overflow: hidden
+		& > div
+			& > .category__list-block .del-category
+			 	display: none
 	&__list
 		margin-left: $nested_margin_left_G
 		margin-top: 10px
@@ -57,13 +60,6 @@
 			margin-left: 15px
 			&:after
 				display: none
-		// &:before
-		// 	content: ''
-		// 	background: $nested_color_line_G
-		// 	position: absolute
-		// 	width: 1px
-		// 	height: 100%
-		// 	left: $nested_margin_left_G - $nested_left_G
 .category__list-block
 	height: 25px
 	width: 100%
@@ -88,7 +84,7 @@
 	color: $icon_color_G
 	&:hover
 		filter: drop-shadow(1px 1px 1px blue)
-.tabs-category
+.tabs-category, .del-category
 	@extend .add-category
 	margin-left: 5px
 	font-size: 15pt
