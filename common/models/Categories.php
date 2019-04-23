@@ -65,8 +65,8 @@ class Categories extends ActiveRecord {
                             <div class="category__list-block">
 				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
-				                <span class="tabs-category" title="Развернуть">▼</span>
-                                <span class="del-category" title="Удалить категорию и подкатегории">&#9746;</span>
+				                <span class="tabs-category" title="Развернуть">▶</span>
+                                <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
 			                </div>
                         ';
                     $tree .= create($cats, $cat['id']);
