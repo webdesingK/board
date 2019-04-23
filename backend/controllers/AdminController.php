@@ -40,6 +40,9 @@ class AdminController extends Controller {
             $post = Yii::$app->request->post();
             $id = $post['id'];
             $result = null;
+            $arrId = null;
+            $lastId = null;
+            if (isset($post['arrId'])) $arrId = $post['arrId'];
             if ($post['nameOfAction'] == 'create') {
                 $parent = $model::find()->andWhere(['id' => $id])->one();
                 $data = [
@@ -47,6 +50,8 @@ class AdminController extends Controller {
                     'name' => $post['name']
                 ];
                 $result = ($model->load($data, '') && $model->prependTo($parent));
+                $lastId = $model->getLastId($post['name']);
+
             }
             if ($post['nameOfAction'] == 'delete') {
                 $elem = $model::find()->andWhere(['id' => $id])->one();
@@ -54,7 +59,7 @@ class AdminController extends Controller {
             }
 
             if ($result) {
-                return $model::createTree();
+                return $model::createTree($arrId, $lastId);
             }
             else {
                 return 'db_error';

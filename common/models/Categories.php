@@ -4,6 +4,7 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
+use Yii;
 
 class Categories extends ActiveRecord {
 
@@ -41,11 +42,15 @@ class Categories extends ActiveRecord {
         ];
     }
 
-    static public function createTree() {
+    public function getLastId($name) {
+        $lastString = self::find()->where(['name' => $name])->one();
+        return $lastString->id;
+    }
+
+    static public function createTree($arrId, $lastId) {
 
         $allCats = self::find()->all();
         $cats = [];
-
         foreach ($allCats as $cat) {
             $cats[$cat->parent_id][] = [
                 'name' => $cat->name,
@@ -53,13 +58,21 @@ class Categories extends ActiveRecord {
             ];
         }
 
-        function create($cats, $parentId) {
+        if (isset($lastId)) array_push($arrId, $lastId);
+
+        function create($cats, $parentId, $arrId, $lastId) {
 
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
                 $tree = '';
                 $class = null;
                 foreach ($cats[$parentId] as $cat) {
-                    if ($cat['id'] != 1) $class = 'none';
+                    if (!is_array($arrId)) {
+                        if ($cat['id'] != 1) $class = 'none';
+                    }
+                    else {
+                        if (!in_array($cat['id'], $arrId)) $class = 'none';
+                    }
+
                     $tree .= '
                         <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                             <div class="category__list-block">
@@ -69,7 +82,7 @@ class Categories extends ActiveRecord {
                                 <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
 			                </div>
                         ';
-                    $tree .= create($cats, $cat['id']);
+                    $tree .= create($cats, $cat['id'], $arrId, $lastId);
                     $tree .= '</div>';
                 }
             }
@@ -79,7 +92,7 @@ class Categories extends ActiveRecord {
             return $tree;
         }
 
-        return create($cats, 0);
+        return create($cats, 0, $arrId, $lastId);
 
     }
 }
