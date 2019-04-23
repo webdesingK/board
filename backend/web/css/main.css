@@ -53,7 +53,7 @@
 }
 
 .category__list {
-  margin-left: 25px;
+  margin-left: 30px;
   margin-top: 10px;
   position: relative;
 }
@@ -65,11 +65,11 @@
 .category__list > div.category__list > [class=category__list-block]:after {
   content: '';
   height: 1px;
-  width: 15px;
+  width: 17px;
   background: #a6a6a6;
   position: absolute;
   top: 12px;
-  left: -15px;
+  left: -17px;
 }
 
 .category__list:nth-child(1) {
@@ -166,7 +166,7 @@
   background: #f2f2f2;
   position: absolute;
   top: 14px;
-  left: -18px;
+  left: -20px;
 }
 
 .none {
@@ -179,5 +179,5 @@
   position: absolute;
   width: 1px;
   height: 100%;
-  left: 10px;
+  left: 13px;
 }
