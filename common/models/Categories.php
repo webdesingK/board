@@ -42,6 +42,11 @@ class Categories extends ActiveRecord {
         ];
     }
 
+    /**
+     * @param string $name
+     * @return integer
+     */
+
     public function getLastId($name) {
         $lastString = self::find()->where(['name' => $name])->one();
         return $lastString->id;
@@ -76,7 +81,7 @@ class Categories extends ActiveRecord {
                     $tree .= '
                         <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                             <div class="category__list-block">
-				                <span class="name-category">' . $cat['name'] . '</span>
+				                <span class="name-category">' . $cat['name'] . '</span> 
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
 				                <span class="tabs-category" title="Развернуть">▶</span>
                                 <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>

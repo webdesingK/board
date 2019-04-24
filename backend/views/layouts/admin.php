@@ -21,7 +21,9 @@ AdminAsset::register($this);
 <?php $this->beginBody() ?>
 		<ul class="menu">
 			<li><a href="/admin">Главная</a></li>
-			<li><a href="/admin/tree-manager">Менджер меню</a></li>
+            <hr>
+			<li><a href="/admin/categories-manager">Менеджер категорий</a></li>
+			<li><a href="/admin/cities-manager">Менеджер городов</a></li>
 		</ul>
     <?= $content ?>
 

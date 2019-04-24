@@ -9,30 +9,10 @@ use Yii;
 class AdminController extends Controller {
 
     public function actionIndex() {
-
-//        $model = new Categories();
-//
-//        if ($model->load(Yii::$app->request->post())) {
-//
-//            $id = Yii::$app->request->post('Categories')['parent_id'];
-//            $parent = $model::find()->andWhere(['id' => $id])->one();
-//            if ($model->prependTo($parent) && $model->save()) {
-//                return $this->refresh();
-//            }
-//        }
-//
-//        if (Yii::$app->request->isAjax) {
-//            if (Yii::$app->request->post('nameOfOperate') == 'del') {
-//                $id = Yii::$app->request->post('parentId');
-//                $el = $model->find()->andWhere(['id' => $id])->one();
-//                if ($el->deleteWithChildren()) return $this->refresh();
-//            }
-//        }
-
         return $this->render('index');
     }
 
-    public function actionTreeManager() {
+    public function actionCategoriesManager() {
 
         $model = new Categories();
 
@@ -61,13 +41,14 @@ class AdminController extends Controller {
             if ($result) {
                 return $model::createTree($arrId, $lastId);
             }
-            else {
-                return 'db_error';
-            }
 
         }
 
-        return $this->render('tree-manager');
+        return $this->render('categories-manager');
+    }
+
+    public function actionCitiesManager() {
+        return $this->render('cities-manager');
     }
 
 }
