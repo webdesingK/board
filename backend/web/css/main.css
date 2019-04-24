@@ -52,6 +52,11 @@
   display: none;
 }
 
+.category__main > div > .category__list-block .checkbox,
+.arr_obj > div > .category__list-block .checkbox {
+  display: none;
+}
+
 .category__list {
   margin-left: 30px;
   margin-top: 10px;
@@ -92,6 +97,8 @@
   padding: 0 10px;
   display: flex;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .name-category {
@@ -114,6 +121,10 @@
 .tabs-category:hover,
 .del-category:hover {
   filter: drop-shadow(1px 1px 1px blue);
+}
+
+.checkbox {
+  margin: 0 0 0 5px;
 }
 
 .tabs-category,

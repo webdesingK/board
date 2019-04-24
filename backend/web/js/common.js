@@ -58,10 +58,41 @@ $(document).ready(function () {
 					$('.category__main').html(resp);
 					tab($('.category__list'));
 					delLastBorder($('.category__list'));
+				},
+				error: function(resp) {
+					alert('Ошибка сервера');
 				}
 			});
 
 		}
+
+		function checkbox() {
+
+			var active;
+
+			if ($(this).attr('data-active') == 1) {
+				$(this).attr('title', 'Активировать?');
+				$(this).attr('data-active', 0);
+				active = 0;
+			} else{
+				$(this).attr('title', 'Деактивировать?');
+				$(this).attr('data-active', 1);
+				active = 1;
+			}
+
+			var data = {
+
+				nameOfAction: 'active',
+				id: $(this).parents('.category__list').data('id'),
+				active: active
+
+			};
+
+			$.post('admin/tree-manager',data);
+
+		};
+
+		$('.checkbox').change(checkbox);
 
 		function categoryAjax(evt) {
 
@@ -125,6 +156,14 @@ $(document).ready(function () {
 
 		$('.category').on('click', '.tabs-category' ,function() {
 
+			$('.add-category').each(function(index){
+				
+				if ($(this).parent().siblings('.form-add').hasClass('visible')) {
+					$(this).html('&plus;');
+				}
+
+			});
+
 			$('.form-add').remove();
 
 			for (var i = 0; i < tabs.length; i++) {
@@ -148,14 +187,26 @@ $(document).ready(function () {
 		function tab(arr) {
 
 			for (var i = 0; i < arr.length; i++) {
-				if(!arr.eq(i).hasClass('none')){
+					
+			 	if(!arr.eq(i).hasClass('none')){
+
+			 	if (!arr.eq(i).children('.category__list').hasClass('none')) {
+
 					arr.eq(i).addClass('add-before')
 					.find('.tabs-category').html('▼')
 					.attr('title', 'Свернуть');
+				 	} else{
+				 		arr.eq(i).addClass('add-before')
+					.find('.tabs-category').html('▶')
+					.attr('title', 'Развернуть');
+
+				 	}
 				}
 			}
 
 		};
+
+
 
 	});
 
