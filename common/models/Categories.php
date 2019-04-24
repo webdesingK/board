@@ -38,11 +38,29 @@ class Categories extends ActiveRecord {
      */
     public function rules() {
         return [
-            [['name', 'parent_id'], 'safe']
+            [['name', 'parent_id', 'active'], 'safe']
         ];
     }
 
     /**
+     * $category->active - столбец строки в бд
+     *
+     * @param $id int
+     * @param $active int
+     * @return false|int
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+
+    static public function setActive($id, $active) {
+        $category = self::findOne($id);
+        $category->active = $active;
+        return $category->update();
+    }
+
+    /**
+     * $lastString - идентификатор строки в бд
+     *
      * @param string $name
      * @return integer
      */
@@ -51,6 +69,12 @@ class Categories extends ActiveRecord {
         $lastString = self::find()->where(['name' => $name])->one();
         return $lastString->id;
     }
+
+    /**
+     * @param $arrId array
+     * @param $lastId int
+     * @return string|null
+     */
 
     static public function createTree($arrId, $lastId) {
 

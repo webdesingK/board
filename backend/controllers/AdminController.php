@@ -37,6 +37,9 @@ class AdminController extends Controller {
                 $elem = $model::find()->andWhere(['id' => $id])->one();
                 $result = $elem->deleteWithChildren();
             }
+            if ($post['nameOfAction'] == 'active' && isset($post['active'])) {
+                $result = $model::setActive($id, $post['active']);
+            }
 
             if ($result) {
                 return $model::createTree($arrId, $lastId);
