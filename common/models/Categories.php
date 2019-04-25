@@ -79,8 +79,8 @@ class Categories extends ActiveRecord {
 				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
                                 <input type="checkbox" checked class="checkbox" title="Деактивировать?" data-active="1">
-				                <span class="tabs-category" title="Развернуть">▶</span>
                                 <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
+				                <span class="tabs-category" title="Развернуть">▶</span>
 			                </div>
                         ';
                     $tree .= create($cats, $cat['id'], $arrId, $lastId);

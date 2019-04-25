@@ -140,6 +140,21 @@
   margin-left: 20px;
 }
 
+.form-add:before {
+  content: attr(data-error);
+  display: block;
+  height: 0;
+  width: 50%;
+  color: red;
+  font: 18px sans-serif;
+  transition: height .3s;
+}
+
+.form-error:before {
+  height: 25px;
+  transition: height .3s;
+}
+
 .visible {
   max-height: 80px;
   transition: max-height .4s;
