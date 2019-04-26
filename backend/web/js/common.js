@@ -65,7 +65,7 @@ $(document).ready(function () {
 					tab($('.category__list'));
 				},
 				error: function(resp) {
-					// alert('Ошибка сервера');
+					alert('Ошибка сервера');
 				}
 			});
 
@@ -77,29 +77,34 @@ $(document).ready(function () {
 
 			var active,
 					self          = $(this),
-					totalCheckbox = $(this).parent().parent().find('.checkbox:not(:first)'),
-					parents       = $(this).parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
+					totalCheckbox = self.parents('.category__list:first').find('.checkbox:not(:first)'),
+					parents       = self.parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
 					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
-					mainDeactive  = {'title': 'Активировать?', 'data-active': 0};
+					mainDeactive  = {'title': 'Активировать?', 'data-active': 0},
+					checkedArr    = [self.parents('.category__list:first').attr('data-id')],
+					nameOfAction;
 
 			// если активируем дочерний checkbox значит циклом активируем родительские checkbox
 			parents.each(function(){
 
-				$(this).prop('checked', true).attr(mainActive);
+				if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
+
+					$(this).prop('checked', true).attr(mainActive);// делаем родитей активными
+					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив 
+
+				}
 
 			});
 
-			if ($(this).prop('checked')) {
-
-				$(this).attr(mainActive);
-				active = 1;
-				$(this).parent().parent().prev().children('.checkbox').prop('checked', true).attr(mainActive);
+			// делаем проверку checkbox на котором произошло изминение
+			if (self.prop('checked')) {
+				nameOfAction = 'active';
+				self.attr(mainActive);
+				self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
 
 			} else{
-				
-				$(this).attr(mainDeactive);
-				active = 0;
-
+				nameOfAction = 'deactive';
+				self.attr(mainDeactive);
 			}
 
 			// делаем изминения циклом дочерних checkbox
@@ -108,13 +113,14 @@ $(document).ready(function () {
 				if ($(this).prop('checked')) {// изменяем с активного на неактивный
 
 					$(this).prop('checked', false).attr(mainDeactive);
+					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
 
 				} else{// изменяем с неактивного на активный
 
 					if (self.prop('checked')) {// при условии если родительский checkbox активный 
 
 						$(this).prop('checked', true).attr(mainActive);
-						
+						checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
 					}
 
 				}
@@ -124,14 +130,13 @@ $(document).ready(function () {
 			// создаем обьект для передачи на сервер
 			var data = {
 
-				nameOfAction: 'active',
-				id: $(this).parents('.category__list').data('id'),
-				active: active
+				nameOfAction: nameOfAction,
+				ids: checkedArr
 
 			};
 
 			// отправка на сервер
-			$.post('admin/tree-manager',data);
+			$.post('admin/categories-manager',data);
 
 		};
 
@@ -181,7 +186,7 @@ $(document).ready(function () {
 				nameOfAction: 'create', 
 				name: name, // значение инпута
 				id: id, // значение атрибута id
-				arrId: sort($('.category__list')) // сортировка открытых элементов
+				openedIds: sort($('.category__list')) // сортировка открытых элементов
 			};
 
 			// отправляем ajax запрос на сервер
