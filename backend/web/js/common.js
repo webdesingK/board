@@ -88,7 +88,7 @@ $(document).ready(function () {
 
 			};
 
-			$.post('admin/tree-manager',data);
+			$.post('admin/categories-manager',data);
 
 		};
 
