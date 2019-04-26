@@ -19,19 +19,20 @@ class AdminController extends Controller {
 
         if (Yii::$app->request->isAjax) {
             $post = Yii::$app->request->post();
-            $id = $post['id'];
+//            $id = $post['id'];
             $result = null;
-            $arrOpenedId = null;
-            $arrDeactivatedId = null;
+//            $arrOpenedId = null;
+//            $arrDeactivatedId = null;
             $lastId = null;
-            if (isset($post['arrId'])) $arrOpenedId = $post['arrId'];
+//            if (isset($post['arrId'])) $arrOpenedId = $post['arrId'];
             if ($post['nameOfAction'] == 'create') {
-                $parent = $model::find()->andWhere(['id' => $id])->one();
+//                $parent = $model::find()->andWhere(['id' => $id])->one();
                 $data = [
-                    'parent_id' => $id,
+                    'id' => $post['id'],
                     'name' => $post['name']
                 ];
-                $result = ($model->load($data, '') && $model->prependTo($parent));
+//                $result = ($model->load($data, '') && $model->prependTo($parent));
+                $result = $model->createNewNode($data);
                 $lastId = $model->getLastId($post['name']);
 
             }

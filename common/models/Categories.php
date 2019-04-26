@@ -42,6 +42,10 @@ class Categories extends ActiveRecord {
         ];
     }
 
+    function createNewNode($data) {
+        $parentNode = self::find()->where(['id' => $data['id']])->one();
+    }
+
     /**
      * @return array
      */
