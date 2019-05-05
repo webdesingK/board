@@ -43,53 +43,26 @@ class Categories extends ActiveRecord {
     }
 
     function createNewNode($data) {
+        $dataForModel = [
+            'parent_id' => $data['id'],
+            'name' => $data['name']
+        ];
         $parentNode = self::find()->where(['id' => $data['id']])->one();
+        if (self::load($dataForModel, '') && self::prependTo($parentNode)) {
+            return self::getLastId($data['name']);
+        }
+        else {
+            return false;
+        }
+    }
+
+    function deleteNode($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        return $node->deleteWithChildren();
     }
 
     /**
-     * @return array
-     */
-
-    static public function getDeactivateId() {
-        $allData = self::findAll(['active' => 0]);
-        $idArray = [];
-        foreach ($allData as $key => $value) {
-            $idArray[$key] = $value->id;
-        }
-        return $idArray;
-    }
-
-    /**
-     * $category->active - столбец строки в бд
-     *
-     * @param $id int
-     * @param $active int
-     * @return false|int
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-
-    static public function changeActivate($id, $active) {
-        $category = self::findOne($id);
-        $category->active = $active;
-        $childrens = $category->children()->all();
-        $parents = $category->parents()->all();
-        $childrenIds = [];
-        $parentIds = [];
-        foreach ($childrens as $children) {
-            $childrenIds[] = $children->id;
-        }
-        foreach ($parents as $parent) {
-            if ($parent->id == 1) continue;
-            $parentIds[] = $parent->id;
-        }
-        $allIds = array_merge($parentIds, $childrenIds);
-        $category->update();
-        self::updateAll(['active' => $active], ['in', 'id', $allIds]);
-    }
-
-    /**
-     * $lastString - идентификатор строки в бд
+     * $lastString->id - идентификатор последней записанной строки в бд
      *
      * @param string $name
      * @return integer
@@ -101,13 +74,12 @@ class Categories extends ActiveRecord {
     }
 
     /**
-     * @param $arrOpenedId array
-     * @param $arrDeactivatedId array
+     * @param $openedIds array
      * @param $lastId int
      * @return string|null
      */
 
-    static public function createTree($arrOpenedId, $arrDeactivatedId, $lastId) {
+    static public function createTree($openedIds, $lastId) {
 
         $allCats = self::find()->all();
         $cats = [];
@@ -118,45 +90,33 @@ class Categories extends ActiveRecord {
             ];
         }
 
-        if (isset($lastId)) array_push($arrOpenedId, $lastId);
+        if (isset($lastId)) array_push($openedIds, $lastId);
 
-        function create($cats, $parentId, $arrOpenedId, $lastId, $arrDeactivatedId) {
+        function create($cats, $parentId, $openedIds) {
 
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
                 $tree = '';
                 $class = null;
                 foreach ($cats[$parentId] as $cat) {
-                    if (!is_array($arrOpenedId)) {
+
+                    if (!is_array($openedIds)) {
                         if ($cat['id'] != 1) $class = 'none';
                     }
                     else {
-                        if (!in_array($cat['id'], $arrOpenedId)) $class = 'none';
+                        if (!in_array($cat['id'], $openedIds)) $class = 'none';
                     }
-                    if ($arrDeactivatedId && !empty($arrDeactivatedId) && in_array($cat['id'], $arrDeactivatedId)) {
-                        $activated = [
-                            'data-active' => 0,
-                            'checked' => null,
-                            'title' => 'Активировать?',
-                        ];
-                    }
-                    else {
-                        $activated = [
-                            'data-active' => 1,
-                            'checked' => 'checked',
-                            'title' => 'Деактивировать?',
-                        ];
-                    }
+
                     $tree .= '
                         <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                             <div class="category__list-block">
 				                <span class="name-category">' . $cat['name'] . '</span> 
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
-                                <input type="checkbox" ' . $activated['checked'] . ' class="checkbox" title="' . $activated['title'] . '" data-active="' . $activated['data-active'] . '">
+                                <input type="checkbox" checked class="checkbox" title="Деактивировать" data-active="1">
 				                <span class="tabs-category" title="Развернуть">▶</span>
                                 <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
 			                </div>
                         ';
-                    $tree .= create($cats, $cat['id'], $arrOpenedId, $lastId, $arrDeactivatedId);
+                    $tree .= create($cats, $cat['id'], $openedIds);
                     $tree .= '</div>';
                 }
             }
@@ -166,7 +126,7 @@ class Categories extends ActiveRecord {
             return $tree;
         }
 
-        return create($cats, 0, $arrOpenedId, $lastId, $arrDeactivatedId);
+        return create($cats, 0, $openedIds);
 
     }
 }

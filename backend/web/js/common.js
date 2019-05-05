@@ -1,301 +1,302 @@
 $(document).ready(function () {
 
-	// category
-	$(function () {
+    // category
+    $(function () {
 
-		// add form ----------------------------------------------
-		function addCategory() {
+        // add form ----------------------------------------------
+        function addCategory() {
 
-			if ($(this).text() == '+') {
-				
-				$(this).html('&minus;');
-				// добовляем форму 
-				$(this).parent().after('<form class="form-add">\
+            if ($(this).text() == '+') {
+
+                $(this).html('&minus;');
+                // добовляем форму
+                $(this).parent().after('<form class="form-add">\
 						<input type="text" class="input-text" placeholder="Имя категории">\
 						<button class="submit-btn">Сохранить</button></form>');
 
-				$('.input-text').focus();
+                $('.input-text').focus();
 
-			} else{
+            } else {
 
-				$(this).parent().siblings('.form-add').remove();
-				$(this).html('&plus;');
+                $(this).parent().siblings('.form-add').remove();
+                $(this).html('&plus;');
 
-			}
+            }
 
-			// добавляем класс для анимации после динамического добавления элемента (form)
-			setTimeout(function () {
-				$('.form-add').addClass('visible');
-			}, 25);
+            // добавляем класс для анимации после динамического добавления элемента (form)
+            setTimeout(function () {
+                $('.form-add').addClass('visible');
+            }, 25);
 
-		};
+        };
 
-		// делегированное события клика на динамически добаленого элемента
-		$('.category').on('click', '.add-category', addCategory);
+        // делегированное события клика на динамически добаленого элемента
+        $('.category').on('click', '.add-category', addCategory);
 
-		// end add form -------------------------------------------
+        // end add form -------------------------------------------
 
 
-		// функция передающая в ajax запрос с масивом блоков у которых нет класса 'none'
-		function sort(arr, number) {
+        // функция передающая в ajax запрос с масивом блоков у которых нет класса 'none'
+        function sort(arr, number) {
 
-			var ar = [];
+            var ar = [];
 
-			for (var i = 0; i < arr.length; i++) {
-				if (!arr.eq(i).hasClass('none')) {
-					ar.push(arr.eq(i).data('id'));
-				}
-			}
+            for (var i = 0; i < arr.length; i++) {
+                if (!arr.eq(i).hasClass('none')) {
+                    ar.push(arr.eq(i).data('id'));
+                }
+            }
 
-			if (ar.indexOf(number) != '-1') {
-				ar.splice(ar.indexOf(number),1);
-			}
-			return ar;
-		};
+            if (ar.indexOf(number) != '-1') {
+                ar.splice(ar.indexOf(number), 1);
+            }
+            return ar;
+        };
 
-		// ajax ---------------------------------------------------
-		function ajx(obj, numm) {
+        // ajax ---------------------------------------------------
+        function ajx(obj, numm) {
 
-			$.ajax({
-				type: 'POST',
-				data: obj,
-				success: function(resp) {
-					$('.category__main').html(resp);
-					delLastBorder($('.category__list'));
-					tab($('.category__list'));
-				},
-				error: function(resp) {
-					alert('Ошибка сервера');
-				}
-			});
+            $.ajax({
+                type: 'POST',
+                data: obj,
+                success: function (resp) {
+                    $('.category__main').html(resp);
+                    delLastBorder($('.category__list'));
+                    tab($('.category__list'));
+                },
+                error: function (resp) {
+                    alert('Ошибка сервера');
+                }
+            });
 
-		}
-		// end ajax -----------------------------------------------
+        }
 
-		// checkbox change ----------------------------------------
-		function checkbox() {
+        // end ajax -----------------------------------------------
 
-			var active,
-					self          = $(this),
-					totalCheckbox = self.parents('.category__list:first').find('.checkbox:not(:first)'),
-					parents       = self.parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
-					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
-					mainDeactive  = {'title': 'Активировать?', 'data-active': 0},
-					checkedArr    = [self.parents('.category__list:first').attr('data-id')],
-					nameOfAction;
+        // checkbox change ----------------------------------------
+        function checkbox() {
 
-			// если активируем дочерний checkbox значит циклом активируем родительские checkbox
-			parents.each(function(){
+            var active,
+                self = $(this),
+                totalCheckbox = self.parents('.category__list:first').find('.checkbox:not(:first)'),
+                parents = self.parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
+                mainActive = {'title': 'Деактивировать?', 'data-active': 1},
+                mainDeactive = {'title': 'Активировать?', 'data-active': 0},
+                checkedArr = [self.parents('.category__list:first').attr('data-id')],
+                nameOfAction;
 
-				if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
+            // если активируем дочерний checkbox значит циклом активируем родительские checkbox
+            parents.each(function () {
 
-					$(this).prop('checked', true).attr(mainActive);// делаем родитей активными
-					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив 
+                if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
 
-				}
+                    $(this).prop('checked', true).attr(mainActive);// делаем родитей активными
+                    checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
 
-			});
+                }
 
-			// делаем проверку checkbox на котором произошло изминение
-			if (self.prop('checked')) {
-				nameOfAction = 'active';
-				self.attr(mainActive);
-				self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
+            });
 
-			} else{
-				nameOfAction = 'deactive';
-				self.attr(mainDeactive);
-			}
+            // делаем проверку checkbox на котором произошло изминение
+            if (self.prop('checked')) {
+                nameOfAction = 'active';
+                self.attr(mainActive);
+                self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
 
-			// делаем изминения циклом дочерних checkbox
-			totalCheckbox.each(function(){
+            } else {
+                nameOfAction = 'deactive';
+                self.attr(mainDeactive);
+            }
 
-				if ($(this).prop('checked')) {// изменяем с активного на неактивный
+            // делаем изминения циклом дочерних checkbox
+            totalCheckbox.each(function () {
 
-					$(this).prop('checked', false).attr(mainDeactive);
-					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
+                if ($(this).prop('checked')) {// изменяем с активного на неактивный
 
-				} else{// изменяем с неактивного на активный
+                    $(this).prop('checked', false).attr(mainDeactive);
+                    checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
 
-					if (self.prop('checked')) {// при условии если родительский checkbox активный 
+                } else {// изменяем с неактивного на активный
 
-						$(this).prop('checked', true).attr(mainActive);
-						checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
-					}
+                    if (self.prop('checked')) {// при условии если родительский checkbox активный
 
-				}
+                        $(this).prop('checked', true).attr(mainActive);
+                        checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
+                    }
 
-			});
+                }
 
-			// создаем обьект для передачи на сервер
-			var data = {
+            });
 
-				nameOfAction: nameOfAction,
-				ids: checkedArr
+            // создаем обьект для передачи на сервер
+            var data = {
 
-			};
+                nameOfAction: nameOfAction,
+                ids: checkedArr
 
-			// отправка на сервер
-			$.post('admin/categories-manager',data);
+            };
 
-		};
+            // отправка на сервер
+            $.post('admin/categories-manager', data);
 
-		$('.category').on('change', '.checkbox', checkbox);
+        };
 
-		//  end checkbox change -----------------------------------
+        $('.category').on('change', '.checkbox', checkbox);
 
-		// validation input ---------------------------------------
+        //  end checkbox change -----------------------------------
 
-		var nameCategoryArr = [],
-				nameCategory    = $('.name-category');
+        // validation input ---------------------------------------
 
-		nameCategory.each(function(){
-			var text = $(this).text();
-			nameCategoryArr.push(text);
-		});
+        var nameCategoryArr = [],
+            nameCategory = $('.name-category');
 
-		// end validation -----------------------------------------
+        nameCategory.each(function () {
+            var text = $(this).text();
+            nameCategoryArr.push(text);
+        });
 
-		// add category ajax --------------------------------------
-		function categoryAjax(evt) {
+        // end validation -----------------------------------------
 
-			evt.preventDefault(); //отменяем стандартное поведение кнопки отправки формы на сервер 
+        // add category ajax --------------------------------------
+        function categoryAjax(evt) {
 
-			var name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
-			var id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
-			
-			// validation
-			for (var i = 0; i < nameCategoryArr.length; i++) {
-				if(nameCategoryArr[i] == name) {
-					$(this).prev().focus();
-					$(this).parent().attr('data-error', 'смотри что пишешь 🚫')
-					.addClass('form-error');
-					return;
-				} else if(name == '') {
-					$(this).parent().attr('data-error', 'напиши хоть что-нибудь 🚫')
-					.addClass('form-error');
-					$(this).prev().focus();
-					return;
-				}
-			}
-			
-			// добавляем в масив вновь созданную категорию для валидации
-			nameCategoryArr.push(name);
+            evt.preventDefault(); //отменяем стандартное поведение кнопки отправки формы на сервер
 
-			var data = {
-				nameOfAction: 'create', 
-				name: name, // значение инпута
-				id: id, // значение атрибута id
-				openedIds: sort($('.category__list')) // сортировка открытых элементов
-			};
+            var name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
+            var id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
 
-			// отправляем ajax запрос на сервер
-			ajx(data);
+            // validation
+            for (var i = 0; i < nameCategoryArr.length; i++) {
+                if (nameCategoryArr[i] == name) {
+                    $(this).prev().focus();
+                    $(this).parent().attr('data-error', 'смотри что пишешь 🚫')
+                        .addClass('form-error');
+                    return;
+                } else if (name == '') {
+                    $(this).parent().attr('data-error', 'напиши хоть что-нибудь 🚫')
+                        .addClass('form-error');
+                    $(this).prev().focus();
+                    return;
+                }
+            }
 
-		};
+            // добавляем в масив вновь созданную категорию для валидации
+            nameCategoryArr.push(name);
 
-		// при клике на кнопку вызываем функцию отправки формы на сервер
-		$('.category').on('click', 'button', categoryAjax);
+            var data = {
+                nameOfAction: 'create',
+                name: name, // значение инпута
+                id: id, // значение атрибута id
+                openedIds: sort($('.category__list')) // сортировка открытых элементов
+            };
 
-		// end add category ajax ----------------------------------
+            // отправляем ajax запрос на сервер
+            ajx(data);
 
-		// delete category ajax ----------------------------------
-		// отправка ajax запроса на удаления категории и если есть в ней подкотегории
-		$('.category').on('click', '.del-category', function() {
+        };
 
-			var id = $(this).parents('.category__list').data('id');
-			var data = {
-				nameOfAction: 'delete',
-				id: id,
-				arrId: sort($('.category__list'), id) // сортировка открытых элементов
-			};
+        // при клике на кнопку вызываем функцию отправки формы на сервер
+        $('.category').on('click', 'button', categoryAjax);
 
-			var numm = $(this).parents('.category__list').data('id');
+        // end add category ajax ----------------------------------
 
-			ajx(data, numm);
+        // delete category ajax ----------------------------------
+        // отправка ajax запроса на удаления категории и если есть в ней подкотегории
+        $('.category').on('click', '.del-category', function () {
 
-		});
+            var id = $(this).parents('.category__list').data('id');
+            var data = {
+                nameOfAction: 'delete',
+                id: id,
+                arrId: sort($('.category__list'), id) // сортировка открытых элементов
+            };
 
-		//  end category ajax ------------------------------------
+            var numm = $(this).parents('.category__list').data('id');
 
-		// nested ------------------------------------------------
-		var nestedList = $('.category__list');
+            ajx(data, numm);
 
-		function delLastBorder(arr) {
+        });
 
-			for (var i = 0; i < arr.length; i++) {
+        //  end category ajax ------------------------------------
 
-				if(arr.eq(i).children('.category__list').length == 0) {
-					arr.eq(i).addClass('after_none');
-					arr.eq(i).find('.tabs-category').remove();
-				}
+        // nested ------------------------------------------------
+        var nestedList = $('.category__list');
 
-				arr.eq(i).children('.category__list:last').addClass('after_hide');
+        function delLastBorder(arr) {
 
-			}
+            for (var i = 0; i < arr.length; i++) {
 
-		};
-		delLastBorder(nestedList);
+                if (arr.eq(i).children('.category__list').length == 0) {
+                    arr.eq(i).addClass('after_none');
+                    arr.eq(i).find('.tabs-category').remove();
+                }
 
-		// end nested ------------------------------------------
+                arr.eq(i).children('.category__list:last').addClass('after_hide');
 
-		// tabs ------------------------------------------------
-		var tabs = $('.tabs-category');
+            }
 
-		$('.category').on('click', '.tabs-category' ,function() {
+        };
+        delLastBorder(nestedList);
 
-			$('.add-category').each(function(index){
-				
-				if ($(this).parent().siblings('.form-add').hasClass('visible')) {
-					$(this).html('&plus;');
-				}
+        // end nested ------------------------------------------
 
-			});
+        // tabs ------------------------------------------------
+        var tabs = $('.tabs-category');
 
-			$('.form-add').remove();
+        $('.category').on('click', '.tabs-category', function () {
 
-			for (var i = 0; i < tabs.length; i++) {
+            $('.add-category').each(function (index) {
 
-				if ($(this).parent().siblings().eq(i).find('.tabs-category').html() == '▼') {
-					$(this).parent().siblings().eq(i).find('.tabs-category').click();
-				}
+                if ($(this).parent().siblings('.form-add').hasClass('visible')) {
+                    $(this).html('&plus;');
+                }
 
-			}
-			if ($(this).html() == '▶') {
-				$(this).html('▼').attr('title', 'Свернуть');
-				$(this).parents('.category__list').addClass('add-before');
-			} else{
-				$(this).html('▶').attr('title', 'Развернуть');
-				$(this).parent().parent().removeClass('add-before');
-			}
-			$(this).parent().siblings().toggleClass('none');
+            });
 
-		});
+            $('.form-add').remove();
 
-		function tab(arr) {
+            for (var i = 0; i < tabs.length; i++) {
 
-			for (var i = 0; i < arr.length; i++) {
-					
-			 	if(!arr.eq(i).hasClass('none')){
+                if ($(this).parent().siblings().eq(i).find('.tabs-category').html() == '▼') {
+                    $(this).parent().siblings().eq(i).find('.tabs-category').click();
+                }
 
-			 	if (!arr.eq(i).children('.category__list').hasClass('none')) {
+            }
+            if ($(this).html() == '▶') {
+                $(this).html('▼').attr('title', 'Свернуть');
+                $(this).parents('.category__list').addClass('add-before');
+            } else {
+                $(this).html('▶').attr('title', 'Развернуть');
+                $(this).parent().parent().removeClass('add-before');
+            }
+            $(this).parent().siblings().toggleClass('none');
 
-					arr.eq(i).addClass('add-before')
-					.find('.tabs-category').html('▼')
-					.attr('title', 'Свернуть');
-				 	} else{
-				 		arr.eq(i).addClass('add-before')
-					.find('.tabs-category').html('▶')
-					.attr('title', 'Развернуть');
+        });
 
-				 	}
-				}
-			}
+        function tab(arr) {
 
-		};
+            for (var i = 0; i < arr.length; i++) {
 
-		//  end tabs ------------------------------------------
+                if (!arr.eq(i).hasClass('none')) {
 
-	});
+                    if (!arr.eq(i).children('.category__list').hasClass('none')) {
+
+                        arr.eq(i).addClass('add-before')
+                            .find('.tabs-category').html('▼')
+                            .attr('title', 'Свернуть');
+                    } else {
+                        arr.eq(i).addClass('add-before')
+                            .find('.tabs-category').html('▶')
+                            .attr('title', 'Развернуть');
+
+                    }
+                }
+            }
+
+        };
+
+        //  end tabs ------------------------------------------
+
+    });
 
 });

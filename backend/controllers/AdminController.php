@@ -15,44 +15,41 @@ class AdminController extends Controller {
     public function actionCategoriesManager() {
 
         $model = new Categories();
-        $arrDeactivatedId = $model->getDeactivateId();
+//        $arrDeactivatedId = $model->getDeactivateId();
 
         if (Yii::$app->request->isAjax) {
             $post = Yii::$app->request->post();
-//            $id = $post['id'];
             $result = null;
-//            $arrOpenedId = null;
 //            $arrDeactivatedId = null;
             $lastId = null;
-//            if (isset($post['arrId'])) $arrOpenedId = $post['arrId'];
             if ($post['nameOfAction'] == 'create') {
-//                $parent = $model::find()->andWhere(['id' => $id])->one();
                 $data = [
                     'id' => $post['id'],
-                    'name' => $post['name']
+                    'name' => $post['name'],
+                    'openedIds' => $post['openedIds']
                 ];
-//                $result = ($model->load($data, '') && $model->prependTo($parent));
-                $result = $model->createNewNode($data);
-                $lastId = $model->getLastId($post['name']);
-
+                $lastId = $model->createNewNode($data);
             }
-            if ($post['nameOfAction'] == 'delete') {
-                $elem = $model::find()->andWhere(['id' => $id])->one();
-                $result = $elem->deleteWithChildren();
+            elseif ($post['nameOfAction'] == 'delete') {
+                $result = $model->deleteNode($post['id']);
             }
-            if ($post['nameOfAction'] == 'active') {
-                $model->changeActivate($id, $post['active']);
+            elseif ($post['nameOfAction'] == 'active') {
+                $model->setActive($post['ids']);
+                exit();
+            }
+            elseif ($post['nameOfAction'] == 'deactive') {
+                $model->setDeactive($post['ids']);
                 exit();
             }
 
-            if ($result) {
-                return $model::createTree($arrOpenedId, $arrDeactivatedId, $lastId);
+            if ($result || $lastId) {
+                return $model::createTree($post['openedIds'], $lastId);
             }
 
         }
 
         return $this->render('categories-manager', compact([
-            'arrDeactivatedId'
+//            'arrDeactivatedId'
         ]));
     }
 

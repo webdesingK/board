@@ -25,7 +25,14 @@ AdminAsset::register($this);
 			<li><a href="/admin/categories-manager">Менеджер категорий</a></li>
 			<li><a href="/admin/cities-manager">Менеджер городов</a></li>
 		</ul>
+
+<? \yii\widgets\Pjax::begin([
+        'linkSelector' => '.menu a'
+])?>
+
     <?= $content ?>
+
+<? \yii\widgets\Pjax::end()?>
 
 <?php $this->endBody() ?>
 </body>
