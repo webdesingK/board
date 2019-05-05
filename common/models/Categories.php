@@ -42,7 +42,12 @@ class Categories extends ActiveRecord {
         ];
     }
 
-    function createNewNode($data) {
+    /**
+     * @param $data array
+     * @return bool|int
+     */
+
+    public function createNewNode($data) {
         $dataForModel = [
             'parent_id' => $data['id'],
             'name' => $data['name']
@@ -56,7 +61,16 @@ class Categories extends ActiveRecord {
         }
     }
 
-    function deleteNode($id) {
+    public function changeActive($ids, $value) {
+
+    }
+
+    /**
+     * @param $id int
+     * @return mixed
+     */
+
+    public function deleteNode($id) {
         $node = self::find()->where(['id' => $id])->one();
         return $node->deleteWithChildren();
     }

@@ -26,7 +26,6 @@ class AdminController extends Controller {
                 $data = [
                     'id' => $post['id'],
                     'name' => $post['name'],
-                    'openedIds' => $post['openedIds']
                 ];
                 $lastId = $model->createNewNode($data);
             }
@@ -34,11 +33,11 @@ class AdminController extends Controller {
                 $result = $model->deleteNode($post['id']);
             }
             elseif ($post['nameOfAction'] == 'active') {
-                $model->setActive($post['ids']);
+                $model->changeActive($post['ids'], 1);
                 exit();
             }
             elseif ($post['nameOfAction'] == 'deactive') {
-                $model->setDeactive($post['ids']);
+                $model->changeActive($post['ids'], 0);
                 exit();
             }
 
