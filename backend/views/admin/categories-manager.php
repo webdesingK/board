@@ -6,7 +6,6 @@
 $this->title = 'Манагер меню';
 
 use common\models\Categories;
-
 ?>
 
 <div class="category">

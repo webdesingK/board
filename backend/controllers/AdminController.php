@@ -15,12 +15,10 @@ class AdminController extends Controller {
     public function actionCategoriesManager() {
 
         $model = new Categories();
-//        $arrDeactivatedId = $model->getDeactivateId();
 
         if (Yii::$app->request->isAjax) {
             $post = Yii::$app->request->post();
             $result = null;
-//            $arrDeactivatedId = null;
             $lastId = null;
             if ($post['nameOfAction'] == 'create') {
                 $data = [
@@ -32,13 +30,19 @@ class AdminController extends Controller {
             elseif ($post['nameOfAction'] == 'delete') {
                 $result = $model->deleteNode($post['id']);
             }
-            elseif ($post['nameOfAction'] == 'active') {
-                $model->changeActive($post['ids'], 1);
+            elseif ($post['nameOfAction'] == 'changeActive') {
+                $model->changeActive($post['ids'], $post['value']);
                 exit();
             }
-            elseif ($post['nameOfAction'] == 'deactive') {
-                $model->changeActive($post['ids'], 0);
+            elseif ($post['nameOfAction'] == 'rename') {
+                $model->renameNode($post['id'], $post['value']);
                 exit();
+            }
+            elseif ($post['nameOfAction'] == 'moveUp') {
+                $result = $model->moveUp($post['id'], $post['siblingId']);
+            }
+            elseif ($post['nameOfAction'] == 'moveDown') {
+                $result = $model->moveDown($post['id'], $post['siblingId']);
             }
 
             if ($result || $lastId) {
@@ -47,9 +51,7 @@ class AdminController extends Controller {
 
         }
 
-        return $this->render('categories-manager', compact([
-//            'arrDeactivatedId'
-        ]));
+        return $this->render('categories-manager');
     }
 
     public function actionCitiesManager() {

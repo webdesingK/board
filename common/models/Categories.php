@@ -61,8 +61,39 @@ class Categories extends ActiveRecord {
         }
     }
 
-    public function changeActive($ids, $value) {
+    /**
+     * @param $ids array
+     * @param $value int
+     * @return int
+     */
 
+    public function changeActive($ids, $value) {
+        self::updateAll(['active' => $value], ['in', 'id', $ids]);
+    }
+
+    /**
+     * @param $id int
+     * @param $value string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+
+    public function renameNode($id, $value) {
+        $node = self::find()->where(['id' => $id])->one();
+        $node->name = $value;
+        $node->update();
+    }
+
+    public function moveUp($id, $siblingId) {
+        $node = self::find()->where(['id' => $id])->one();
+        $sibling = self::find()->where(['id' => $siblingId])->one();
+        return $node->insertBefore($sibling);
+    }
+
+    public function moveDown($id, $siblingId) {
+        $node = self::find()->where(['id' => $id])->one();
+        $sibling = self::find()->where(['id' => $siblingId])->one();
+        return $node->insertAfter($sibling);
     }
 
     /**
@@ -95,7 +126,7 @@ class Categories extends ActiveRecord {
 
     static public function createTree($openedIds, $lastId) {
 
-        $allCats = self::find()->all();
+        $allCats = self::find()->orderBy('lft ASC')->all();
         $cats = [];
         foreach ($allCats as $cat) {
             $cats[$cat->parent_id][] = [
@@ -122,12 +153,15 @@ class Categories extends ActiveRecord {
 
                     $tree .= '
                         <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
-                            <div class="category__list-block">
-				                <span class="name-category">' . $cat['name'] . '</span> 
+                             <div class="category__list-block">
+				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
-                                <input type="checkbox" checked class="checkbox" title="Деактивировать" data-active="1">
+                                <span class="edit-category" title="Редоктирование названия категории">✎</span>
+                                <span class="del-category" title="Удалить категорию и подкатегории">✘</span>
+                                <input type="checkbox" checked class="checkbox" title="Деактивировать?" data-active="1">
+                                <span class="motion__up-category" title="Переместить вверх">➭</span>
+                                <span class="motion__down-category" title="Переместить вниз">➭</span>
 				                <span class="tabs-category" title="Развернуть">▶</span>
-                                <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
 			                </div>
                         ';
                     $tree .= create($cats, $cat['id'], $openedIds);

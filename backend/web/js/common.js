@@ -3,13 +3,54 @@ $(document).ready(function () {
 	// category
 	$(function () {
 
+		// функция для вывода сообщения для предупреждения о незавершенной работе другого элемента
+		function alertMessage(self, name, bool){
+
+			self.removeClass(function(i, cls) {
+			  return (cls.match(/alert\-\S+/g)||[]).join(" ");
+			});
+
+			self.addClass('alert-' + name + '');
+
+			if (bool == undefined) {
+
+				setTimeout(function(){
+					self.removeClass('alert-' + name + '');
+				},2000);
+
+			}
+
+		};
+
+		// функция для проверки совпадения id открытого элемента с кликнутым элементом
+		function checkIds(self, selector) {
+
+			var openedId = $(selector + ':visible').parents('.category__list:first').attr('data-id'),
+					closeId  = self.parents('.category__list:first').attr('data-id');
+
+			if (openedId == closeId) {
+				return true;
+			} else{
+				return false;
+			}
+		};
+
 		// add form ----------------------------------------------
 		function addCategory() {
 
-			if ($(this).text() == '+') {
+			if ($('.form-add').length > 0 && !checkIds($(this), '.form-add')) {
+				alertMessage($(this), 'form');
+				return;
+			};
 
+			if ($(this).parent().siblings('.category__list').hasClass('none')) {// при добавлении формы проверяем если у родителя дочерние элементы скрыты
+				$(this).parents('.category__list:first').removeClass('add-before');// тогда удаляем полоску у родителя
+			}
+
+			if ($(this).text() == '+') {
+				
 				$(this).html('&minus;');
-				// добовляем форму
+				// добовляем форму 
 				$(this).parent().after('<form class="form-add">\
 						<input type="text" class="input-text" placeholder="Имя категории">\
 						<button class="submit-btn">Сохранить</button></form>');
@@ -19,14 +60,9 @@ $(document).ready(function () {
 			} else{
 
 				$(this).parent().siblings('.form-add').remove();
-				$(this).html('&plus;');
+				$(this).text('+');
 
 			}
-
-			// добавляем класс для анимации после динамического добавления элемента (form)
-			setTimeout(function () {
-				$('.form-add').addClass('visible');
-			}, 25);
 
 		};
 
@@ -54,15 +90,17 @@ $(document).ready(function () {
 		};
 
 		// ajax ---------------------------------------------------
-		function ajx(obj, numm) {
+		function ajx(obj) {
 
 			$.ajax({
 				type: 'POST',
 				data: obj,
 				success: function(resp) {
 					$('.category__main').html(resp);
-					delLastBorder($('.category__list'));
+					structureMovements();
 					tab($('.category__list'));
+					delLastBorder($('.category__list'));
+					titleName($('.name-category'));
 				},
 				error: function(resp) {
 					alert('Ошибка сервера');
@@ -82,7 +120,7 @@ $(document).ready(function () {
 					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
 					mainDeactive  = {'title': 'Активировать?', 'data-active': 0},
 					checkedArr    = [self.parents('.category__list:first').attr('data-id')],
-					nameOfAction;
+					value;
 
 			// если активируем дочерний checkbox значит циклом активируем родительские checkbox
 			parents.each(function(){
@@ -90,7 +128,7 @@ $(document).ready(function () {
 				if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
 
 					$(this).prop('checked', true).attr(mainActive);// делаем родитей активными
-					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
+					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив 
 
 				}
 
@@ -98,12 +136,12 @@ $(document).ready(function () {
 
 			// делаем проверку checkbox на котором произошло изминение
 			if (self.prop('checked')) {
-				nameOfAction = 'active';
+				value = 1;
 				self.attr(mainActive);
 				self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
 
 			} else{
-				nameOfAction = 'deactive';
+				value = 0;
 				self.attr(mainDeactive);
 			}
 
@@ -117,7 +155,7 @@ $(document).ready(function () {
 
 				} else{// изменяем с неактивного на активный
 
-					if (self.prop('checked')) {// при условии если родительский checkbox активный
+					if (self.prop('checked')) {// при условии если родительский checkbox активный 
 
 						$(this).prop('checked', true).attr(mainActive);
 						checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
@@ -130,13 +168,22 @@ $(document).ready(function () {
 			// создаем обьект для передачи на сервер
 			var data = {
 
-				nameOfAction: nameOfAction,
+				nameOfAction: 'changeActive',
+				value: value,
 				ids: checkedArr
 
 			};
 
 			// отправка на сервер
-			$.post('admin/categories-manager',data);
+			$.ajax({
+
+				type: 'POST',
+				data: data,
+				error: function(){
+					alert('Ошибка сервера!!!');
+				}
+
+			});
 
 		};
 
@@ -150,7 +197,7 @@ $(document).ready(function () {
 				nameCategory    = $('.name-category');
 
 		nameCategory.each(function(){
-			var text = $(this).text();
+			var text = $(this).text().toLowerCase();
 			nameCategoryArr.push(text);
 		});
 
@@ -158,32 +205,30 @@ $(document).ready(function () {
 
 		// add category ajax --------------------------------------
 		function categoryAjax(evt) {
-
-			evt.preventDefault(); //отменяем стандартное поведение кнопки отправки формы на сервер
+			
+			evt.preventDefault(); //отменяем стандартное поведение кнопки отправки формы на сервер 
 
 			var name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
 			var id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
-
+			
 			// validation
 			for (var i = 0; i < nameCategoryArr.length; i++) {
-				if(nameCategoryArr[i] == name) {
+				if(nameCategoryArr[i] == name.toLowerCase()) {// проверяем вводимое значение на совпадения в массиве(переведенные в нижний регистр)
 					$(this).prev().focus();
-					$(this).parent().attr('data-error', 'смотри что пишешь 🚫')
-					.addClass('form-error');
+					alertMessage($(this), 'text_copy', true);
 					return;
-				} else if(name == '') {
-					$(this).parent().attr('data-error', 'напиши хоть что-нибудь 🚫')
-					.addClass('form-error');
+				} else if(name == '') {// проверяем вводимое значение на пустую строку
+					alertMessage($(this), 'text_null', true);
 					$(this).prev().focus();
 					return;
 				}
 			}
-
-			// добавляем в масив вновь созданную категорию для валидации
-			nameCategoryArr.push(name);
+			
+			// добавляем в масив вновь созданную категорию для валидации в нижнем регистре
+			nameCategoryArr.push(name.toLowerCase());
 
 			var data = {
-				nameOfAction: 'create',
+				nameOfAction: 'create', 
 				name: name, // значение инпута
 				id: id, // значение атрибута id
 				openedIds: sort($('.category__list')) // сортировка открытых элементов
@@ -195,24 +240,38 @@ $(document).ready(function () {
 		};
 
 		// при клике на кнопку вызываем функцию отправки формы на сервер
-		$('.category').on('click', 'button', categoryAjax);
+		$('.category').on('click', '.submit-btn', categoryAjax);
 
 		// end add category ajax ----------------------------------
 
 		// delete category ajax ----------------------------------
-		// отправка ajax запроса на удаления категории и если есть в ней подкотегории
-		$('.category').on('click', '.del-category', function() {
+		
+		$('.category').on('click', '.del-category', function() {// отправка ajax запроса на удаления категории и если есть в ней подкотегории
 
-			var id = $(this).parents('.category__list').data('id');
+			var delName          = $(this).siblings('.name-category').text().toLowerCase(),
+				  id               = $(this).parents('.category__list').attr('data-id'),
+				  allAttachments   = $(this).parents('.category__list:first').find('.category__list');
+
+			if (allAttachments.length > 0) {// проверяем если у родителя есть дочерние элементы
+
+				allAttachments.each(function(){// тогда проходим по массиву этих дочерних элементов
+
+					var del = $(this).find('.name-category').text().toLowerCase();// находим название категории и переводим в нижний регистр
+					delete nameCategoryArr[nameCategoryArr.indexOf(del)];// удаляем с массива для валидации удаленную категорию
+
+				});
+
+			}
+
+			delete nameCategoryArr[nameCategoryArr.indexOf(delName)];// удаляем с массива для валидации удаленную категорию
+
 			var data = {
 				nameOfAction: 'delete',
 				id: id,
-				arrId: sort($('.category__list'), id) // сортировка открытых элементов
+				openedIds: sort($('.category__list'), id)
 			};
 
-			var numm = $(this).parents('.category__list').data('id');
-
-			ajx(data, numm);
+			ajx(data);
 
 		});
 
@@ -222,6 +281,9 @@ $(document).ready(function () {
 		var nestedList = $('.category__list');
 
 		function delLastBorder(arr) {
+
+			$('.category__list-block:first').children('.del-category').remove();// удаляем элемент в самом первом блоке
+			$('.category__list-block:first').children('.checkbox').remove();// удаляем элемент в самом первом блоке
 
 			for (var i = 0; i < arr.length; i++) {
 
@@ -237,45 +299,62 @@ $(document).ready(function () {
 		};
 		delLastBorder(nestedList);
 
+		function titleName(obj){
+
+			obj.each(function(){
+				$(this).attr('title', $(this).text());
+			});
+
+		};
+		titleName($('.name-category'));
 		// end nested ------------------------------------------
 
 		// tabs ------------------------------------------------
-		var tabs = $('.tabs-category');
 
 		$('.category').on('click', '.tabs-category' ,function() {
 
-			$('.add-category').each(function(index){
+			var tabs = $(this).parent().siblings().find('.tabs-category');// записываем массив из дочерних элементов кнопок tabs
 
-				if ($(this).parent().siblings('.form-add').hasClass('visible')) {
-					$(this).html('&plus;');
-				}
+			if ($(this).html() == '▶') {// если при клике на кнопку она была свернута
 
-			});
+				$(this).html('▼').attr('title', 'Свернуть');// тогда меняем ей иконку на сворачивания и меняем title 
+				$(this).parents('.category__list').addClass('add-before');// и родителю даем класс, который добовляет полосу вниз
 
-			$('.form-add').remove();
+			} else{// елси при клике на кнопку она была развернута
+				
+				// при сворачивании подкатегорий
+				$('.form-add').remove();// удаляем открытю форму
+				$('.editing-form').remove();// удаляем открытю форму
 
-			for (var i = 0; i < tabs.length; i++) {
+				$('.add-category').each(function(){// и меня '+' на '-'
+					if ($(this).html() != '+') {// если стоит '-'
+						$(this).text('+');// только, тогда меняем на '-'
+					}
+					$('.category__list-block').removeAttr('style');
+				});
+				
+				tabs.each(function(){// nulf проходим циклом по всем дочерним элементам с кнопками tabs 
 
-				if ($(this).parent().siblings().eq(i).find('.tabs-category').html() == '▼') {
-					$(this).parent().siblings().eq(i).find('.tabs-category').click();
-				}
+					if ($(this).html() == '▼') {// и проверяем, если она развернута
+
+						$(this).html('▶').parent().siblings(':not(.form-add)').addClass('none');// тогда сворачиваем ее и вложенный category__list задаем класс none (тоесть скрываем)
+
+					}
+
+				});
+
+				$(this).html('▶').attr('title', 'Развернуть');// и меням на обратное значение иконку и title 
 
 			}
-			if ($(this).html() == '▶') {
-				$(this).html('▼').attr('title', 'Свернуть');
-				$(this).parents('.category__list').addClass('add-before');
-			} else{
-				$(this).html('▶').attr('title', 'Развернуть');
-				$(this).parent().parent().removeClass('add-before');
-			}
-			$(this).parent().siblings().toggleClass('none');
+
+			$(this).parent().siblings('.category__list').toggleClass('none');// тоглим у внутреннего category__list класс none 
 
 		});
 
 		function tab(arr) {
 
 			for (var i = 0; i < arr.length; i++) {
-
+					
 			 	if(!arr.eq(i).hasClass('none')){
 
 			 	if (!arr.eq(i).children('.category__list').hasClass('none')) {
@@ -296,6 +375,134 @@ $(document).ready(function () {
 
 		//  end tabs ------------------------------------------
 
+		// structureMovements category
+
+		function structureMovements() {
+
+			var motionUp   = $('.motion__up-category'),
+					motionDown = $('.motion__down-category');
+
+				motionUp.each(function(){
+
+					if (!$(this).parents('.category__list:first').prev().hasClass('category__list')) {
+						$(this).remove();
+					}
+
+				});
+
+				motionDown.each(function(){
+
+					if (!$(this).parents('.category__list:first').next().hasClass('category__list')) {
+						$(this).remove();
+					}
+
+				});
+
+		};
+
+		structureMovements();
+
+		$('.category').on('click', '.motion__up-category', movements);
+		$('.category').on('click', '.motion__down-category', movements);
+
+		function movements() {
+
+			var nameOfAction = '',
+					parent       = $(this).parents('.category__list:first'),
+					id 					 = parent.attr('data-id'),
+					siblingId    = '';
+
+			if ($(this).attr('class') == 'motion__up-category') {
+				nameOfAction = 'moveUp';
+				siblingId = parent.prev().attr('data-id');
+			} else if($(this).attr('class') == 'motion__down-category') {
+				nameOfAction = 'moveDown';
+				siblingId = parent.next().attr('data-id');
+			}
+
+			var data = {
+				nameOfAction: nameOfAction,
+				id: id,
+				siblingId: siblingId
+			}
+			ajx(data);
+		}
+
+		// end structureMovements category
+
+		// edit name category
+
+		// var oldNameCategory = '';
+
+		function editing() {
+
+			var nameCategory = $(this).siblings('.name-category').text();
+			// oldNameCategory = nameCategory.toLowerCase();
+
+			// проверяем на который элемент пришелся клик
+			if ($('.editing-category:visible').length > 0 && !checkIds($(this), '.editing-category')) {// если кликнули на любой другой, но не открытый элемент
+				return alertMessage($(this), 'edit');// вызываем функцию с ошибкой и выходим с функции
+			}
+
+			$(this).before('<form class="editing-form">\
+					<input type="text" class="editing-category">\
+					<span class="btn-save-rename" title="Сохранить">✔</span>\
+					<span class="btn-close-rename" title="Отменить">✘</span>\
+				</form>');
+			$(this).siblings('.editing-form').children('input').focus().val(nameCategory);
+			$(this).parent().css('box-shadow', '2px 2px 0px red');
+
+		};
+
+		function deleteEditing(el) {
+
+			el.parents('.category__list-block:first').removeAttr('style');
+			el.parent().remove();
+
+		};
+
+		$('.category').on('click', '.edit-category', editing);// апендим инпут для изминения названия имени категории
+
+		$('.category').on('click', '.btn-save-rename', function() {
+
+			var newNameCategory = $(this).siblings('.editing-category').val(),
+					oldNameCategory = $(this).parent().siblings('.name-category').text().toLowerCase();
+
+			// validation
+			for (var i = 0; i < nameCategoryArr.length; i++) {
+				if(nameCategoryArr[i] == newNameCategory.toLowerCase()) {// проверяем вводимое значение на совпадения в массиве(переведенные в нижний регистр)
+					$(this).prev().focus();
+					alertMessage($(this), 'text_copy', true);
+					return;
+				} else if(newNameCategory == '') {// проверяем вводимое значение на пустую строку
+					alertMessage($(this), 'text_null', true);
+					$(this).prev().focus();
+					return;
+				}
+			}
+
+			delete nameCategoryArr[nameCategoryArr.indexOf(oldNameCategory)];// удаляем название старой категории из глобального массива
+			nameCategoryArr.push(newNameCategory.toLowerCase());// добавляем название новой категории в глобальный массив
+
+			$(this).parent().siblings('.name-category').text(newNameCategory);
+
+			var data = {
+				nameOfAction: 'rename',
+				id: $(this).parents('.category__list:first').attr('data-id'),
+				value: newNameCategory
+			};
+
+			deleteEditing($(this));
+			ajx(data);
+
+		});
+
+		$('.category').on('click', '.btn-close-rename', function(){
+			deleteEditing($(this));
+		});
+
 	});
+	// end edit name category
+
 
 });
