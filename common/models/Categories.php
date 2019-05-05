@@ -78,8 +78,11 @@ class Categories extends ActiveRecord {
                             <div class="category__list-block">
 				                <span class="name-category">' . $cat['name'] . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
+                                <span class="edit-category" title="Редоктирование названия категории">✎</span>
+                                <span class="del-category" title="Удалить категорию и подкатегории">✘</span>
                                 <input type="checkbox" checked class="checkbox" title="Деактивировать?" data-active="1">
-                                <span class="del-category" title="Удалить категорию и подкатегории">&#10008;</span>
+                                <span class="motion__up-category" title="Переместить вверх">➭</span>
+                                <span class="motion__down-category" title="Переместить вниз">➭</span>
 				                <span class="tabs-category" title="Развернуть">▶</span>
 			                </div>
                         ';

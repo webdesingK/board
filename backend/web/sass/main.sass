@@ -24,7 +24,6 @@
 .category
 	+wrap
 	+flex
-	min-height: 50vh
 	margin-top: 50px
 	margin-left: $menu_left + 10px
 	&__main
@@ -38,11 +37,6 @@
 		padding-left: 0
 		padding-right: 20px
 		overflow: hidden
-		& > div
-			& > .category__list-block .del-category,
-			 	display: none
-			& > .category__list-block .checkbox,
-			 	display: none
 	&__list
 		margin-left: $nested_margin_left_G
 		margin-top: 10px
@@ -68,52 +62,42 @@
 	border: 1px solid $border_color_total_G
 	box-shadow: 1px 1px 1px #000
 	border-radius: $radius
-	margin-bottom: 15px
+	margin-bottom: 20px
 	background: #ffffff
 	font: 16px/25px sans-serif
 	padding: 0 10px
-	display: flex
 	position: relative
 	display: flex
 	align-items: center
 .name-category
 	user-select: none
-.add-category
-	width: auto
-	display: inline-block
-	cursor: pointer
-	margin-left: auto
-	font-size: 25px
-	cursor: pointer
-	color: $icon_color_G
-	&:hover
-		filter: drop-shadow(1px 1px 1px blue)
-.checkbox
-	margin: 0 0 0 5px
-.tabs-category, .del-category
-	@extend .add-category
-	margin-left: 5px
-	font-size: 15pt
-.form-add
-	max-height: 0px
+	flex-grow: 1
+	text-overflow: ellipsis
 	overflow: hidden
-	padding: 2px
+.add-category
+	cursor: pointer
+	font-size: 25px
+	color: $icon_color_G
+	user-select: none
+	margin: 0px 2px
+	&:hover
+		color: green
+.tabs-category, .del-category, .edit-category, .checkbox
+	@extend .add-category
+	font-size: 15pt
+.motion__up-category, .motion__down-category
+	font-size: 20pt
+	cursor: pointer
+	&:hover
+		color: green
+.motion__up-category
+	transform: rotate(-90deg)
+.motion__down-category
+	transform: rotate(90deg)
+.form-add
+	padding: 0 2px
 	margin-left: 20px
-	&:before
-		content: attr(data-error)
-		display: block
-		height: 0
-		width: 50%
-		color: red
-		font: 18px sans-serif
-		transition: height .3s
-.form-error
-	&:before
-		height: 25px
-		transition: height .3s
-.visible
-	max-height: 80px
-	transition: max-height .4s
+	position: relative
 	input
 		height: 25px
 		padding-left: 10px
@@ -126,9 +110,6 @@
 		font: bold 14px sans-serif
 		border: 1px solid $border_color_total_G
 		box-shadow: 1px 1px 1px #000
-
-.arr_obj
-	@extend .category__main
 .after_none
 	&:before
 		display: none
@@ -153,3 +134,64 @@
 		width: 1px
 		height: 100%
 		left: $nested_margin_left_G - $nested_left_G
+
+
+// editing===========================================================================
+
+$width-editing-category: 100%
+.editing-form
+	position: absolute
+	width: $width-editing-category
+	background: #fff
+	z-index: 10
+	border-radius: $radius
+	height: inherit
+	left: 0
+	padding: 0px 10px
+	display: flex
+	input
+		font: 16px sans-serif
+		caret-color: red
+		border: none
+		height: inherit
+		flex-basis: $width-editing-category
+		&:focus
+			outline: none
+.btn-save-rename, .btn-close-rename
+	cursor: pointer
+	padding: 0px 5px
+.btn-save-rename
+	&:hover
+		color: green
+.btn-close-rename
+	&:hover
+		color: red
+.alert
+	&:before
+		position: absolute
+		display: block
+		color: red
+		left: 0
+		top: -16px
+		width: 100%
+		font: 12px sans-serif
+.alert-edit
+	@extend .alert
+	&:before
+		text-align: right
+		content: $edit_G
+.alert-form
+	@extend .alert
+	&:before
+		text-align: right
+		content: $form_G
+.alert-text_null
+	@extend .alert
+	&:before
+		text-align: left
+		content: $text_null_G
+.alert-text_copy
+	@extend .alert
+	&:before
+		text-align: left
+		content: $text_copy_G
