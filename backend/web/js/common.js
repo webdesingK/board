@@ -120,7 +120,7 @@ $(document).ready(function () {
 					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
 					mainDeactive  = {'title': 'Активировать?', 'data-active': 0},
 					checkedArr    = [self.parents('.category__list:first').attr('data-id')],
-					nameOfAction;
+					value;
 
 			// если активируем дочерний checkbox значит циклом активируем родительские checkbox
 			parents.each(function(){
@@ -136,12 +136,12 @@ $(document).ready(function () {
 
 			// делаем проверку checkbox на котором произошло изминение
 			if (self.prop('checked')) {
-				nameOfAction = 'active';
+				value = 1;
 				self.attr(mainActive);
 				self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
 
 			} else{
-				nameOfAction = 'deactive';
+				value = 0;
 				self.attr(mainDeactive);
 			}
 
@@ -168,7 +168,8 @@ $(document).ready(function () {
 			// создаем обьект для передачи на сервер
 			var data = {
 
-				nameOfAction: nameOfAction,
+				nameOfAction: 'changeActive',
+				value: value,
 				ids: checkedArr
 
 			};
@@ -230,7 +231,7 @@ $(document).ready(function () {
 				nameOfAction: 'create', 
 				name: name, // значение инпута
 				id: id, // значение атрибута id
-				arrId: sort($('.category__list')) // сортировка открытых элементов
+				openedIds: sort($('.category__list')) // сортировка открытых элементов
 			};
 
 			// отправляем ajax запрос на сервер
@@ -267,7 +268,7 @@ $(document).ready(function () {
 			var data = {
 				nameOfAction: 'delete',
 				id: id,
-				arrId: sort($('.category__list'), id)
+				openedIds: sort($('.category__list'), id)
 			};
 
 			ajx(data);
