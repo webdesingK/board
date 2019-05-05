@@ -6,7 +6,7 @@
 $this->title = 'Манагер меню';
 
 use common\models\Categories;
-//dump(Categories::changeActivate(2, 1));
+
 ?>
 
 <div class="category">

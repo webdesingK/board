@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .menu {
   border: 1px solid #ccc;
   position: fixed;
@@ -27,13 +29,11 @@
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
-  min-height: 50vh;
   margin-top: 50px;
   margin-left: 210px;
 }
 
-.category__main,
-.arr_obj {
+.category__main {
   width: 97.5%;
   margin-left: 1.25%;
   margin-right: 1.25%;
@@ -45,16 +45,6 @@
   padding-left: 0;
   padding-right: 20px;
   overflow: hidden;
-}
-
-.category__main > div > .category__list-block .del-category,
-.arr_obj > div > .category__list-block .del-category {
-  display: none;
-}
-
-.category__main > div > .category__list-block .checkbox,
-.arr_obj > div > .category__list-block .checkbox {
-  display: none;
 }
 
 .category__list {
@@ -91,11 +81,10 @@
   border: 1px solid #ccc;
   box-shadow: 1px 1px 1px #000;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background: #ffffff;
   font: 16px/25px sans-serif;
   padding: 0 10px;
-  display: flex;
   position: relative;
   display: flex;
   align-items: center;
@@ -103,71 +92,71 @@
 
 .name-category {
   user-select: none;
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .add-category,
 .tabs-category,
-.del-category {
-  width: auto;
-  display: inline-block;
+.del-category,
+.edit-category,
+.checkbox {
   cursor: pointer;
-  margin-left: auto;
   font-size: 25px;
-  cursor: pointer;
   color: #666666;
+  user-select: none;
+  margin: 0px 2px;
 }
 
 .add-category:hover,
 .tabs-category:hover,
-.del-category:hover {
-  filter: drop-shadow(1px 1px 1px blue);
-}
-
-.checkbox {
-  margin: 0 0 0 5px;
+.del-category:hover,
+.edit-category:hover,
+.checkbox:hover {
+  color: green;
 }
 
 .tabs-category,
-.del-category {
-  margin-left: 5px;
+.del-category,
+.edit-category,
+.checkbox {
   font-size: 15pt;
 }
 
+.motion__up-category,
+.motion__down-category {
+  font-size: 20pt;
+  cursor: pointer;
+}
+
+.motion__up-category:hover,
+.motion__down-category:hover {
+  color: green;
+}
+
+.motion__up-category {
+  transform: rotate(-90deg);
+}
+
+.motion__down-category {
+  transform: rotate(90deg);
+}
+
 .form-add {
-  max-height: 0px;
-  overflow: hidden;
-  padding: 2px;
+  padding: 0 2px;
   margin-left: 20px;
+  position: relative;
 }
 
-.form-add:before {
-  content: attr(data-error);
-  display: block;
-  height: 0;
-  width: 50%;
-  color: red;
-  font: 18px sans-serif;
-  transition: height .3s;
-}
-
-.form-error:before {
-  height: 25px;
-  transition: height .3s;
-}
-
-.visible {
-  max-height: 80px;
-  transition: max-height .4s;
-}
-
-.visible input {
+.form-add input {
   height: 25px;
   padding-left: 10px;
   width: 80%;
   margin-bottom: 5px;
 }
 
-.visible button {
+.form-add button {
   height: 25px;
   background: #cdffcd;
   cursor: pointer;
@@ -206,4 +195,76 @@
   width: 1px;
   height: 100%;
   left: 13px;
+}
+
+.editing-form {
+  position: absolute;
+  width: 100%;
+  background: #fff;
+  z-index: 10;
+  border-radius: 5px;
+  height: inherit;
+  left: 0;
+  padding: 0px 10px;
+  display: flex;
+}
+
+.editing-form input {
+  font: 16px sans-serif;
+  caret-color: red;
+  border: none;
+  height: inherit;
+  flex-basis: 100%;
+}
+
+.editing-form input:focus {
+  outline: none;
+}
+
+.btn-save-rename,
+.btn-close-rename {
+  cursor: pointer;
+  padding: 0px 5px;
+}
+
+.btn-save-rename:hover {
+  color: green;
+}
+
+.btn-close-rename:hover {
+  color: red;
+}
+
+.alert:before,
+.alert-edit:before,
+.alert-form:before,
+.alert-text_null:before,
+.alert-text_copy:before {
+  position: absolute;
+  display: block;
+  color: red;
+  left: 0;
+  top: -16px;
+  width: 100%;
+  font: 12px sans-serif;
+}
+
+.alert-edit:before {
+  text-align: right;
+  content: "Идёт редоктирование другой категории";
+}
+
+.alert-form:before {
+  text-align: right;
+  content: "Идёт создание другой категории";
+}
+
+.alert-text_null:before {
+  text-align: left;
+  content: "Пустое значение не принимаеться";
+}
+
+.alert-text_copy:before {
+  text-align: left;
+  content: "Категория с таким именем уже существует";
 }
