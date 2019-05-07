@@ -20,39 +20,35 @@ class AdminController extends Controller {
             $post = Yii::$app->request->post();
             $result = null;
             $lastId = null;
-            if ($post['nameOfAction'] == 'create') {
-                $data = [
-                    'id' => $post['id'],
-                    'name' => $post['name'],
-                ];
-                $lastId = $model->createNewNode($data);
-            }
-            elseif ($post['nameOfAction'] == 'delete') {
-                $result = $model->deleteNode($post['id']);
-            }
-            elseif ($post['nameOfAction'] == 'changeActive') {
-                $model->changeActive($post['ids'], $post['value']);
-                exit();
-            }
-            elseif ($post['nameOfAction'] == 'rename') {
-                $model->renameNode($post['id'], $post['value']);
-                exit();
-            }
-            elseif ($post['nameOfAction'] == 'moveUp') {
-                $result = $model->moveUp($post['id'], $post['siblingId']);
-            }
-            elseif ($post['nameOfAction'] == 'moveDown') {
-                $result = $model->moveDown($post['id'], $post['siblingId']);
+            switch ($post['nameOfAction']) {
+                case 'create':
+                    $lastId = $model->createNode($post['id'], $post['name']);
+                    break;
+                case 'rename':
+                    $result = $model->renameNode($post['id'], $post['value']);
+                    break;
+                case 'changeActive':
+                    return ($model->changeActive($post['ids'], $post['value'])) ? 'ok' : 'error active';
+                    break;
+                case 'move':
+                    $result = $model->moveNode($post['id'], $post['siblingId'], $post['direction']);
+                    break;
+                case 'delete':
+                    $result = $model->deleteNode($post['id']);
+                    break;
             }
 
-            if ($result || $lastId) {
+            if ($lastId || $result) {
                 return $model::createTree($post['openedIds'], $lastId);
+            }
+            else {
+                return 'error';
             }
 
         }
 
         return $this->render('categories-manager');
-    }
+}
 
     public function actionCitiesManager() {
         return $this->render('cities-manager');

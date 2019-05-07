@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
 	// category
 	$(function () {
 
@@ -96,14 +95,20 @@ $(document).ready(function () {
 				type: 'POST',
 				data: obj,
 				success: function(resp) {
-					$('.category__main').html(resp);
-					structureMovements();
-					tab($('.category__list'));
-					delLastBorder($('.category__list'));
-					titleName($('.name-category'));
+					if (resp == 'error') {
+						alert('Ошибка сервера');
+					}
+					else{
+						$('.category__main').html(resp);
+						structureMovements();
+						tab($('.category__list'));
+						delLastBorder($('.category__list'));
+						titleName($('.name-category'));
+					}
+
 				},
 				error: function(resp) {
-					alert('Ошибка сервера');
+					alert(resp.responseText);
 				}
 			});
 
@@ -407,23 +412,25 @@ $(document).ready(function () {
 
 		function movements() {
 
-			var nameOfAction = '',
+			var direction = '',
 					parent       = $(this).parents('.category__list:first'),
 					id 					 = parent.attr('data-id'),
 					siblingId    = '';
 
 			if ($(this).attr('class') == 'motion__up-category') {
-				nameOfAction = 'moveUp';
+				direction = 'up';
 				siblingId = parent.prev().attr('data-id');
 			} else if($(this).attr('class') == 'motion__down-category') {
-				nameOfAction = 'moveDown';
+				direction = 'down';
 				siblingId = parent.next().attr('data-id');
 			}
 
 			var data = {
-				nameOfAction: nameOfAction,
+				nameOfAction: 'move',
 				id: id,
-				siblingId: siblingId
+				direction: direction,
+				siblingId: siblingId,
+				openedIds: sort($('.category__list'))
 			}
 			ajx(data);
 		}
@@ -489,7 +496,8 @@ $(document).ready(function () {
 			var data = {
 				nameOfAction: 'rename',
 				id: $(this).parents('.category__list:first').attr('data-id'),
-				value: newNameCategory
+				value: newNameCategory,
+				openedIds: sort($('.category__list'))
 			};
 
 			deleteEditing($(this));

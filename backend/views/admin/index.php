@@ -5,4 +5,4 @@ $this->title = 'Главная';
 ?>
 
 
-<h1>Главная</h1>
+<h1 style="margin-left: 200px">Главная</h1>

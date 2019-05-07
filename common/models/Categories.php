@@ -5,6 +5,7 @@ namespace common\models;
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
+use yii\helpers\Html;
 
 class Categories extends ActiveRecord {
 
@@ -38,42 +39,49 @@ class Categories extends ActiveRecord {
      */
     public function rules() {
         return [
-            [['name', 'parent_id', 'active'], 'safe']
+            [['name', 'parent_id'], 'required'],
+            ['name', 'string'],
+            ['parent_id', 'integer'],
         ];
     }
 
     /**
-     * @param $data array
+     * @param $parentId int
+     * @param $name string
      * @return bool|int
      */
 
-    public function createNewNode($data) {
+    public function createNode($parentId, $name) {
         $dataForModel = [
-            'parent_id' => $data['id'],
-            'name' => $data['name']
+            'parent_id' => $parentId,
+            'name' => $name
         ];
-        $parentNode = self::find()->where(['id' => $data['id']])->one();
-        if (self::load($dataForModel, '') && self::prependTo($parentNode)) {
-            return self::getLastId($data['name']);
+        if (self::load($dataForModel, '')) {
+            $parentNode = self::find()->where(['id' => $parentId])->one();
+            if (self::prependTo($parentNode)) {
+                return self::getLastId($name);
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**
      * @param $ids array
      * @param $value int
-     * @return int
+     * @return bool
      */
 
     public function changeActive($ids, $value) {
-        self::updateAll(['active' => $value], ['in', 'id', $ids]);
+        if (self::updateAll(['active' => $value], ['in', 'id', $ids])) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * @param $id int
      * @param $value string
+     * @return bool
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
@@ -81,40 +89,52 @@ class Categories extends ActiveRecord {
     public function renameNode($id, $value) {
         $node = self::find()->where(['id' => $id])->one();
         $node->name = $value;
-        $node->update();
-    }
-
-    public function moveUp($id, $siblingId) {
-        $node = self::find()->where(['id' => $id])->one();
-        $sibling = self::find()->where(['id' => $siblingId])->one();
-        return $node->insertBefore($sibling);
-    }
-
-    public function moveDown($id, $siblingId) {
-        $node = self::find()->where(['id' => $id])->one();
-        $sibling = self::find()->where(['id' => $siblingId])->one();
-        return $node->insertAfter($sibling);
+        if ($node->update()) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * @param $id int
-     * @return mixed
+     * @param $siblingId int
+     * @param $direction string
+     * @return bool
+     */
+
+    public function moveNode($id, $siblingId, $direction) {
+        $node = self::find()->where(['id' => $id])->one();
+        $sibling = self::find()->where(['id' => $siblingId])->one();
+        $result = false;
+        if ($direction == 'up') {
+            $result = $node->insertBefore($sibling);
+        }
+        elseif ($direction == 'down') {
+            $result = $node->insertAfter($sibling);
+        }
+        return $result;
+    }
+
+    /**
+     * @param $id int
+     * @return bool
      */
 
     public function deleteNode($id) {
         $node = self::find()->where(['id' => $id])->one();
-        return $node->deleteWithChildren();
+        if ($node->deleteWithChildren()) {
+            return true;
+        }
+        return false;
     }
 
     /**
-     * $lastString->id - идентификатор последней записанной строки в бд
-     *
      * @param string $name
      * @return integer
      */
 
     public function getLastId($name) {
-        $lastString = self::find()->where(['name' => $name])->one();
+        $lastString = self::find('id')->where(['name' => $name])->one();
         return $lastString->id;
     }
 
@@ -154,7 +174,7 @@ class Categories extends ActiveRecord {
                     $tree .= '
                         <div class="category__list ' . $class . '" data-id="' . $cat['id'] . '">
                              <div class="category__list-block">
-				                <span class="name-category">' . $cat['name'] . '</span>
+				                <span class="name-category">' . Html::encode($cat['name']) . '</span>
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
                                 <span class="edit-category" title="Редоктирование названия категории">✎</span>
                                 <span class="del-category" title="Удалить категорию и подкатегории">✘</span>
