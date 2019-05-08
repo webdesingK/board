@@ -2,3 +2,43 @@
 @import '_smart-grid'
 @import '_var'
 
+.header
+	width: 100%
+	min-height: 100px
+.menu
+	+wrap
+	min-height: 50vh
+	border: 1px solid red
+	position: relative
+	font-family: sans-serif
+	font-weight: bold
+	&__first
+		padding: 20px 10px
+		border: 1px solid blue
+		width: 250px
+		& > li
+			margin: 5px
+			& > a
+				color: red
+	&__second
+		position: absolute
+		left: 250px
+		top: 0
+		border: 1px solid red
+		width: calc(100% - 250px)
+		height: 100%
+		display: flex
+		flex-wrap: wrap
+		flex-direction: column
+		align-content: flex-start
+	&__third
+		border: 1px solid green
+		padding-left: 20px
+		width: 200px
+		& > li
+			& > a
+				color: green
+	li
+		padding: 5px 15px
+.arr
+	padding: 30px
