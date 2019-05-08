@@ -80,7 +80,7 @@ class Categories extends ActiveRecord {
 
     /**
      * @param $id int
-     * @param $value string
+     * @param $newName string
      * @return bool
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
