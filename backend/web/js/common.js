@@ -483,7 +483,7 @@ $(document).ready(function () {
 				return alertMessage($(this), 'edit');// вызываем функцию с ошибкой и выходим с функции
 			}
 
-			$(this).before('<form class="editing-form">\
+			$(this).before('<form onsubmit="return false" class="editing-form">\
 					<input type="text" class="editing-category">\
 					<span class="btn-save-rename" title="Сохранить">✔</span>\
 					<span class="btn-close-rename" title="Отменить">✘</span>\
@@ -528,7 +528,6 @@ $(document).ready(function () {
 				openedIds: sort($('.category__list'))
 			};
 
-
 			$.ajax({
 
 				type: 'POST',
@@ -556,6 +555,15 @@ $(document).ready(function () {
 
 		$('.category').on('click', '.btn-close-rename', function(){
 			deleteEditing($(this));
+		});
+
+		$(document).keyup(function(evt){
+
+			if (evt.keyCode == 13 && $('.editing-category').is(':focus')) $('.btn-save-rename').click();
+			if (evt.keyCode == 27 && $('.editing-category').is(':focus')) $('.btn-close-rename').click();
+
+			if (evt.keyCode == 27 && $('.input-text').is(':focus')) $('.form-add').siblings('.category__list-block').children('.add-category').click();
+
 		});
 
 	});
