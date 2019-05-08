@@ -7,17 +7,18 @@ use yii\web\AssetBundle;
 /**
  * Main backend application asset bundle.
  */
-class AdminAsset extends AssetBundle {
+class AppAsset extends AssetBundle
+{
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/libs.css',
-        'css/main.css'
+			'css/libs.css',
+			'css/main.css'
     ];
     public $js = [
-        'js/common.js'
+			'js/common.js'
     ];
     public $depends = [
-        'yii\web\JqueryAsset'
+			'yii\web\JqueryAsset'
     ];
 }
