@@ -1,0 +1,113 @@
+// smart-grid arguments
+
+$wrapper: 1260px
+$colums: 12
+$offset: 2.5%
+$max-min: min
+
+// smart-grid ======================================
+
+$atom: (100% / $colums)
+
+$break_big: 1366px
+$break_lg: 1200px
+$break_md: 992px
+$break_sm: 720px
+$break_xs: 480px
+
+$offset_one_side: ($offset / 2)
+
+
+=wrap()
+	max-width: $wrapper
+	margin: 0 auto
+
+=row-offsets()
+    margin-left: ($offset_one_side * -1)
+    margin-right: ($offset_one_side * -1)
+
+=col-offsets($type)
+    #{$type}-left: $offset_one_side
+    #{$type}-right: $offset_one_side
+
+=flex()
+	display: flex
+	flex-wrap: wrap
+
+=col()
+	+col-offsets(margin)
+
+=col-padding()
+	+col-offsets(padding)
+
+=shift-left($n)
+    margin-left: $atom * $n + $offset_one_side
+
+=shift-right($n)
+    margin-right: $atom * $n + $offset_one_side
+
+=size($n)
+    	width: $atom * $n - $offset
+
+=size-0($n)
+    	width: $atom * $n
+
+=size-big($n)
+	+big
+		width: $atom * $n - $offset
+		@content
+=size-big-0($n)
+	+big
+		width: $atom * $n
+		@content
+=big()
+    @media screen and (#{$max-min}-width: $break_big)
+        @content
+
+=size-lg($n)
+	+lg
+		width: $atom * $n - $offset
+		@content
+=size-lg-0($n)
+	+lg
+		width: $atom * $n
+		@content
+=lg()
+    @media screen and (#{$max-min}-width: $break_lg)
+        @content
+
+=size-md($n)
+	+md
+		width: $atom * $n - $offset
+		@content
+=size-md-0($n)
+	+md
+		width: $atom * $n
+		@content
+=md()
+    @media screen and (#{$max-min}-width: $break_md)
+        @content
+
+=size-sm($n)
+	+sm
+		width: $atom * $n - $offset
+		@content
+=size-sm-0($n)
+	+sm
+		width: $atom * $n
+		@content
+=sm()
+    @media screen and (#{$max-min}-width: $break_sm)
+        @content
+
+=size-xs($n)
+	+xs
+		width: $atom * $n - $offset
+		@content
+=size-xs-0($n)
+	+xs
+		width: $atom * $n
+		@content
+=xs()
+    @media screen and (#{$max-min}-width: $break_xs)
+        @content

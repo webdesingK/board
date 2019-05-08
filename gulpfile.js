@@ -5,9 +5,16 @@ const gcmq     = require('gulp-group-css-media-queries');
 const concat   = require('gulp-concat');
 const notify   = require('gulp-notify');
 
+let paths = {
+	//sync: 'board/admin',
+	sync: 'board',
+	//module: 'backend',
+	module: 'frontend',
+}
+
 function browserSync(done) {
 	sync.init({
-		proxy: 'board/admin'
+		proxy: paths.sync
 	});
 	done();
 }
@@ -18,19 +25,19 @@ function browserSyncReload(done) {
 }
 
 function sassFile() {
-	return src('backend/web/sass/*.+(sass|scss)')
+	return src(paths.module + '/web/sass/*.+(sass|scss)')
 		.pipe(sass().on('error', notify.onError(function (error) {
 			return 'error-sass: ' + error.message;
 		})))
 		.pipe(gcmq())
-		.pipe(dest('backend/web/css'))
+		.pipe(dest(paths.module + '/web/css'))
 		.pipe(sync.stream());
 }
 
 function watchFile() {
-	watch('backend/web/sass', sassFile);
-	watch('backend/**/*.php', browserSyncReload);
-	watch('backend/web/js/*.js', browserSyncReload);
+	watch(paths.module + '/web/sass', sassFile);
+	watch(paths.module + '/**/*.php', browserSyncReload);
+	watch(paths.module + '/web/js/*.js', browserSyncReload);
 	watch('common/**/*.php', browserSyncReload);
 }
 
