@@ -1,18 +1,16 @@
 <?
 /**
- * @var $arrDeactivatedId array
+ * @var $model
  */
 
 $this->title = 'Манагер меню';
-
-use common\models\Categories;
 
 ?>
 
 <div class="category">
 
     <div class="category__main">
-        <?= Categories::createTree($openedIds = null, $lastId = null) ?>
+        <?= $model->createTree($openedIds = null, $lastId = null) ?>
     </div>
 
 </div>

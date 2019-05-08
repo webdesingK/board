@@ -39,7 +39,7 @@ class AdminController extends Controller {
             }
 
             if ($lastId || $result) {
-                return $model::createTree($post['openedIds'], $lastId);
+                return $model->createTree($post['openedIds'], $lastId);
             }
             else {
                 return 'error';
@@ -47,7 +47,7 @@ class AdminController extends Controller {
 
         }
 
-        return $this->render('categories-manager');
+        return $this->render('categories-manager', compact('model'));
 }
 
     public function actionCitiesManager() {

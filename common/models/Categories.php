@@ -144,7 +144,7 @@ class Categories extends ActiveRecord {
      * @return string|null
      */
 
-    static public function createTree($openedIds, $lastId) {
+    public function createTree($openedIds, $lastId) {
 
         $allCats = self::find()->orderBy('lft ASC')->all();
         $cats = [];
@@ -197,4 +197,64 @@ class Categories extends ActiveRecord {
         return create($cats, 0, $openedIds);
 
     }
+
+    public function createArray() {
+        $all = self::find()->orderBy('lft ASC')->all();
+
+        $first = [];
+        $second = [];
+        $third = [];
+
+        foreach ($all as $k => $v) {
+            if ($v->depth == 1) {
+                $first[] = [
+                    'id' => $v->id,
+                    'parent_id' => $v->parent_id,
+                    'name' => $v->name,
+                    'sub' => []
+                ];
+            }
+            if ($v->depth == 2) {
+                $second[] = [
+                    'id' => $v->id,
+                    'parent_id' => $v->parent_id,
+                    'name' => $v->name,
+                    'sub' => []
+                ];
+            }
+            if ($v->depth == 3) {
+                $third[] = [
+                    'id' => $v->id,
+                    'parent_id' => $v->parent_id,
+                    'name' => $v->name
+                ];
+            }
+        }
+
+        foreach ($first as $firstKey => $firstValue) {
+            foreach ($second as $secondKey => $secondValue) {
+                if ($secondValue['parent_id'] == $firstValue['id']) {
+                    foreach ($third as $thirdKey => $thirdValue) {
+                        if ($thirdValue['parent_id'] == $secondValue['id']) {
+                            $second[$secondKey]['sub'][] = [
+                                'id' => $thirdValue['id'],
+                                'parent_id' => $thirdValue['parent_id'],
+                                'name' => $thirdValue['name']
+                            ];
+                        }
+                    }
+                    $first[$firstKey]['sub'][] = [
+                        'id' => $secondValue['id'],
+                        'parent_id' => $secondValue['parent_id'],
+                        'name' => $secondValue['name'],
+                        'sub' => $second[$secondKey]['sub']
+                    ];
+                }
+            }
+        }
+
+
+        return $first;
+    }
+
 }
