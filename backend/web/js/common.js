@@ -2,6 +2,18 @@ $(document).ready(function () {
 	// category
 	$(function () {
 
+		// validation input ---------------------------------------
+
+		var nameCategoryArr = [],
+				nameCategory    = $('.name-category');
+
+		nameCategory.each(function(){
+			var text = $(this).text().toLowerCase();
+			nameCategoryArr.push(text);
+		});
+
+		// end validation -----------------------------------------
+
 		// функция для вывода сообщения для предупреждения о незавершенной работе другого элемента
 		function alertMessage(self, name, bool){
 
@@ -89,7 +101,7 @@ $(document).ready(function () {
 		};
 
 		// ajax ---------------------------------------------------
-		function ajx(obj) {
+		function ajx(obj, callback) {
 
 			$.ajax({
 				type: 'POST',
@@ -104,6 +116,9 @@ $(document).ready(function () {
 						tab($('.category__list'));
 						delLastBorder($('.category__list'));
 						titleName($('.name-category'));
+						if (callback) {
+							callback();
+						}
 					}
 
 				},
@@ -117,9 +132,8 @@ $(document).ready(function () {
 
 		// checkbox change ----------------------------------------
 		function checkbox() {
-
-			var active,
-					self          = $(this),
+ 
+			var	self          = $(this),
 					totalCheckbox = self.parents('.category__list:first').find('.checkbox:not(:first)'),
 					parents       = self.parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
 					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
@@ -129,45 +143,27 @@ $(document).ready(function () {
 
 			// если активируем дочерний checkbox значит циклом активируем родительские checkbox
 			parents.each(function(){
-
 				if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
-
-					$(this).prop('checked', true).attr(mainActive);// делаем родитей активными
 					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив 
-
 				}
-
 			});
 
 			// делаем проверку checkbox на котором произошло изминение
 			if (self.prop('checked')) {
 				value = 1;
-				self.attr(mainActive);
-				self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
-
 			} else{
 				value = 0;
-				self.attr(mainDeactive);
 			}
 
 			// делаем изминения циклом дочерних checkbox
 			totalCheckbox.each(function(){
-
 				if ($(this).prop('checked')) {// изменяем с активного на неактивный
-
-					$(this).prop('checked', false).attr(mainDeactive);
 					checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
-
 				} else{// изменяем с неактивного на активный
-
 					if (self.prop('checked')) {// при условии если родительский checkbox активный 
-
-						$(this).prop('checked', true).attr(mainActive);
 						checkedArr.push($(this).parents('.category__list:first').attr('data-id'));// добавляем id родителей checkbox в массив
 					}
-
 				}
-
 			});
 
 			// создаем обьект для передачи на сервер
@@ -184,7 +180,49 @@ $(document).ready(function () {
 
 				type: 'POST',
 				data: data,
+				success: function(resp) {
+					if (resp == 'error') {
+						if (!self.prop('checked')) {
+							self.prop('checked', true)
+						} else{
+							self.prop('checked', false)
+						}
+						alert('Ошибка сервера');
+					} else {
+
+						// если активируем дочерний checkbox значит циклом активируем родительские checkbox
+						parents.each(function(){
+							if (!$(this).prop('checked')) {// проверяем если родитель не активный только тогда делаем его активным
+								$(this).prop('checked', true).attr(mainActive);// делаем родитей активными
+							}
+						});
+						// делаем проверку checkbox на котором произошло изминение
+						if (self.prop('checked')) {
+							self.attr(mainActive);
+							self.parents('.category__list:first').prev().children('.checkbox').prop('checked', true).attr(mainActive);
+
+						} else{
+							self.attr(mainDeactive);
+						}
+						// делаем изминения циклом дочерних checkbox
+						totalCheckbox.each(function(){
+							if ($(this).prop('checked')) {// изменяем с активного на неактивный
+								$(this).prop('checked', false).attr(mainDeactive);
+							} else{// изменяем с неактивного на активный
+								if (self.prop('checked')) {// при условии если родительский checkbox активный 
+									$(this).prop('checked', true).attr(mainActive);							
+								}
+							}
+						});
+
+					}
+				},
 				error: function(){
+					if (!self.prop('checked')) {
+						self.prop('checked', true)
+					} else{
+						self.prop('checked', false)
+					}
 					alert('Ошибка сервера!!!');
 				}
 
@@ -195,18 +233,6 @@ $(document).ready(function () {
 		$('.category').on('change', '.checkbox', checkbox);
 
 		//  end checkbox change -----------------------------------
-
-		// validation input ---------------------------------------
-
-		var nameCategoryArr = [],
-				nameCategory    = $('.name-category');
-
-		nameCategory.each(function(){
-			var text = $(this).text().toLowerCase();
-			nameCategoryArr.push(text);
-		});
-
-		// end validation -----------------------------------------
 
 		// add category ajax --------------------------------------
 		function categoryAjax(evt) {
@@ -230,7 +256,10 @@ $(document).ready(function () {
 			}
 			
 			// добавляем в масив вновь созданную категорию для валидации в нижнем регистре
-			nameCategoryArr.push(name.toLowerCase());
+
+			function pushNameCategory() {
+				nameCategoryArr.push(name.toLowerCase());
+			};
 
 			var data = {
 				nameOfAction: 'create', 
@@ -240,7 +269,7 @@ $(document).ready(function () {
 			};
 
 			// отправляем ajax запрос на сервер
-			ajx(data);
+			ajx(data, pushNameCategory);
 
 		};
 
@@ -257,18 +286,23 @@ $(document).ready(function () {
 				  id               = $(this).parents('.category__list').attr('data-id'),
 				  allAttachments   = $(this).parents('.category__list:first').find('.category__list');
 
-			if (allAttachments.length > 0) {// проверяем если у родителя есть дочерние элементы
 
-				allAttachments.each(function(){// тогда проходим по массиву этих дочерних элементов
+			function deleteNameCategory() {
 
-					var del = $(this).find('.name-category').text().toLowerCase();// находим название категории и переводим в нижний регистр
-					delete nameCategoryArr[nameCategoryArr.indexOf(del)];// удаляем с массива для валидации удаленную категорию
+				if (allAttachments.length > 0) {// проверяем если у родителя есть дочерние элементы
 
-				});
+					allAttachments.each(function(){// тогда проходим по массиву этих дочерних элементов
+
+						var del = $(this).find('.name-category:first').text().toLowerCase();// находим название категории и переводим в нижний регистр
+						delete nameCategoryArr[nameCategoryArr.indexOf(del)];// удаляем с массива для валидации удаленную категорию
+
+					});
+
+				}
+
+				delete nameCategoryArr[nameCategoryArr.indexOf(delName)];// удаляем с массива для валидации удаленную категорию
 
 			}
-
-			delete nameCategoryArr[nameCategoryArr.indexOf(delName)];// удаляем с массива для валидации удаленную категорию
 
 			var data = {
 				nameOfAction: 'delete',
@@ -276,7 +310,7 @@ $(document).ready(function () {
 				openedIds: sort($('.category__list'), id)
 			};
 
-			ajx(data);
+			ajx(data, deleteNameCategory);
 
 		});
 
@@ -439,8 +473,6 @@ $(document).ready(function () {
 
 		// edit name category
 
-		// var oldNameCategory = '';
-
 		function editing() {
 
 			var nameCategory = $(this).siblings('.name-category').text();
@@ -473,7 +505,8 @@ $(document).ready(function () {
 		$('.category').on('click', '.btn-save-rename', function() {
 
 			var newNameCategory = $(this).siblings('.editing-category').val(),
-					oldNameCategory = $(this).parent().siblings('.name-category').text().toLowerCase();
+					oldNameCategory = $(this).parent().siblings('.name-category').text().toLowerCase(),
+					self            = $(this);
 
 			// validation
 			for (var i = 0; i < nameCategoryArr.length; i++) {
@@ -488,20 +521,36 @@ $(document).ready(function () {
 				}
 			}
 
-			delete nameCategoryArr[nameCategoryArr.indexOf(oldNameCategory)];// удаляем название старой категории из глобального массива
-			nameCategoryArr.push(newNameCategory.toLowerCase());// добавляем название новой категории в глобальный массив
-
-			$(this).parent().siblings('.name-category').text(newNameCategory);
-
 			var data = {
 				nameOfAction: 'rename',
 				id: $(this).parents('.category__list:first').attr('data-id'),
-				value: newNameCategory,
+				newName: newNameCategory,
 				openedIds: sort($('.category__list'))
 			};
 
-			deleteEditing($(this));
-			ajx(data);
+
+			$.ajax({
+
+				type: 'POST',
+				data: data,
+				success: function(resp) {
+					if (resp == 'error') {
+						alert('Ошибка сервера');
+					} else{
+
+						delete nameCategoryArr[nameCategoryArr.indexOf(oldNameCategory)];// удаляем название старой категории из глобального массива
+						nameCategoryArr.push(newNameCategory.toLowerCase());// добавляем название новой категории в глобальный массив
+
+						self.parent().siblings('.name-category').text(newNameCategory);// записываем новое название категории
+						deleteEditing(self);
+
+					}
+				},
+				error: function() {
+					alert(resp.responseText);
+				}
+
+			});
 
 		});
 

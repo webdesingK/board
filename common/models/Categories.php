@@ -86,9 +86,9 @@ class Categories extends ActiveRecord {
      * @throws \yii\db\StaleObjectException
      */
 
-    public function renameNode($id, $value) {
+    public function renameNode($id, $newName) {
         $node = self::find()->where(['id' => $id])->one();
-        $node->name = $value;
+        $node->name = $newName;
         if ($node->update()) {
             return true;
         }

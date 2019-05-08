@@ -25,10 +25,10 @@ class AdminController extends Controller {
                     $lastId = $model->createNode($post['id'], $post['name']);
                     break;
                 case 'rename':
-                    $result = $model->renameNode($post['id'], $post['value']);
+                    return $model->renameNode($post['id'], $post['newName']) ? 'ok' : 'error';
                     break;
                 case 'changeActive':
-                    return ($model->changeActive($post['ids'], $post['value'])) ? 'ok' : 'error active';
+                    return $model->changeActive($post['ids'], $post['value']) ? 'ok' : 'error';
                     break;
                 case 'move':
                     $result = $model->moveNode($post['id'], $post['siblingId'], $post['direction']);
