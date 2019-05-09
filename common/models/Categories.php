@@ -232,7 +232,7 @@ class Categories extends ActiveRecord {
      * @return string
      */
 
-    public function createTreeFrontend() {
+    static public function createTreeFrontend() {
 
         $all = self::find()->select(['id', 'parent_id', 'depth', 'active', 'name'])->orderBy('lft ASC')->asArray()->all();
 
@@ -246,27 +246,20 @@ class Categories extends ActiveRecord {
                 case 1:
                     $menuFirstData[] = [
                         'id' => $one['id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '<span>></span></a>',
+                        'openLi' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '<span>></span></a>',
                     ];
                     break;
                 case 2:
                     $menuSecondData[] = [
                         'id' => $one['id'],
                         'parent_id' => $one['parent_id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a>',
+                        'openLi' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '</a>',
                     ];
                     break;
                 case 3:
                     $menuThirdData[] = [
-                        'id' => $one['id'],
                         'parent_id' => $one['parent_id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'li' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a></li>',
+                        'li' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '</a></li>',
                     ];
                     break;
             }
