@@ -33,14 +33,15 @@ $(document).ready(function() {
 		hideSubMenu($('.menu__second:not(:first)'));
 
 		function mouseShow() {
+			hideSubMenu($('.menu__second'));
 			$(this).children('.menu__second').show();
 		};
 
 		function mouseHide() {
 			$(this).children('.menu__second').hide();
 		};
-		menu.on('mouseenter', '.menu__first li', mouseShow);
-		menu.on('mouseleave', '.menu__first li', mouseHide);
+		menu.on('click', '.menu__first li', mouseShow);
+		// menu.on('mouseleave', '.menu__first li', mouseHide);
 
 	});
 
