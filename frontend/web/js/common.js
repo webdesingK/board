@@ -15,7 +15,7 @@ $(document).ready(function() {
 		function clickMenuBtn() {
 			$(this).next().slideToggle('slow', function() {
 				hideSubMenu($('.menu__second'));
-				$('.menu__second:first').show();
+				$(this).next().show();
 			}).removeClass('none');
 		};
 
