@@ -139,6 +139,19 @@ class Categories extends ActiveRecord {
     }
 
     /**
+     * @return array
+     */
+
+    protected function getDeactiveNodes () {
+        $fullArr = self::find()->select(['id'])->where(['active' => 0])->asArray()->all();
+        $ids = [];
+        foreach ($fullArr as $v) {
+            $ids[] = $v['id'];
+        }
+        return $ids;
+    }
+
+    /**
      * @param $openedIds array
      * @param $lastId int
      * @return string|null
@@ -148,6 +161,8 @@ class Categories extends ActiveRecord {
 
         $allCats = self::find()->orderBy('lft ASC')->all();
         $cats = [];
+        $deactiveIds = self::getDeactiveNodes();
+
         foreach ($allCats as $cat) {
             $cats[$cat->parent_id][] = [
                 'name' => $cat->name,
@@ -157,11 +172,12 @@ class Categories extends ActiveRecord {
 
         if (isset($lastId)) array_push($openedIds, $lastId);
 
-        function create($cats, $parentId, $openedIds) {
+        function create($cats, $parentId, $openedIds, $deactiveIds) {
 
             if (isset($cats[$parentId]) && is_array($cats[$parentId])) {
                 $tree = '';
                 $class = null;
+
                 foreach ($cats[$parentId] as $cat) {
 
                     if (!is_array($openedIds)) {
@@ -169,6 +185,20 @@ class Categories extends ActiveRecord {
                     }
                     else {
                         if (!in_array($cat['id'], $openedIds)) $class = 'none';
+                    }
+                    if (in_array($cat['id'], $deactiveIds)) {
+                        $activeData = [
+                            'checked' => null,
+                            'title' => 'Активировать?',
+                            'data-active' => 0
+                        ];
+                    }
+                    else {
+                        $activeData = [
+                            'checked' => 'checked',
+                            'title' => 'Деактивировать?',
+                            'data-active' => 1
+                        ];
                     }
 
                     $tree .= '
@@ -178,13 +208,13 @@ class Categories extends ActiveRecord {
 				                <span class="add-category" title="Добавить новую категорию">&plus;</span>
                                 <span class="edit-category" title="Редоктирование названия категории">✎</span>
                                 <span class="del-category" title="Удалить категорию и подкатегории">✘</span>
-                                <input type="checkbox" checked class="checkbox" title="Деактивировать?" data-active="1">
+                                <input type="checkbox"' . $activeData['checked'] . ' class="checkbox" title="' . $activeData['title'] . '" data-active="' . $activeData['data-active'] . '">
                                 <span class="motion__up-category" title="Переместить вверх">➭</span>
                                 <span class="motion__down-category" title="Переместить вниз">➭</span>
 				                <span class="tabs-category" title="Развернуть">▶</span>
 			                </div>
                         ';
-                    $tree .= create($cats, $cat['id'], $openedIds);
+                    $tree .= create($cats, $cat['id'], $openedIds, $deactiveIds);
                     $tree .= '</div>';
                 }
             }
@@ -194,11 +224,15 @@ class Categories extends ActiveRecord {
             return $tree;
         }
 
-        return create($cats, 0, $openedIds);
+        return create($cats, 0, $openedIds, $deactiveIds);
 
     }
 
-    public function createTreeFrontend() {
+    /**
+     * @return string
+     */
+
+    static public function createTreeFrontend() {
 
         $all = self::find()->select(['id', 'parent_id', 'depth', 'active', 'name'])->orderBy('lft ASC')->asArray()->all();
 
@@ -207,31 +241,25 @@ class Categories extends ActiveRecord {
         $menuThirdData = [];
 
         foreach ($all as $one) {
+            if (!$one['active']) continue;
             switch ($one['depth']) {
                 case 1:
                     $menuFirstData[] = [
                         'id' => $one['id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '<span>></span></a>',
+                        'openLi' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '<span>></span></a>',
                     ];
                     break;
                 case 2:
                     $menuSecondData[] = [
                         'id' => $one['id'],
                         'parent_id' => $one['parent_id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a>',
+                        'openLi' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '</a>',
                     ];
                     break;
                 case 3:
                     $menuThirdData[] = [
-                        'id' => $one['id'],
                         'parent_id' => $one['parent_id'],
-                        'active' => $one['active'],
-                        'name' => $one['name'],
-                        'li' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a></li>',
+                        'li' => '<li><a href="/' . $one['name'] . '" data-id="' . $one['id'] . '">' . $one['name'] . '</a></li>',
                     ];
                     break;
             }
@@ -259,10 +287,10 @@ class Categories extends ActiveRecord {
             $menuFirstData[$fk]['closeLi'] = '</li>';
         }
 
-        $tree = "<ul class='menu__first none'><div id='menu-close'>☒</div>\n \r";
+        $tree = "<ul class='menu__first none'><div id='menu-close'>☒</div>";
 
         $callback = function ($v, $k) use (&$tree) {
-          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v . "\n \r";
+          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v;
         };
 
         array_walk_recursive($menuFirstData, $callback);

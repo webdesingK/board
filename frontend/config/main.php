@@ -41,7 +41,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action>' => ''
+                '' => 'site/index',
+                '<id:\w+>' => 'site/index'
             ],
         ],
     ],

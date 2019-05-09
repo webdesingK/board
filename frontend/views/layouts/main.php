@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use common\models\Categories;
 
 AppAsset::register($this);
 
@@ -20,17 +21,16 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header class="header">
+    <a href="/">Главная</a>
+    <a href="http://localhost:3000/admin">localhost-admin</a>
+    <a href="/admin">board-admin</a>
+    <nav class="menu">
+        <div id="menu-btn">категории</div>
+        <?= Categories::createTreeFrontend() ?>
+    </nav>
 
-		<a href="http://localhost:3000/admin">localhost-admin</a>
-		<a href="board/admin">board-admin</a>
-		<nav class="menu">
-			<div id="menu-btn">категории</div>
-			<?= $this->context->model->createTreeFrontend() ?>
-		</nav>
-	
 </header>
-
-<?= $content?>
+<?= $content ?>
 <?php $this->endBody() ?>
 </body>
 </html>
