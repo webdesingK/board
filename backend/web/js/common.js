@@ -54,6 +54,9 @@ $(document).ready(function () {
 				return;
 			};
 
+			if ($(this).siblings('.tabs-category').text() == '▶') {
+				$(this).siblings('.tabs-category').click();
+			}
 			if ($(this).parent().siblings('.category__list').hasClass('none')) {// при добавлении формы проверяем если у родителя дочерние элементы скрыты
 				$(this).parents('.category__list:first').removeClass('add-before');// тогда удаляем полоску у родителя
 			}
@@ -131,6 +134,23 @@ $(document).ready(function () {
 		// end ajax -----------------------------------------------
 
 		// checkbox change ----------------------------------------
+
+		function deactiveCheckedStyle(obj) {
+
+			obj.each(function() {
+
+				if ($(this).attr('data-active') == 0) {
+					$(this).parent().addClass('deactive-checkbox');
+				} else {
+					$(this).parent().removeClass('deactive-checkbox');					
+				}
+
+			});
+
+		};
+
+		deactiveCheckedStyle($('.checkbox'));
+
 		function checkbox() {
  
 			var	self          = $(this),
@@ -214,7 +234,7 @@ $(document).ready(function () {
 								}
 							}
 						});
-
+						deactiveCheckedStyle($('.checkbox'));
 					}
 				},
 				error: function(){
@@ -334,6 +354,7 @@ $(document).ready(function () {
 				arr.eq(i).children('.category__list:last').addClass('after_hide');
 
 			}
+			deactiveCheckedStyle($('.checkbox'));
 
 		};
 		delLastBorder(nestedList);
@@ -418,23 +439,24 @@ $(document).ready(function () {
 
 		function structureMovements() {
 
-			var motionUp   = $('.motion__up-category'),
-					motionDown = $('.motion__down-category');
+			var motionUp     = $('.motion__up-category'),
+					motionDown   = $('.motion__down-category'),
+					categoryList = $('.category__list').children('.category__list').children('.category__list').children('.category__list');
 
 				motionUp.each(function(){
-
 					if (!$(this).parents('.category__list:first').prev().hasClass('category__list')) {
 						$(this).remove();
 					}
-
 				});
 
 				motionDown.each(function(){
-
 					if (!$(this).parents('.category__list:first').next().hasClass('category__list')) {
 						$(this).remove();
 					}
+				});
 
+				categoryList.each(function(){
+					$(this).find('.add-category').remove();
 				});
 
 		};
