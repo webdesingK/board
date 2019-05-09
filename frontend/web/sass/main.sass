@@ -4,7 +4,7 @@
 
 .header
 	width: 100%
-	min-height: 100px
+	height: $header_height_G
 	background: #333
 	position: relative
 	& > a
@@ -25,6 +25,14 @@
 	margin-top: -$height_btn_menu_G
 	&:hover
 		color: $link_hover_color_G
+#menu-close
+	position: absolute
+	z-index: 10
+	top: 5px
+	right: 10px
+	font-size: 25pt
+	cursor: pointer
+	color: red
 .menu
 	+wrap
 	position: absolute
@@ -43,6 +51,7 @@
 				color: $link_hover_color_G
 	&__first
 		width: 100%
+		height: $first_height_G
 		overflow: hidden
 		position: relative
 		z-index: -1

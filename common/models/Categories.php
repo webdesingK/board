@@ -287,7 +287,7 @@ class Categories extends ActiveRecord {
             $menuFirstData[$fk]['closeLi'] = '</li>';
         }
 
-        $tree = "<ul class='menu__first none'>";
+        $tree = "<ul class='menu__first none'><div id='menu-close'>☒</div>";
 
         $callback = function ($v, $k) use (&$tree) {
           if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v;
