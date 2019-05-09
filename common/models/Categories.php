@@ -198,63 +198,79 @@ class Categories extends ActiveRecord {
 
     }
 
-    public function createArray() {
-        $all = self::find()->orderBy('lft ASC')->all();
+    public function createTreeFrontend() {
 
-        $first = [];
-        $second = [];
-        $third = [];
+        $all = self::find()->select(['id', 'parent_id', 'depth', 'active', 'name'])->orderBy('lft ASC')->asArray()->all();
 
-        foreach ($all as $k => $v) {
-            if ($v->depth == 1) {
-                $first[] = [
-                    'id' => $v->id,
-                    'parent_id' => $v->parent_id,
-                    'name' => $v->name,
-                    'sub' => []
-                ];
-            }
-            if ($v->depth == 2) {
-                $second[] = [
-                    'id' => $v->id,
-                    'parent_id' => $v->parent_id,
-                    'name' => $v->name,
-                    'sub' => []
-                ];
-            }
-            if ($v->depth == 3) {
-                $third[] = [
-                    'id' => $v->id,
-                    'parent_id' => $v->parent_id,
-                    'name' => $v->name
-                ];
+        $menuFirstData = [];
+        $menuSecondData = [];
+        $menuThirdData = [];
+
+        foreach ($all as $one) {
+            switch ($one['depth']) {
+                case 1:
+                    $menuFirstData[] = [
+                        'id' => $one['id'],
+                        'active' => $one['active'],
+                        'name' => $one['name'],
+                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '<span>></span></a>',
+                    ];
+                    break;
+                case 2:
+                    $menuSecondData[] = [
+                        'id' => $one['id'],
+                        'parent_id' => $one['parent_id'],
+                        'active' => $one['active'],
+                        'name' => $one['name'],
+                        'openLi' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a>',
+                    ];
+                    break;
+                case 3:
+                    $menuThirdData[] = [
+                        'id' => $one['id'],
+                        'parent_id' => $one['parent_id'],
+                        'active' => $one['active'],
+                        'name' => $one['name'],
+                        'li' => '<li><a href="#" data-id="' . $one['id'] . '">' . $one['name'] . '</a></li>',
+                    ];
+                    break;
             }
         }
 
-        foreach ($first as $firstKey => $firstValue) {
-            foreach ($second as $secondKey => $secondValue) {
-                if ($secondValue['parent_id'] == $firstValue['id']) {
-                    foreach ($third as $thirdKey => $thirdValue) {
-                        if ($thirdValue['parent_id'] == $secondValue['id']) {
-                            $second[$secondKey]['sub'][] = [
-                                'id' => $thirdValue['id'],
-                                'parent_id' => $thirdValue['parent_id'],
-                                'name' => $thirdValue['name']
-                            ];
-                        }
-                    }
-                    $first[$firstKey]['sub'][] = [
-                        'id' => $secondValue['id'],
-                        'parent_id' => $secondValue['parent_id'],
-                        'name' => $secondValue['name'],
-                        'sub' => $second[$secondKey]['sub']
-                    ];
+        foreach ($menuSecondData as $sk => $sv) {
+            foreach ($menuThirdData as $thk => $thv) {
+                if ($thv['parent_id'] == $sv['id']) {
+                    $menuSecondData[$sk]['openUl'] = '<ul class="menu__third">';
+                    $menuSecondData[$sk]['li'][] = $thv;
+                    $menuSecondData[$sk]['closeUl'] = '</ul>';
                 }
             }
+            $menuSecondData[$sk]['closeLi'] = '</li>';
         }
 
+        foreach ($menuFirstData as $fk => $fv) {
+            foreach ($menuSecondData as $sk => $sv) {
+                if ($sv['parent_id'] == $fv['id']) {
+                    $menuFirstData[$fk]['openUl'] = '<ul class="menu__second">';
+                    $menuFirstData[$fk]['li'][] = $sv;
+                    $menuFirstData[$fk]['closeUl'] = '</ul>';
+                }
+            }
+            $menuFirstData[$fk]['closeLi'] = '</li>';
+        }
 
-        return $first;
+        $tree = "<ul class='menu__first'> \n \r";
+
+        $callback = function ($v, $k) use (&$tree) {
+          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v . "\n \r";
+        };
+
+        array_walk_recursive($menuFirstData, $callback);
+
+        $tree .= "</ul>";
+
+        return $tree;
+
     }
 
 }
