@@ -20,66 +20,10 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header class="header">
-		
+	
 		<nav class="menu">
-			
-			<ul class="menu__first">
-				<li><a href="#">Lorem ipsum.</a>
-					<ul class="menu__second">
-						<li><a href="#">Lorem ipsum.</a>
-							<ul class="menu__third">
-								<li><a href="#">Lorem ipsum.</a></li>
-								<li><a href="#">Quidem, labore.</a></li>
-								<li><a href="#">Cum, eveniet.</a></li>
-								<li><a href="#">Modi, ad.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Quidem, labore.</a></li>
-						<li><a href="#">Cum, eveniet.</a></li>
-						<li><a href="#">Modi, ad.</a><ul class="menu__third">
-								<li><a href="#">Lorem ipsum.</a></li>
-								<li><a href="#">Quidem, labore.</a></li>
-								<li><a href="#">Cum, eveniet.</a></li>
-								<li><a href="#">Modi, ad.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Asperiores, soluta.</a><ul class="menu__third">
-								<li><a href="#">Lorem ipsum.</a></li>
-								<li><a href="#">Quidem, labore.</a></li>
-								<li><a href="#">Cum, eveniet.</a></li>
-								<li><a href="#">Modi, ad.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Deleniti, minus!</a>
-							<ul class="menu__third">
-								<li><a href="#">Lorem ipsum.</a></li>
-								<li><a href="#">Quidem, labore.</a></li>
-								<li><a href="#">Cum, eveniet.</a></li>
-								<li><a href="#">Modi, ad.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-								<li><a href="#">Asperiores, soluta.</a></li>
-							</ul>
-						</li>
-						<li><a href="#">Aspernatur, quibusdam.</a></li>
-						<li><a href="#">Molestiae, odio.</a></li>
-						<li><a href="#">Obcaecati, nisi.</a></li>
-						<li><a href="#">Iure, minus.</a></li>
-					</ul>
-				</li>
-				<li><a href="#">Quidem, labore.</a></li>
-				<li><a href="#">Cum, eveniet.</a></li>
-				<li><a href="#">Modi, ad.</a></li>
-				<li><a href="#">Asperiores, soluta.</a></li>
-				<li><a href="#">Deleniti, minus!</a></li>
-				<li><a href="#">Aspernatur, quibusdam.</a></li>
-				<li><a href="#">Molestiae, odio.</a></li>
-				<li><a href="#">Obcaecati, nisi.</a></li>
-				<li><a href="#">Iure, minus.</a></li>
-			</ul>
+			<div id="menu-btn">категории</div>			
+			<?= $this->context->model->createTreeFrontend() ?>
 		</nav>
 	
 </header>

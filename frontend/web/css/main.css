@@ -1,59 +1,136 @@
 .header {
   width: 100%;
   min-height: 100px;
+  background: #333;
+  position: relative;
+}
+
+#menu-btn {
+  color: #fff;
+  cursor: pointer;
+  color: #fff;
+  width: 270px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 20px;
+  background: #2773D7;
+  display: block;
+  margin-top: -30px;
+}
+
+#menu-btn:hover {
+  color: #FF00A3;
 }
 
 .menu {
   max-width: 1360px;
   margin: 0 auto;
-  min-height: 50vh;
-  border: 1px solid red;
-  position: relative;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: 100%;
   font-family: sans-serif;
   font-weight: bold;
 }
 
+.menu a {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+.menu a:hover {
+  color: #FF00A3;
+}
+
+.menu a:hover span {
+  color: #FF00A3;
+}
+
 .menu__first {
-  padding: 20px 10px;
-  border: 1px solid blue;
-  width: 250px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: -1;
+  border: 2px solid rgba(21, 233, 221, 0.4);
+  border-radius: 5px;
 }
 
 .menu__first > li {
-  margin: 5px;
+  width: 270px;
 }
 
 .menu__first > li > a {
-  color: red;
+  display: inline-block;
+  padding: 10px 10px 10px 20px;
+  color: #2773D7;
+}
+
+.menu__first > li > a span {
+  float: right;
+}
+
+.menu__first > li > a:hover {
+  background: #e6e6e6;
 }
 
 .menu__second {
   position: absolute;
-  left: 250px;
+  width: 100%;
+  left: 270px;
   top: 0;
-  border: 1px solid red;
-  width: calc(100% - 250px);
-  height: 100%;
+  padding-top: 15px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   align-content: flex-start;
 }
 
+.menu__second > li {
+  width: 230px;
+}
+
+.menu__second > li > a {
+  padding: 5px 15px;
+  font-size: 15px;
+  color: orange;
+}
+
+.menu__second > li > a span {
+  margin-left: 10px;
+  font-size: 8pt;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .menu__third {
-  border: 1px solid green;
-  padding-left: 20px;
-  width: 200px;
+  width: 100%;
+}
+
+.menu__third > li {
+  overflow: hidden;
+  position: relative;
+}
+
+.menu__third > li:before {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 90%);
 }
 
 .menu__third > li > a {
+  padding: 2px 15px 2px 25px;
+  white-space: nowrap;
+  font-size: 14px;
   color: green;
 }
 
-.menu li {
-  padding: 5px 15px;
-}
-
-.arr {
-  padding: 30px;
+.none {
+  display: none;
 }
