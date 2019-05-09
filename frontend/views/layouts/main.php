@@ -21,7 +21,7 @@ AppAsset::register($this);
 
 <header class="header">
 		<a href="http://localhost:3000/admin">localhost-admin</a>
-		<a href="board/admin">board-admin</a>
+		<a href="/admin">board-admin</a>
 		<nav class="menu">
 			<div id="menu-btn">категории</div>	
 			<?= $this->context->model->createTreeFrontend() ?>

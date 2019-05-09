@@ -138,6 +138,10 @@ class Categories extends ActiveRecord {
         return $lastString->id;
     }
 
+    protected function getDeactiveNodes () {
+        return self::find()->select(['id'])->where(['active' => 0])->asArray()->all();
+    }
+
     /**
      * @param $openedIds array
      * @param $lastId int
@@ -148,6 +152,7 @@ class Categories extends ActiveRecord {
 
         $allCats = self::find()->orderBy('lft ASC')->all();
         $cats = [];
+
         foreach ($allCats as $cat) {
             $cats[$cat->parent_id][] = [
                 'name' => $cat->name,
@@ -207,6 +212,7 @@ class Categories extends ActiveRecord {
         $menuThirdData = [];
 
         foreach ($all as $one) {
+            if (!$one['active']) continue;
             switch ($one['depth']) {
                 case 1:
                     $menuFirstData[] = [
@@ -259,10 +265,10 @@ class Categories extends ActiveRecord {
             $menuFirstData[$fk]['closeLi'] = '</li>';
         }
 
-        $tree = "<ul class='menu__first none'> \n \r";
+        $tree = "<ul class='menu__first none'>";
 
         $callback = function ($v, $k) use (&$tree) {
-          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v . "\n \r";
+          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v;
         };
 
         array_walk_recursive($menuFirstData, $callback);
