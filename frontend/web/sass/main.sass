@@ -5,40 +5,94 @@
 .header
 	width: 100%
 	min-height: 100px
+	background: #333
+	position: relative
+#menu-btn
+	color: #fff
+	cursor: pointer
+	color: #fff
+	width: $menu_left_G
+	height: $height_btn_menu_G
+	line-height: $height_btn_menu_G
+	padding: 0 20px
+	background: #2773D7
+	display: block
+	margin-top: -$height_btn_menu_G
+	&:hover
+		color: $link_hover_color_G
 .menu
 	+wrap
-	min-height: 50vh
-	border: 1px solid red
-	position: relative
+	position: absolute
+	z-index: 10
+	left: 0
+	right: 0
+	top: 100%
 	font-family: sans-serif
 	font-weight: bold
+	a
+		width: 100%
+		height: 100%
+		display: inline-block
+		&:hover
+			color: $link_hover_color_G
+			span
+				color: $link_hover_color_G
 	&__first
-		padding: 20px 10px
-		border: 1px solid blue
-		width: 250px
+		width: 100%
+		overflow: hidden
+		position: relative
+		z-index: -1
+		border: 2px solid rgba(#15E9DD, .4)
+		border-radius: 5px
 		& > li
-			margin: 5px
+			width: $menu_left_G
 			& > a
-				color: red
+				display: inline-block
+				padding: $first_height_a_G $first_a_right_G $first_height_a_G $first_a_left_G
+				color: $first_color_link_G
+				span
+					float: right
+				&:hover
+					background: $first_bg_link_G
 	&__second
 		position: absolute
-		left: 250px
+		width: 100%
+		left: $menu_left_G
 		top: 0
-		border: 1px solid red
-		width: calc(100% - 250px)
-		height: 100%
+		padding-top: $second_top_G
 		display: flex
 		flex-wrap: wrap
 		flex-direction: column
 		align-content: flex-start
-	&__third
-		border: 1px solid green
-		padding-left: 20px
-		width: 200px
 		& > li
+			width: $second_li_width_G
 			& > a
-				color: green
-	li
-		padding: 5px 15px
-.arr
-	padding: 30px
+				padding: $second_a_padding_top_bottom_G $second_a_padding_left_right_G
+				font-size: $second_a_fs_G
+				color: $second_a_color_G
+				span
+					margin-left: $second_span_ml_G
+					font-size: $second_span_fs_G
+					display: inline-block
+					vertical-align: middle
+	&__third
+		width: 100%
+		& > li
+			overflow: hidden
+			position: relative
+			&:before
+				content: ''
+				display: block
+				width: 30px
+				height: 100%
+				position: absolute
+				top: 0
+				right: 0
+				background-image: linear-gradient(to right, rgba(#fff, 0), #fff 90%)
+			& > a
+				padding: $third_a_padding_top_bottom_G $third_a_pr_G $third_a_padding_top_bottom_G $third_a_pl_G
+				white-space: nowrap
+				font-size: $third_a_fs_G
+				color: $third_a_color
+.none
+	display: none

@@ -20,9 +20,13 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header class="header">
-		
+	
 		<nav class="menu">
+<<<<<<< HEAD
             <div id="menu-btn">категории</div>
+=======
+			<div id="menu-btn">категории</div>			
+>>>>>>> frontend
 			<?= $this->context->model->createTreeFrontend() ?>
 		</nav>
 	
