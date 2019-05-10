@@ -1,8 +1,19 @@
 <?
+/**
+ * @var $model
+ */
 
-$this->title = 'Мененджер городов';
+$this->title = 'Манагер городов';
 
 ?>
 
+<div class="category">
 
-<h1 style="margin-left: 200px">Мененджер городов</h1>
+    <div class="category__main">
+        <?= $model->createTree($openedIds = null, $lastId = null) ?>
+    </div>
+
+</div>
+
+
+<!-- /.category -->

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
-use common\models\Categories;
+use common\models\categories\Categories;
 
 AppAsset::register($this);
 

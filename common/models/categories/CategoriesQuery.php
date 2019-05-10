@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace common\models\categories;
 
 use creocoder\nestedsets\NestedSetsQueryBehavior;
 use yii\db\ActiveQuery;

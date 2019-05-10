@@ -1,19 +1,19 @@
 <?php
 
-namespace common\models;
+namespace common\models\cities;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
 use Yii;
 use yii\helpers\Html;
 
-class Categories extends ActiveRecord {
+class Cities extends ActiveRecord {
 
     /**
      * {@inheritdoc}
      */
     public static function tableName() {
-        return 'categories';
+        return 'cities';
     }
 
     public function behaviors() {
@@ -31,7 +31,7 @@ class Categories extends ActiveRecord {
     }
 
     public static function find() {
-        return new CategoriesQuery(get_called_class());
+        return new CitiesQuery(get_called_class());
     }
 
     /**
@@ -132,6 +132,10 @@ class Categories extends ActiveRecord {
         return false;
     }
 
+    /**
+     * @param $name string
+     * @return int
+     */
 
     public function getLastId($name) {
         return self::find()->select('id')->where(['name' => $name])->asArray()->one()['id'];

@@ -24,6 +24,7 @@ class m190414_110413_create_categories_table extends Migration {
             'rgt' => 2,
             'depth' => 0,
             'parent_id' => 0,
+            'active' => 1,
             'name' => 'Категории'
         ]);
     }
