@@ -41,7 +41,7 @@ class Categories extends ActiveRecord {
         return [
             [['name', 'parent_id'], 'required'],
             ['name', 'string'],
-            ['parent_id', 'integer'],
+            [['parent_id', 'active'], 'integer'],
         ];
     }
 
@@ -54,10 +54,14 @@ class Categories extends ActiveRecord {
     public function createNode($parentId, $name) {
         $dataForModel = [
             'parent_id' => $parentId,
-            'name' => $name
+            'name' => $name,
+            'active' => 1
         ];
+        $parentNode = self::find()->where(['id' => $parentId])->one();
+        if ($parentNode->active == 0) {
+            $dataForModel['active'] = 0;
+        }
         if (self::load($dataForModel, '')) {
-            $parentNode = self::find()->where(['id' => $parentId])->one();
             if (self::prependTo($parentNode)) {
                 return self::getLastId($name);
             }
@@ -128,21 +132,16 @@ class Categories extends ActiveRecord {
         return false;
     }
 
-    /**
-     * @param string $name
-     * @return integer
-     */
 
     public function getLastId($name) {
-        $lastString = self::find('id')->where(['name' => $name])->one();
-        return $lastString->id;
+        return self::find()->select('id')->where(['name' => $name])->asArray()->one()['id'];
     }
 
     /**
      * @return array
      */
 
-    protected function getDeactiveNodes () {
+    protected function getDeactiveNodes() {
         $fullArr = self::find()->select(['id'])->where(['active' => 0])->asArray()->all();
         $ids = [];
         foreach ($fullArr as $v) {
@@ -159,14 +158,14 @@ class Categories extends ActiveRecord {
 
     public function createTree($openedIds, $lastId) {
 
-        $allCats = self::find()->orderBy('lft ASC')->all();
+        $allCats = self::find()->select(['id', 'parent_id', 'name'])->orderBy('lft ASC')->asArray()->all();
         $cats = [];
         $deactiveIds = self::getDeactiveNodes();
 
         foreach ($allCats as $cat) {
-            $cats[$cat->parent_id][] = [
-                'name' => $cat->name,
-                'id' => $cat->id,
+            $cats[$cat['parent_id']][] = [
+                'name' => $cat['name'],
+                'id' => $cat['id'],
             ];
         }
 
@@ -186,7 +185,7 @@ class Categories extends ActiveRecord {
                     else {
                         if (!in_array($cat['id'], $openedIds)) $class = 'none';
                     }
-                    if (in_array($cat['id'], $deactiveIds)) {
+                    if (!empty($deactiveIds) && in_array($cat['id'], $deactiveIds)) {
                         $activeData = [
                             'checked' => null,
                             'title' => 'Активировать?',
@@ -290,7 +289,7 @@ class Categories extends ActiveRecord {
         $tree = "<ul class='menu__first none'><div id='menu-close'>☒</div>";
 
         $callback = function ($v, $k) use (&$tree) {
-          if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v;
+            if ($k == 'openLi' || $k == 'openUl' || $k == 'li' || $k == 'closeUl' || $k == 'closeLi') $tree .= $v;
         };
 
         array_walk_recursive($menuFirstData, $callback);
