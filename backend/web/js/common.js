@@ -26,7 +26,7 @@ $(document).ready(function () {
 		// функция для проверки совпадения id открытого элемента с кликнутым элементом
 		function checkIds(self, selector) {
 
-			var openedId = $(selector + ':visible').parents('.category__list:first').attr('data-id'),
+			let openedId = $(selector + ':visible').parents('.category__list:first').attr('data-id'),
 					closeId  = self.parents('.category__list:first').attr('data-id');
 
 			if (openedId == closeId) {
@@ -79,9 +79,9 @@ $(document).ready(function () {
 		// функция передающая в ajax запрос с масивом блоков у которых нет класса 'none'
 		function sort(arr, number) {
 
-			var ar = [];
+			let ar = [];
 
-			for (var i = 0; i < arr.length; i++) {
+			for (let i = 0; i < arr.length; i++) {
 				if (!arr.eq(i).hasClass('none')) {
 					ar.push(arr.eq(i).data('id'));
 				}
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
 		function checkbox() {
  
-			var	self          = $(this),
+			let	self          = $(this),
 					totalCheckbox = self.parents('.category__list:first').find('.checkbox:not(:first)'),
 					parents       = self.parents('.category__list').children('.category__list-block').children('.checkbox:not(:first)'),
 					mainActive    = {'title': 'Деактивировать?', 'data-active': 1},
@@ -173,7 +173,7 @@ $(document).ready(function () {
 			});
 
 			// создаем обьект для передачи на сервер
-			var data = {
+			let data = {
 
 				nameOfAction: 'changeActive',
 				value: value,
@@ -245,8 +245,8 @@ $(document).ready(function () {
 			
 			evt.preventDefault(); //отменяем стандартное поведение кнопки отправки формы на сервер 
 
-			var name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
-			var id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
+			let name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
+			let id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
 			
 			// // validation
 			if(name == '') {// проверяем вводимое значение на пустую строку
@@ -257,7 +257,7 @@ $(document).ready(function () {
 			
 			// добавляем в масив вновь созданную категорию для валидации в нижнем регистре
 
-			var data = {
+			let data = {
 				nameOfAction: 'create', 
 				name: name, // значение инпута
 				id: id, // значение атрибута id
@@ -278,10 +278,10 @@ $(document).ready(function () {
 		
 		$('.category').on('click', '.del-category', function() {// отправка ajax запроса на удаления категории и если есть в ней подкотегории
 
-			var delName          = $(this).siblings('.name-category').text().toLowerCase(),
+			let delName          = $(this).siblings('.name-category').text().toLowerCase(),
 				  id               = $(this).parents('.category__list').attr('data-id');
 
-			var data = {
+			let data = {
 				nameOfAction: 'delete',
 				id: id,
 				openedIds: sort($('.category__list'), id)
@@ -294,14 +294,14 @@ $(document).ready(function () {
 		//  end category ajax ------------------------------------
 
 		// nested ------------------------------------------------
-		var nestedList = $('.category__list');
+		let nestedList = $('.category__list');
 
 		function delLastBorder(arr) {
 
 			$('.category__list-block:first').children('.del-category').remove();// удаляем элемент в самом первом блоке
 			$('.category__list-block:first').children('.checkbox').remove();// удаляем элемент в самом первом блоке
 
-			for (var i = 0; i < arr.length; i++) {
+			for (let i = 0; i < arr.length; i++) {
 
 				if(arr.eq(i).children('.category__list').length == 0) {
 					arr.eq(i).addClass('after_none');
@@ -322,7 +322,7 @@ $(document).ready(function () {
 
 		$('.category').on('click', '.tabs-category' ,function() {
 
-			var tabs = $(this).parent().siblings().find('.tabs-category');// записываем массив из дочерних элементов кнопок tabs
+			let tabs = $(this).parent().siblings().find('.tabs-category');// записываем массив из дочерних элементов кнопок tabs
 
 			if ($(this).html() == '▶') {// если при клике на кнопку она была свернута
 
@@ -362,7 +362,7 @@ $(document).ready(function () {
 
 		function tab(arr) {
 
-			for (var i = 0; i < arr.length; i++) {
+			for (let i = 0; i < arr.length; i++) {
 					
 			 	if(!arr.eq(i).hasClass('none')){
 
@@ -388,7 +388,7 @@ $(document).ready(function () {
 
 		function structureMovements() {
 
-			var motionUp     = $('.motion__up-category'),
+			let motionUp     = $('.motion__up-category'),
 					motionDown   = $('.motion__down-category'),
 					categoryList = $('.category__list').children('.category__list').children('.category__list').children('.category__list');
 
@@ -417,7 +417,7 @@ $(document).ready(function () {
 
 		function movements() {
 
-			var direction = '',
+			let direction = '',
 					parent       = $(this).parents('.category__list:first'),
 					id 					 = parent.attr('data-id'),
 					siblingId    = '';
@@ -430,7 +430,7 @@ $(document).ready(function () {
 				siblingId = parent.next().attr('data-id');
 			}
 
-			var data = {
+			let data = {
 				nameOfAction: 'move',
 				id: id,
 				direction: direction,
@@ -444,9 +444,11 @@ $(document).ready(function () {
 
 		// edit name category
 
+		let oldNameCategory;
 		function editing() {
 
-			var nameCategory = $(this).siblings('.name-category').text();
+			let nameCategory = $(this).siblings('.name-category').text();
+			oldNameCategory = nameCategory;
 			// oldNameCategory = nameCategory.toLowerCase();
 
 			// проверяем на который элемент пришелся клик
@@ -475,8 +477,7 @@ $(document).ready(function () {
 
 		$('.category').on('click', '.btn-save-rename', function() {
 
-			var newNameCategory = $(this).siblings('.editing-category').val(),
-					oldNameCategory = $(this).parent().siblings('.name-category').text().toLowerCase(),
+			let newNameCategory = $(this).siblings('.editing-category').val().trim(),
 					self            = $(this);
 
 			// validation
@@ -484,9 +485,13 @@ $(document).ready(function () {
 				alertMessage($(this), 'text_null', true);
 				$(this).prev().focus();
 				return;
+			} else if (oldNameCategory == newNameCategory) {
+				deleteEditing(self);
+				return;
 			}
+			console.log(oldNameCategory);
 
-			var data = {
+			let data = {
 				nameOfAction: 'rename',
 				id: $(this).parents('.category__list:first').attr('data-id'),
 				newName: newNameCategory,
