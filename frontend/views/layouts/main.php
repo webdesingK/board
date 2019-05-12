@@ -21,13 +21,49 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <header class="header">
-    <a href="/">Главная</a>
-    <a href="http://localhost:3000/admin">localhost-admin</a>
-    <a href="/admin">board-admin</a>
-    <nav class="menu">
-        <div id="menu-btn">категории</div>
-        <?= Categories::createTreeFrontend() ?>
-    </nav>
+
+    <div class="header__wrap">
+        <a href="/">Главная</a>
+        <a href="http://localhost:3000/admin">localhost-admin</a>
+        <a href="/admin">board-admin</a>
+        <div class="auth">
+            <p id="auth">Вход</p>
+            <!-- <div id="auth-user">⛑</div> -->
+            <div class="auth__user none">
+                <a href="#">Личный кабинет</a>
+                <a href="#">Выйти</a>
+            </div>
+            <div id="sign-in" class="none">
+                <p>Вход</p>
+                <form>
+                    <input type="text" placeholder="Электронная почта">
+                    <input type="text" placeholder="Пароль">
+                    <button>Войти</button>
+                </form>
+                <a href="#">BK</a>
+                <a href="#">ОД</a>
+                <hr>
+                <span>Регистрация</span>
+            </div>
+            <div id="sign-up" class="none">
+                <p>Регистрация</p>
+                <form>
+                    <input type="text" placeholder="Электронная почта">
+                    <input type="text" placeholder="Пароль">
+                    <input type="text" placeholder="Подтверждение пароля">
+                    <button>Зарегистрироваться</button>
+                </form>
+                <a href="#">BK</a>
+                <a href="#">ОД</a>
+                <hr>
+                <span>Вход</span>
+            </div>
+        </div>
+        <nav class="menu">
+            <div id="menu-btn">категории</div>
+            <?= Categories::createTreeFrontend() ?>
+        </nav>
+    </div>
 
 </header>
 <?= $content ?>
