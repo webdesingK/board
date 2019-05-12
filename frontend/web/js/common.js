@@ -48,11 +48,11 @@ $(document).ready(function() {
 			}
 		});
 
-		// когда открыто меню при нажатии на esc скрываем меню
+		// при нажатии на esc делаем проверки и отрабатываем функционал
 		$(document).keyup(function(evt){
-			if (evt.keyCode == 27 && $('.menu__first').is(':visible')) menuBtn.click();
-			if (evt.keyCode == 27 && $('#sign-in').is(':visible')) $('#sign-in').addClass('none');
-			if (evt.keyCode == 27 && $('#sign-up').is(':visible')) $('#sign-up').addClass('none');
+			if (evt.keyCode == 27 && $('.menu__first').is(':visible')) menuBtn.click();// если меню открыто скрываем его
+			if (evt.keyCode == 27 && $('#sign-in').is(':visible')) $('#sign-in').addClass('none');// если окно попап входа открыто скрываем его
+			if (evt.keyCode == 27 && $('#sign-up').is(':visible')) $('#sign-up').addClass('none');// если окно попап регистрации открыто скрываем его
 		});
 
 		// функция при наведении на категорию 1 уровня (эфект hover)
@@ -64,32 +64,46 @@ $(document).ready(function() {
 		let startX,
 				x,
 				flagMenuActive = true,
-				set = setInterval(fn,4);
+				set = setInterval(funInterval,4),
+				flagMainMenu = false;
+
 				clearInterval(set);
 
+		// событие для вычесления позиции курсора по оси x 
 		menu.on('mousemove', '.menu__first > li > a', function(evt) {
 			 x = Math.round(evt.pageX - $(this).offset().left);
 		});
 
-		function fn(self) {
-			if (startX > x && flagMenuActive) {
-				mouseShow(self);
-				clearInterval(set);
+		// функция для запуска в setInterval 
+		function funInterval(self) {// передаем аргумент this элемента на который был наведен курсор
+			if (startX > x && flagMenuActive) {// проверяем если startX++ догнал x(коор. курсора) и курсор находиться в пределах ссылки
+				mouseShow(self);// запускаем функция эфекта hover
+				clearInterval(set);// и останавливаем setInterval
 			}
-			startX++;
+			startX++;// добавляем +1 при каждом вызове функции
 		};
 
+		// при наведении курсора на menu__second(то есть курсор покинул menu__first)
 		menu.on('mouseenter', '.menu__second', function(){
-			flagMenuActive = false;
+			flagMenuActive = false;// изминяем флаг, для запрета отработки функции mouseShow
 		});
 
+		// отслеживаем покидания курсора со всего меню
+		menu.on('mouseleave', '.menu__first', function() {
+			flagMainMenu = true;// изменяем флаг, для разрешения отработки функции mouseShow
+		});
+
+		// при наведении на любую из ссылок(1 уровня)
 		menu.on('mouseenter', '.menu__first > li > a', function(evt) {
 
-			startX = Math.round(evt.pageX - $(this).offset().left);
-			flagMenuActive = true;
-			
-			clearInterval(set);
-			set = setInterval(fn, 15, $(this));
+			startX = Math.round(evt.pageX - $(this).offset().left);// считываем коор. где вошел курсор на элемент и записываем в переменную
+			flagMenuActive = true;// изминяем флаг, для разрешения отработки функции mouseShow
+			if (flagMainMenu) {// если разрешено
+				mouseShow($(this));// запускаем hover эффект
+			}
+			flagMainMenu = false;// запрещаем отработку функции mouseShow
+			clearInterval(set);// останавливаем предыдущий setInterval 
+			set = setInterval(funInterval, 15, $(this));// запускаем новый setInterval
 
 		});
 
@@ -110,6 +124,7 @@ $(document).ready(function() {
 			$('#sign-up').removeClass('none');
 
 		});
+		
 		auth.on('click', '#sign-up span', function() {
 
 			$('#sign-up').addClass('none');

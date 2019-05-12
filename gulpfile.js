@@ -6,10 +6,10 @@ const concat   = require('gulp-concat');
 const notify   = require('gulp-notify');
 
 let paths = {
-	//sync: 'board/admin',
-	sync: 'board',
-	//module: 'backend',
-	module: 'frontend',
+	sync: 'board/admin',
+	//sync: 'board',
+	module: 'backend',
+	//module: 'frontend',
 }
 
 function browserSync(done) {

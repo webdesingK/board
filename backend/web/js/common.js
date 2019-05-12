@@ -2,16 +2,6 @@ $(document).ready(function () {
 	// category
 	$(function () {
 
-		// validation input ---------------------------------------
-
-		var nameCategoryArr = [],
-				nameCategory    = $('.name-category');
-
-		nameCategory.each(function(){
-			var text = $(this).text().toLowerCase();
-			nameCategoryArr.push(text);
-		});
-
 		// end validation -----------------------------------------
 
 		// функция для вывода сообщения для предупреждения о незавершенной работе другого элемента
@@ -104,7 +94,7 @@ $(document).ready(function () {
 		};
 
 		// ajax ---------------------------------------------------
-		function ajx(obj, callback) {
+		function ajx(obj) {
 
 			$.ajax({
 				type: 'POST',
@@ -118,10 +108,6 @@ $(document).ready(function () {
 						structureMovements();
 						tab($('.category__list'));
 						delLastBorder($('.category__list'));
-						titleName($('.name-category'));
-						if (callback) {
-							callback();
-						}
 					}
 
 				},
@@ -262,24 +248,14 @@ $(document).ready(function () {
 			var name = $(this).siblings('.input-text').val().trim(); // считываем с инпута содержимое
 			var id = $(this).parents('.category__list').data('id'); // считываем атрибут id с родительского элемента
 			
-			// validation
-			for (var i = 0; i < nameCategoryArr.length; i++) {
-				if(nameCategoryArr[i] == name.toLowerCase()) {// проверяем вводимое значение на совпадения в массиве(переведенные в нижний регистр)
-					$(this).prev().focus();
-					alertMessage($(this), 'text_copy', true);
-					return;
-				} else if(name == '') {// проверяем вводимое значение на пустую строку
-					alertMessage($(this), 'text_null', true);
-					$(this).prev().focus();
-					return;
-				}
+			// // validation
+			if(name == '') {// проверяем вводимое значение на пустую строку
+				alertMessage($(this), 'text_null', true);
+				$(this).prev().focus();
+				return;
 			}
 			
 			// добавляем в масив вновь созданную категорию для валидации в нижнем регистре
-
-			function pushNameCategory() {
-				nameCategoryArr.push(name.toLowerCase());
-			};
 
 			var data = {
 				nameOfAction: 'create', 
@@ -289,7 +265,7 @@ $(document).ready(function () {
 			};
 
 			// отправляем ajax запрос на сервер
-			ajx(data, pushNameCategory);
+			ajx(data);
 
 		};
 
@@ -303,26 +279,7 @@ $(document).ready(function () {
 		$('.category').on('click', '.del-category', function() {// отправка ajax запроса на удаления категории и если есть в ней подкотегории
 
 			var delName          = $(this).siblings('.name-category').text().toLowerCase(),
-				  id               = $(this).parents('.category__list').attr('data-id'),
-				  allAttachments   = $(this).parents('.category__list:first').find('.category__list');
-
-
-			function deleteNameCategory() {
-
-				if (allAttachments.length > 0) {// проверяем если у родителя есть дочерние элементы
-
-					allAttachments.each(function(){// тогда проходим по массиву этих дочерних элементов
-
-						var del = $(this).find('.name-category:first').text().toLowerCase();// находим название категории и переводим в нижний регистр
-						delete nameCategoryArr[nameCategoryArr.indexOf(del)];// удаляем с массива для валидации удаленную категорию
-
-					});
-
-				}
-
-				delete nameCategoryArr[nameCategoryArr.indexOf(delName)];// удаляем с массива для валидации удаленную категорию
-
-			}
+				  id               = $(this).parents('.category__list').attr('data-id');
 
 			var data = {
 				nameOfAction: 'delete',
@@ -330,7 +287,7 @@ $(document).ready(function () {
 				openedIds: sort($('.category__list'), id)
 			};
 
-			ajx(data, deleteNameCategory);
+			ajx(data);
 
 		});
 
@@ -359,14 +316,6 @@ $(document).ready(function () {
 		};
 		delLastBorder(nestedList);
 
-		function titleName(obj){
-
-			obj.each(function(){
-				$(this).attr('title', $(this).text());
-			});
-
-		};
-		titleName($('.name-category'));
 		// end nested ------------------------------------------
 
 		// tabs ------------------------------------------------
@@ -531,16 +480,10 @@ $(document).ready(function () {
 					self            = $(this);
 
 			// validation
-			for (var i = 0; i < nameCategoryArr.length; i++) {
-				if(nameCategoryArr[i] == newNameCategory.toLowerCase()) {// проверяем вводимое значение на совпадения в массиве(переведенные в нижний регистр)
-					$(this).prev().focus();
-					alertMessage($(this), 'text_copy', true);
-					return;
-				} else if(newNameCategory == '') {// проверяем вводимое значение на пустую строку
-					alertMessage($(this), 'text_null', true);
-					$(this).prev().focus();
-					return;
-				}
+			if(newNameCategory == '') {// проверяем вводимое значение на пустую строку
+				alertMessage($(this), 'text_null', true);
+				$(this).prev().focus();
+				return;
 			}
 
 			var data = {
@@ -558,9 +501,6 @@ $(document).ready(function () {
 					if (resp == 'error') {
 						alert('Ошибка сервера');
 					} else{
-
-						delete nameCategoryArr[nameCategoryArr.indexOf(oldNameCategory)];// удаляем название старой категории из глобального массива
-						nameCategoryArr.push(newNameCategory.toLowerCase());// добавляем название новой категории в глобальный массив
 
 						self.parent().siblings('.name-category').text(newNameCategory);// записываем новое название категории
 						deleteEditing(self);
