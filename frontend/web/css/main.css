@@ -1,3 +1,7 @@
+.none {
+  display: none !important;
+}
+
 .header {
   width: 100%;
   height: 100px;
@@ -8,6 +12,8 @@
 .header__wrap {
   max-width: 1365px;
   margin: 0 auto;
+  height: 100%;
+  position: relative;
 }
 
 .header__wrap > a {
@@ -102,24 +108,31 @@
   height: 320px;
 }
 
-#menu-btn {
+#menu-btn,
+#city-btn {
   color: #fff;
   cursor: pointer;
-  color: #fff;
   width: 270px;
   height: 30px;
-  line-height: 30px;
   padding: 0 20px;
   background: #2773D7;
   display: block;
-  margin-top: -30px;
+  font: bold 20px sans-serif;
+  line-height: 30px;
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
 }
 
-#menu-btn:hover {
+#menu-btn:hover,
+#city-btn:hover {
   color: #FF00A3;
 }
 
-#menu-close {
+#menu-close,
+#city-close {
   position: absolute;
   z-index: 10;
   top: 5px;
@@ -129,39 +142,43 @@
   color: red;
 }
 
-.menu {
-  max-width: 1365px;
-  margin: 0 auto;
+.menu,
+.city {
+  width: 100%;
   position: absolute;
   z-index: 10;
+  height: 600px;
   left: 0;
   right: 0;
   top: 100%;
   font-family: sans-serif;
   font-weight: bold;
+  border: 2px solid rgba(21, 233, 221, 0.4);
+  border-radius: 5px;
+  background: #fff;
 }
 
-.menu a {
+.menu a,
+.city a {
   width: 100%;
   display: inline-block;
 }
 
-.menu a:hover {
+.menu a:hover,
+.city a:hover {
   color: #FF00A3;
 }
 
-.menu a:hover span {
+.menu a:hover span,
+.city a:hover span {
   color: #FF00A3;
 }
 
 .menu__first {
-  width: 100%;
+  width: inherit;
   height: 600px;
   overflow: hidden;
   position: relative;
-  z-index: -1;
-  border: 2px solid rgba(21, 233, 221, 0.4);
-  border-radius: 5px;
 }
 
 .menu__first > li {
@@ -185,6 +202,7 @@
 .menu__second {
   position: absolute;
   width: 100%;
+  height: 600px;
   left: 270px;
   top: 0;
   padding-top: 0;
@@ -240,6 +258,49 @@
   color: green;
 }
 
-.none {
-  display: none;
+#city-btn {
+  margin-left: 280px;
+}
+
+.city__wrap {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px 0 20px;
+}
+
+.city ul:not([class=city__first]) {
+  padding-left: 15px;
+}
+
+.city ul:not([class=city__first]) a {
+  padding: 2px 0;
+  font-weight: 400;
+}
+
+.city__first {
+  width: 47.5%;
+  margin-left: 1.25%;
+  margin-right: 1.25%;
+  box-shadow: 3px 3px 3px #ccc, -3px -3px 3px #ccc, 3px -3px 3px #ccc, -3px 3px 3px #ccc;
+  padding: 5px;
+}
+
+.city__second {
+  height: 505px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.city__second li {
+  width: 210px;
+}
+
+.city__thrid {
+  padding: 5px 0;
+}
+
+.city__thrid li a {
+  color: green;
 }

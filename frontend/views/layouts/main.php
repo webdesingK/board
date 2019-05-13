@@ -59,9 +59,49 @@ AppAsset::register($this);
                 <span>Вход</span>
             </div>
         </div>
-        <nav class="menu">
-            <div id="menu-btn">категории</div>
+        <div id="menu-btn">категории</div>
+        <div id="city-btn">Город</div>
+        <nav class="menu none">
+            <div id='menu-close'>☒</div>
             <?= Categories::createTreeFrontend() ?>
+        </nav>
+        <nav class="city none">
+            <div id='city-close'>☒</div>
+            <div class="city__wrap">
+                <ul class="city__first">
+                    <li><a href="#">ЛНР</a>
+                        <ul class="city__second">
+                            <li><a href="#">Луганск</a></li>
+                            <li><a href="#">Луганск</a>
+                                <ul class="city__thrid">
+                                    <li><a href="#">восточный квартол</a></li>
+                                    <li><a href="#">восточный квартол</a></li>
+                                    <li><a href="#">восточный квартол</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="city__first">
+                    <li><a href="#">ДНР</a>
+                        <ul class="city__second">
+                            <li><a href="#">Донецк</a>
+                                <ul class="city__thrid">
+                                    <li><a href="#">южный квартол</a></li>
+                                    <li><a href="#">южный квартол</a></li>
+                                    <li><a href="#">южный квартол</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Донецк</a></li>
+                            <li><a href="#">Донецк</a></li>
+                            <li><a href="#">Донецк</a></li>
+                            <li><a href="#">Донецк</a></li>
+                            <li><a href="#">Донецк</a></li>
+                            <li><a href="#">Донецк</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </div>
 

@@ -1,7 +1,9 @@
 @import '_mixin'
 @import '_smart-grid'
 @import '_var'
+@import '_total'
 
+// header------------------------------------------------
 .header
 	width: 100%
 	height: $header_height_G
@@ -9,10 +11,14 @@
 	position: relative
 	&__wrap
 		+wrap
+		height: 100%
+		position: relative
 		& > a
 			color: #fff
 			padding: 0 10px
 			font: 20px sans-serif
+
+// auth---------------------------------------------------			
 .auth
 	float: right
 	margin-top: 20px
@@ -46,7 +52,7 @@
 	font: 20px sans-serif
 #sign-in
 	position: fixed
-	z-index: 20
+	z-index: $index_2_G
 	width: 300px
 	height: 280px
 	padding: 20px
@@ -72,36 +78,46 @@
 #sign-up
 	@extend #sign-in
 	height: 320px
+
+// menu---------------------------------------------------
 #menu-btn
-	color: #fff
+	color: $color_btn_menu_G
 	cursor: pointer
-	color: #fff
 	width: $menu_left_G
 	height: $height_btn_menu_G
-	line-height: $height_btn_menu_G
 	padding: 0 20px
-	background: #2773D7
+	background: $bg_btn_menu_G
 	display: block
-	margin-top: -$height_btn_menu_G
+	font: bold 20px sans-serif
+	line-height: $height_btn_menu_G
+	text-transform: capitalize
+	position: absolute
+	bottom: 0
+	left: 0
+	z-index: $index_2_G
 	&:hover
 		color: $link_hover_color_G
 #menu-close
 	position: absolute
-	z-index: 10
+	z-index: $index_1_G
 	top: 5px
 	right: 10px
 	font-size: 25pt
 	cursor: pointer
 	color: red
 .menu
-	+wrap
+	width: 100%
 	position: absolute
-	z-index: 10
+	z-index: $index_1_G
+	height: $height_menu_G
 	left: 0
 	right: 0
 	top: 100%
 	font-family: sans-serif
 	font-weight: bold
+	border: 2px solid rgba(#15E9DD, .4)
+	border-radius: 5px
+	background: #fff
 	a
 		width: 100%
 		display: inline-block
@@ -110,13 +126,10 @@
 			span
 				color: $link_hover_color_G
 	&__first
-		width: 100%
-		height: $first_height_G
+		width: inherit
+		height: $height_menu_G
 		overflow: hidden
 		position: relative
-		z-index: -1
-		border: 2px solid rgba(#15E9DD, .4)
-		border-radius: 5px
 		& > li
 			width: $menu_left_G
 			& > a
@@ -130,6 +143,7 @@
 	&__second
 		position: absolute
 		width: 100%
+		height: $height_menu_G
 		left: $menu_left_G
 		top: 0
 		padding-top: $second_top_G
@@ -169,5 +183,40 @@
 				letter-spacing: 2px
 				font-size: $third_a_fs_G
 				color: $third_a_color
-.none
-	display: none
+
+// city---------------------------------------------------
+#city-btn
+	@extend #menu-btn
+	margin-left: $menu_left_G + 10px
+#city-close
+	@extend #menu-close
+.city
+	@extend .menu
+	&__wrap
+		+flex
+		padding: 40px 0 20px
+	ul:not([class=city__first])
+		padding-left: 15px
+		a
+			padding: 2px 0
+			font-weight: 400
+	&__first
+		+size(6)
+		+col
+		box-shadow: 3px 3px 3px #ccc, -3px -3px 3px #ccc, 3px -3px 3px #ccc, -3px 3px 3px #ccc
+		padding: 5px
+	&__second
+		height: $height_menu_G - 95px
+		display: flex
+		flex-wrap: wrap
+		flex-direction: column
+		align-content: flex-start
+		li
+			width: $second_li_width_G - 20px
+	&__thrid
+		padding: 5px 0
+		li
+			a
+				color: green
+
+

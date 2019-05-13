@@ -445,6 +445,7 @@ $(document).ready(function () {
 		// edit name category
 
 		let oldNameCategory;
+
 		function editing() {
 
 			let nameCategory = $(this).siblings('.name-category').text();
@@ -489,7 +490,6 @@ $(document).ready(function () {
 				deleteEditing(self);
 				return;
 			}
-			console.log(oldNameCategory);
 
 			let data = {
 				nameOfAction: 'rename',

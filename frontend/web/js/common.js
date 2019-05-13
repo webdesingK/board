@@ -8,11 +8,6 @@ $(document).ready(function() {
 				flagBtn    = true,
 				heightMenu = $('.menu__first').outerHeight(true);
 
-		// задаем всем menu__second высоту родителя, что-бы при сворачивании и разворачивании menu__second не перепрыгивали на новую строку 
-		$('.menu__second').each(function() {
-			$(this).height(heightMenu);
-		});
-
 		// функция для скрытия всех категория 2 уровня
 		function hideSubMenu(obj) {// передаем массив обьектов которые нужно скрыть
 			obj.each(function() {// проходим циклом по нему
@@ -25,13 +20,23 @@ $(document).ready(function() {
 
 		// функция для плавного открытия и закрытия меню
 		function clickMenuBtn() {
-			$(this).next().slideToggle('slow', function() {// callback функция 
+			if ($('.city').is(':visible')) {
+				$('#city-btn').click();
+			}
+			$('.menu').slideToggle('slow', function() {// callback функция 
 				hideSubMenu($('.menu__second'));// скрываем все категории второго уровня
 				$(this).find('.menu__second:first').show();// открываем самую первую категорию второго уровня 
 			}).removeClass('none');// удаляем класс none который задан для скрытия меню
 		};
 
 		menuBtn.on('click', clickMenuBtn);// клик на кнопку меню вызывает функцию скрытия(открытия) меню
+		
+		// функция для плавного открытия и закрытия меню городов
+		function clickCityBtn() {
+			$('.city').slideToggle().removeClass('none');// удаляем класс none который задан для скрытия меню
+		};
+
+		$('body').on('click', '#city-btn', clickCityBtn);
 
     // клик на кнопку крестика(#menu-close) вызываем вункцию в которой
 		menu.on('click', '#menu-close', function(){
@@ -40,7 +45,7 @@ $(document).ready(function() {
 
 		// когда открыто меню при нажатии в любом месте кроме самого меню скрываем меню
 		$(document).mouseup(function (e){ // событие клика по веб-документу
-			let div = $('.menu'); // тут указываем ID элемента
+			let div = $('.menu, #menu-btn'); // тут указываем ID элемента
 			if (!div.is(e.target) // если клик был не по нашему блоку
 			    && div.has(e.target).length === 0 // и не по его дочерним элементам
 			    && $('.menu__first').is(':visible')) { // и когда меню открыто
@@ -137,5 +142,7 @@ $(document).ready(function() {
 		});
 
 	});
+
+	// city
 
 });
