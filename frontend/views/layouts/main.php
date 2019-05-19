@@ -20,7 +20,7 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<header class="header">
+<header class="header none">
 
     <div class="header__wrap">
         <a href="/">Главная</a>
