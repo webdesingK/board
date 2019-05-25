@@ -143,6 +143,47 @@ $(document).ready(function() {
 
 	});
 
-	// city
+	$(function() {
+
+		var load        = $('.load'),
+				btn         = $('.btn-load'),
+				loadOpacity = $('.load-opacity'),
+				flag        = false,
+				options     = {
+					speedStart: 300,
+					speedJump: 20,
+					speedEnd: 300
+				};
+
+		setTimeout(function() {
+			endLoads();
+		},7000);
+
+		function loads() {
+			let set = setInterval(setLoads, options.speedStart + options.speedJump),
+					i   = 1;
+			function setLoads() {
+				if (flag) return clearInterval(set);
+				loadOpacity.show().removeClass('none');
+				load.animate({
+					width: i * 10 + '%'
+				}, options.speedStart, 'linear');
+				if(i <= 7) i++;
+			};
+		};
+
+		function endLoads() {
+			flag = true;
+			load.animate({
+				width: '100%'
+			}, options.speedEnd, function() {
+				load.css('width', '0%');
+				loadOpacity.hide();
+				flag = false;
+			});
+		};
+		btn.on('click', loads);
+
+	});
 
 });

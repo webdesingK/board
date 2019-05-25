@@ -106,6 +106,9 @@ AppAsset::register($this);
     </div>
 
 </header>
+<div class="load"></div>
+<div class="load-opacity none"></div>
+<div class="btn-load"></div>
 <?= $content ?>
 <?php $this->endBody() ?>
 </body>
