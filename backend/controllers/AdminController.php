@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use common\models\categories\Categories;
-use common\models\cities\Cities;
+use backend\models\Categories;
+use backend\models\Cities;
 use yii\web\Controller;
 use Yii;
 
@@ -15,32 +15,33 @@ class AdminController extends Controller {
 
     public function actionCategoriesManager() {
 
-        $model = new Categories();
+        $model = new Categories;
 
         if (Yii::$app->request->isAjax) {
-            $post = Yii::$app->request->post();
+            $model->postData = Yii::$app->request->post();
             $result = null;
-            $lastId = null;
-            switch ($post['nameOfAction']) {
+            switch ($model->postData['nameOfAction']) {
                 case 'create':
-                    $lastId = $model->createNode($post['id'], $post['name']);
+                    $result = $model->createNode();
                     break;
                 case 'rename':
-                    return $model->renameNode($post['id'], $post['newName']) ? 'ok' : 'error';
+                    return $model->renameNode() ? 'ok' : 'error';
                     break;
                 case 'changeActive':
-                    return $model->changeActive($post['ids'], $post['value']) ? 'ok' : 'error';
+                    return $model->changeActive() ? 'ok' : 'error';
                     break;
                 case 'move':
-                    $result = $model->moveNode($post['id'], $post['siblingId'], $post['direction']);
+                    $result = $model->moveNode();
                     break;
                 case 'delete':
-                    $result = $model->deleteNode($post['id']);
+                    $result = $model->deleteNode();
                     break;
             }
 
-            if ($lastId || $result) {
-                return $model->createTree($post['openedIds'], $lastId);
+            if ($result) {
+                return $this->renderPartial('categories-manager', [
+                    'model' => $model
+                ]);
             }
             else {
                 return 'error';
@@ -53,32 +54,33 @@ class AdminController extends Controller {
 
     public function actionCitiesManager() {
 
-        $model = new Cities();
+        $model = new Cities;
 
         if (Yii::$app->request->isAjax) {
-            $post = Yii::$app->request->post();
+            $model->postData = Yii::$app->request->post();
             $result = null;
-            $lastId = null;
-            switch ($post['nameOfAction']) {
+            switch ($model->postData['nameOfAction']) {
                 case 'create':
-                    $lastId = $model->createNode($post['id'], $post['name']);
+                    $result = $model->createNode();
                     break;
                 case 'rename':
-                    return $model->renameNode($post['id'], $post['newName']) ? 'ok' : 'error';
+                    return $model->renameNode() ? 'ok' : 'error';
                     break;
                 case 'changeActive':
-                    return $model->changeActive($post['ids'], $post['value']) ? 'ok' : 'error';
+                    return $model->changeActive() ? 'ok' : 'error';
                     break;
                 case 'move':
-                    $result = $model->moveNode($post['id'], $post['siblingId'], $post['direction']);
+                    $result = $model->moveNode();
                     break;
                 case 'delete':
-                    $result = $model->deleteNode($post['id']);
+                    $result = $model->deleteNode();
                     break;
             }
 
-            if ($lastId || $result) {
-                return $model->createTree($post['openedIds'], $lastId);
+            if ($result) {
+                return $this->renderPartial('cities-manager', [
+                    'model' => $model
+                ]);
             }
             else {
                 return 'error';

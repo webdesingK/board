@@ -39,10 +39,12 @@ return [
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
+//            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
                 '' => 'site/index',
-                '<id:\w+>' => 'site/index'
+                '<city:\w+>' => 'site/index',
+                '<city:\w+>/<category:\w+>' => 'site/index',
             ],
         ],
     ],

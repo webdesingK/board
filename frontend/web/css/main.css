@@ -1,3 +1,40 @@
+.none {
+  display: none !important;
+}
+
+.load {
+  width: 0;
+  height: 2px;
+  background: red;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  display: inline-block;
+}
+
+.load-opacity:before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: 500;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.btn-load {
+  width: 50px;
+  height: 20px;
+  background: red;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
 .header {
   width: 100%;
   height: 100px;
@@ -5,31 +42,130 @@
   position: relative;
 }
 
-.header > a {
+.header__wrap {
+  max-width: 1365px;
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+}
+
+.header__wrap > a {
   color: #fff;
-  display: block;
   padding: 0 10px;
   font: 20px sans-serif;
 }
 
-#menu-btn {
+.auth {
+  float: right;
+  margin-top: 20px;
+  margin-right: 50px;
   color: #fff;
   cursor: pointer;
+  text-align: center;
+}
+
+.auth__user {
+  border: 1px solid white;
+  margin-top: 10px;
+  background: #333;
+  padding: 20px;
+  text-align: left;
+}
+
+.auth__user a {
+  display: block;
   color: #fff;
+  padding: 5px 0;
+}
+
+#auth-user {
+  border-radius: 50%;
+  border: 3px solid orange;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 20pt;
+  margin-left: auto;
+}
+
+#auth-user:hover {
+  border-color: green;
+}
+
+#auth {
+  border: 1px solid red;
+  padding: 5px 10px;
+  font: 20px sans-serif;
+}
+
+#sign-in,
+#sign-up {
+  position: fixed;
+  z-index: 20;
+  width: 300px;
+  height: 280px;
+  padding: 20px;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 10px;
+  box-shadow: 0 0 0 5000px #fff;
+  background: #ccc;
+}
+
+#sign-in p,
+#sign-up p {
+  margin-bottom: 15px;
+  font-size: 25px;
+}
+
+#sign-in input,
+#sign-up input,
+#sign-in button,
+#sign-up button {
+  display: block;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 5px 15px;
+}
+
+#sign-in > a,
+#sign-up > a {
+  font: bold 18px sans-serif;
+  margin: 0px 10px;
+}
+
+#sign-up {
+  height: 320px;
+}
+
+#menu-btn,
+#city-btn {
+  color: #fff;
+  cursor: pointer;
   width: 270px;
   height: 30px;
-  line-height: 30px;
   padding: 0 20px;
   background: #2773D7;
   display: block;
-  margin-top: -30px;
+  font: bold 20px sans-serif;
+  line-height: 30px;
+  text-transform: capitalize;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
 }
 
-#menu-btn:hover {
+#menu-btn:hover,
+#city-btn:hover {
   color: #FF00A3;
 }
 
-#menu-close {
+#menu-close,
+#city-close {
   position: absolute;
   z-index: 10;
   top: 5px;
@@ -39,39 +175,43 @@
   color: red;
 }
 
-.menu {
-  max-width: 1360px;
-  margin: 0 auto;
+.menu,
+.city {
+  width: 100%;
   position: absolute;
   z-index: 10;
+  height: 600px;
   left: 0;
   right: 0;
   top: 100%;
   font-family: sans-serif;
   font-weight: bold;
+  border: 2px solid rgba(21, 233, 221, 0.4);
+  border-radius: 5px;
+  background: #fff;
 }
 
-.menu a {
+.menu a,
+.city a {
   width: 100%;
   display: inline-block;
 }
 
-.menu a:hover {
+.menu a:hover,
+.city a:hover {
   color: #FF00A3;
 }
 
-.menu a:hover span {
+.menu a:hover span,
+.city a:hover span {
   color: #FF00A3;
 }
 
 .menu__first {
-  width: 100%;
+  width: inherit;
   height: 600px;
   overflow: hidden;
   position: relative;
-  z-index: -1;
-  border: 2px solid rgba(21, 233, 221, 0.4);
-  border-radius: 5px;
 }
 
 .menu__first > li {
@@ -95,6 +235,7 @@
 .menu__second {
   position: absolute;
   width: 100%;
+  height: 600px;
   left: 270px;
   top: 0;
   padding-top: 0;
@@ -144,10 +285,55 @@
 .menu__third > li > a {
   padding: 2px 15px 2px 25px;
   white-space: nowrap;
+  font-weight: 200;
+  letter-spacing: 2px;
   font-size: 14px;
   color: green;
 }
 
-.none {
-  display: none;
+#city-btn {
+  margin-left: 280px;
+}
+
+.city__wrap {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px 0 20px;
+}
+
+.city ul:not([class=city__first]) {
+  padding-left: 15px;
+}
+
+.city ul:not([class=city__first]) a {
+  padding: 2px 0;
+  font-weight: 400;
+}
+
+.city__first {
+  width: 47.5%;
+  margin-left: 1.25%;
+  margin-right: 1.25%;
+  box-shadow: 3px 3px 3px #ccc, -3px -3px 3px #ccc, 3px -3px 3px #ccc, -3px 3px 3px #ccc;
+  padding: 5px;
+}
+
+.city__second {
+  height: 505px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.city__second li {
+  width: 210px;
+}
+
+.city__thrid {
+  padding: 5px 0;
+}
+
+.city__thrid li a {
+  color: green;
 }

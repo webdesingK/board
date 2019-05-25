@@ -28,7 +28,6 @@ AdminAsset::register($this);
     <li><a href="/admin/cities-manager">Менеджер городов</a></li>
 </ul>
 
-
     <?= $content ?>
 
 
