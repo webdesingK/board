@@ -143,6 +143,7 @@ $(document).ready(function() {
 
 	});
 
+	// load line
 	$(function() {
 
 		var load        = $('.load'),
@@ -155,9 +156,9 @@ $(document).ready(function() {
 					speedEnd: 300
 				};
 
-		setTimeout(function() {
-			endLoads();
-		},7000);
+		// setTimeout(function() {
+		// 	endLoads();
+		// },7000);
 
 		function loads() {
 			let set = setInterval(setLoads, options.speedStart + options.speedJump),
@@ -183,6 +184,66 @@ $(document).ready(function() {
 			});
 		};
 		btn.on('click', loads);
+
+	});
+
+	// filter
+	$(function() {
+
+		let contentFilter  = $('.content__filter-category'),
+		    typeFilter     = $('.content__filter-type p'),
+				filterCategory = $('#filter-category'),
+				filterType     = $('#filter-type'),
+				item           = filterCategory.find('li'),
+				text           = contentFilter.children('p'),
+				btn            = $('.content__filter-btn'),
+				price          = $('.price-filter input');
+
+
+		contentFilter.click(function() {
+			filterCategory.toggleClass('none');
+		});
+
+		item.click(function() {
+			let textItem = $(this).text();
+			text.html(textItem + '<span>></span>');
+		});
+
+		typeFilter.click(function() {
+
+			filterType.toggleClass('none');
+
+		});
+
+		btn.click(function() {
+
+			let inputId    = $('#filter-type input'),
+					data = {
+						arrInputId: [],
+						min: $('.price-filter input').eq(0).val(),
+						max: $('.price-filter input').eq(1).val()
+					};
+
+			inputId.each(function() {
+				if ($(this).prop('checked')) {
+					data.arrInputId.push($(this).attr('data-id'));
+				}
+			});
+
+			$.ajax({
+
+				type: "POST",
+				data: data,
+				success: function(resp) {
+					$('.content__wrap').html(resp);
+				},
+				error: function(resp) {
+					alert(resp);
+				}
+
+			});
+
+		});
 
 	});
 

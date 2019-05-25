@@ -389,8 +389,8 @@ $(document).ready(function () {
 		function structureMovements() {
 
 			let motionUp     = $('.motion__up-category'),
-					motionDown   = $('.motion__down-category'),
-					categoryList = $('.category__list').children('.category__list').children('.category__list').children('.category__list');
+					motionDown   = $('.motion__down-category');
+					// categoryList = $('.category__list').children('.category__list').children('.category__list').children('.category__list');
 
 				motionUp.each(function(){
 					if (!$(this).parents('.category__list:first').prev().hasClass('category__list')) {
@@ -404,9 +404,9 @@ $(document).ready(function () {
 					}
 				});
 
-				categoryList.each(function(){
-					$(this).find('.add-category').remove();
-				});
+				// categoryList.each(function(){
+				// 	$(this).find('.add-category').remove();
+				// });
 
 		};
 
