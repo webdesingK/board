@@ -60,11 +60,11 @@ AppAsset::register($this);
         </div>
         <div id="menu-btn">категории</div>
         <div id="city-btn">Город</div>
-        <nav class="menu none">
+        <nav class="menu js-none">
             <div id='menu-close'>☒</div>
             <?= $this->render('//site/categories-menu') ?>
         </nav>
-        <nav class="city none">
+        <nav class="city js-none">
             <div id='city-close'>☒</div>
             <div class="city__wrap">
                 <?= $this->render('//site/cities-menu') ?>
@@ -81,8 +81,8 @@ AppAsset::register($this);
 <div class="content">
     <div class="content__filter">
         <div class="content__filter-category">
-            <p>lorem <span>></span></p>
-            <ul id="filter-category" class="none">
+            <p>lorem <span class="arrow-open">➤</span></p>
+            <ul class="sub-menu js-none">
                 <li><a href="#">Lorem ipsum.</a></li>
                 <li><a href="#">Iste, nihil.</a></li>
                 <li><a href="#">Autem, quisquam.</a></li>
@@ -106,8 +106,8 @@ AppAsset::register($this);
             </ul>
         </div>
         <div class="content__filter-type">
-            <p>Тип <span>></span></p>
-            <ul id="filter-type" class="none">
+            <p>Тип <span class="arrow-open">➤</span></p>
+            <ul class="sub-menu js-none">
                 <li>
                     <label>text</label>
                     <input type="checkbox" data-id="1">
