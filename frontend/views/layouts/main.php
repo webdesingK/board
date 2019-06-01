@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
+use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
 
@@ -15,6 +16,15 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        .breadcrumbs {
+            margin: 5px;
+        }
+
+        .breadcrumbs li {
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -23,8 +33,8 @@ AppAsset::register($this);
 
     <div class="header__wrap">
         <a href="/">Главная</a>
-        <a href="http://localhost:3000/admin">localhost-admin</a>
-        <a href="/admin">board-admin</a>
+        <a href="http://localhost:3000/админка">localhost-admin</a>
+        <a href="/админка">board-admin</a>
         <div class="auth">
             <p id="auth">Вход</p>
             <!-- <div id="auth-user">⛑</div> -->
@@ -58,20 +68,19 @@ AppAsset::register($this);
                 <span>Вход</span>
             </div>
         </div>
-        <div id="menu-btn">категории</div>
-        <div id="city-btn">Город</div>
+        <div id="menu-btn">Категории</div>
+        <div id="city-btn"><?= (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') ? $this->params['url']['city']['name'] : 'Местоположение' ?></div>
         <nav class="menu none">
             <div id='menu-close'>☒</div>
-            <?= $this->render('//site/categories-menu') ?>
+            <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
         </nav>
         <nav class="city none">
             <div id='city-close'>☒</div>
             <div class="city__wrap">
-                <?= $this->render('//site/cities-menu') ?>
+                <?= $this->render('//main/menu/cities', ['url' => $this->params['url']]) ?>
             </div>
         </nav>
     </div>
-
 </header>
 <div class="load"></div>
 <div class="load-opacity none"></div>
@@ -80,52 +89,53 @@ AppAsset::register($this);
 <!-- content -->
 <div class="content">
     <div class="content__filter">
-        <div class="content__filter-category">
-            <p>lorem <span>></span></p>
-            <ul id="filter-category" class="none">
-                <li><a href="#">Lorem ipsum.</a></li>
-                <li><a href="#">Iste, nihil.</a></li>
-                <li><a href="#">Autem, quisquam.</a></li>
-                <li><a href="#">Doloremque, ex.</a></li>
-                <li><a href="#">Deserunt, laborum?</a></li>
-                <li><a href="#">Reiciendis, animi!</a></li>
-                <li><a href="#">Expedita, consequuntur.</a></li>
-                <li><a href="#">Quis, incidunt.</a></li>
-                <li><a href="#">Neque, itaque.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-                <li><a href="#">Porro, nulla.</a></li>
-            </ul>
-        </div>
-        <div class="content__filter-type">
-            <p>Тип <span>></span></p>
-            <ul id="filter-type" class="none">
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="1">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="2">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="3">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="4">
-                </li>
-            </ul>
-        </div>
+        <? if (!empty($this->params['url']['category'])) echo $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
+<!--        <div class="content__filter-category">-->
+<!--            <p>lorem <span>></span></p>-->
+<!--            <ul id="filter-category" class="none">-->
+<!--                <li><a href="#">Lorem ipsum.</a></li>-->
+<!--                <li><a href="#">Iste, nihil.</a></li>-->
+<!--                <li><a href="#">Autem, quisquam.</a></li>-->
+<!--                <li><a href="#">Doloremque, ex.</a></li>-->
+<!--                <li><a href="#">Deserunt, laborum?</a></li>-->
+<!--                <li><a href="#">Reiciendis, animi!</a></li>-->
+<!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
+<!--                <li><a href="#">Quis, incidunt.</a></li>-->
+<!--                <li><a href="#">Neque, itaque.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div class="content__filter-type">-->
+<!--            <p>Тип <span>></span></p>-->
+<!--            <ul id="filter-type" class="none">-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="1">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="2">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="3">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="4">-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
         <div class="content__filter-price">
             <p>Цена</p>
             <div class="price-filter">
@@ -139,6 +149,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
+<?// dump($this->params['url'])?>
 <?php $this->endBody() ?>
 </body>
 </html>

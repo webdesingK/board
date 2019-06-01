@@ -18,6 +18,7 @@ class m190414_110413_create_categories_table extends Migration {
             'parent_id' => $this->smallInteger()->notNull()->unsigned(),
             'active' => $this->tinyInteger()->defaultValue(1)->notNull()->unsigned(),
             'name' => $this->string()->notNull(),
+            'url' => $this->string()
         ]);
         $this->insert('{{%categories}}', [
             'lft' => 1,
@@ -25,7 +26,7 @@ class m190414_110413_create_categories_table extends Migration {
             'depth' => 0,
             'parent_id' => 0,
             'active' => 1,
-            'name' => 'Категории'
+            'name' => 'Категории',
         ]);
     }
 

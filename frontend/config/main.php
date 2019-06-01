@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'defaultRoute' => 'main',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
@@ -35,16 +36,16 @@ return [
 //            ],
 //        ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'main/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
 //            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'site/index',
-                '<city:\w+>' => 'site/index',
-                '<city:\w+>/<category:\w+>' => 'site/index',
+//                '' => 'main/index',
+                '<city:[а-яА-Я\-]+>' => 'main/index',
+                '<city:[а-яА-Я\-]+>/<category:[а-яА-Я\-]+>' => 'main/index',
             ],
         ],
     ],

@@ -22,10 +22,10 @@ AdminAsset::register($this);
 <?php $this->beginBody() ?>
 <ul class="menu">
     <li><a href="/">Главная frontend</a></li>
-    <li><a href="/admin">Главная backend</a></li>
+    <li><a href="/админка">Главная backend</a></li>
     <hr>
-    <li><a href="/admin/categories-manager">Менеджер категорий</a></li>
-    <li><a href="/admin/cities-manager">Менеджер городов</a></li>
+    <li><a href="/админка/мененджер-категорий">Менеджер категорий</a></li>
+    <li><a href="/админка/мененджер-городов">Менеджер городов</a></li>
 </ul>
 
     <?= $content ?>

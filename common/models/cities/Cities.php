@@ -4,8 +4,6 @@ namespace common\models\cities;
 
 use yii\db\ActiveRecord;
 use creocoder\nestedsets\NestedSetsBehavior;
-use Yii;
-use yii\helpers\Html;
 
 class Cities extends ActiveRecord {
 

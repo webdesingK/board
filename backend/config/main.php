@@ -17,7 +17,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
-            'baseUrl' => '/admin',
+            'baseUrl' => '/админка',
             'enableCsrfValidation' => false,
         ],
         'user' => [
@@ -45,7 +45,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action>' => 'admin/<action>'
+                'мененджер-категорий' => 'admin/categories-manager',
+                'мененджер-городов' => 'admin/cities-manager'
             ],
         ],
     ],
