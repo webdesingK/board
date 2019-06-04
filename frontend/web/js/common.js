@@ -216,7 +216,7 @@ $(document).ready(function() {
 
 			if ($(this).hasClass('active__filter-category')) {
 				event.preventDefault();
-				$(this).addClass('active__filter-open');
+				$(this).toggleClass('active__filter-open');
 				categoryFilter.filter(':not(.active__filter-category)').toggle();
 			} else {
 				categoryUl.find('.active__filter-category').removeClass('active__filter-category active__filter-open');
