@@ -127,6 +127,7 @@
 	border: 2px solid rgba(#15E9DD, .4)
 	border-radius: 5px
 	background: #fff
+	display: none
 	a
 		width: 100%
 		display: inline-block
@@ -229,6 +230,47 @@
 				color: green
 
 // content
+.multitype-filter
+	width: 100%
+	font: 18px sans-serif
+	border: 1px solid #000
+	margin-top: 20px
+	background: lighten(silver, 20%)
+	ul
+		max-height: 200px
+		overflow: auto
+		position: relative
+	li, p
+		line-height: 35px
+		padding: 0px 10px
+		cursor: pointer
+		span
+			line-height: inherit
+			float: right
+	a
+		line-height: inherit
+		display: inline-block
+		width: 100%
+		color: #000
+		&:hover
+			color: $link_color_G
+			text-shadow: 1px 1px 1px #333
+.active__filter-category
+	display: block!important
+	position: relative
+	&:after
+		content: '➤'
+		display: inline-block
+		line-height: inherit
+		position: absolute
+		right: 10px
+.active__filter-open
+	&:after
+		content: '✔'
+		color: $link_color_G
+	a
+		color: $link_color_G
+.active
 .content
 	+wrap
 	+flex
@@ -236,27 +278,14 @@
 		+size(3)
 		+col
 		&-category
-			width: 100%
-			font: 18px sans-serif
-			border: 1px solid #000
-			margin-top: 20px
-			background: lighten(silver, 20%)
-			p
-				padding: 10px
-				cursor: pointer
-				span
-					float: right
-			a
-				color: #000
-				&:hover
-					color: blue
-					text-shadow: 1px 1px 1px #333
+			li
+				display: none
 		&-type
-			@extend .content__filter-category
+			ul
+				display: none
 			input
 				float: right
 		&-price
-			@extend .content__filter-category
 			text-align: center
 			p
 				margin-bottom: 5px
@@ -268,7 +297,6 @@
 				padding: 5px 10px
 				margin-bottom: 15px
 		&-btn
-			@extend .content__filter-category
 			text-align: center
 			color: blue
 			cursor: pointer
@@ -277,13 +305,13 @@
 		+size(9)
 		+col
 		+flex
+		align-items: flex-start
 		&-header
 			border-bottom: 1px solid red
 			+size(12)
 			+col
 			+flex
 			justify-content: space-between
-			align-items: flex-end
 			padding: 10px
 		&-item
 			+size(12)
@@ -305,10 +333,6 @@
 		font-size: 25pt
 		cursor: pointer
 		color: blue
-.sub-menu
-	padding: 10px
-	max-height: 200px
-	overflow: auto
 .item
 	&-city
 		display: inline-block

@@ -1,24 +1,4 @@
 $(document).ready(function() {
-	
-	// tabs and js-none
-	function singleTab(event) {
-
-		let speed = 200,
-				arrow = true;
-
-		if (event.data !== null) {
-			if (event.data.arrow !== undefined) arrow = event.data.arrow
-			if (event.data.speed !== undefined) speed = event.data.speed
-		}
-
-		if (arrow) {
-			$(this).children('.arrow-open').toggleClass('arrow-close');
-		}
-
-		$(this).next().slideToggle(speed);
-	};
-
-	$('.js-none').hide().removeClass('js-none');
 
 	// menu
 	$(function() {
@@ -206,15 +186,47 @@ $(document).ready(function() {
 
 	});
 
+	// tabs and js-none
+	function singleTab(event) {
+
+		let speed = 200,
+				arrow = true;
+
+		if (event.data !== null) {
+			if (event.data.arrow !== undefined) arrow = event.data.arrow
+			if (event.data.speed !== undefined) speed = event.data.speed
+		}
+
+		if (arrow) {
+			$(this).children('.arrow-open').toggleClass('arrow-close');
+		}
+
+		$(this).next().slideToggle(speed);
+	};
+
 	// filter
 	$(function() {
 
-		let contentFilter  = $('.content__filter-category p'),
-		    typeFilter     = $('.content__filter-type p'),
-				btn            = $('.content__filter-btn');
+		let categoryUl      = $('.content__filter-category ul'),
+				categoryFilter  = categoryUl.children(),
+		    typeFilter      = $('.content__filter-type p'),
+				btn             = $('.content__filter-btn');
 
+		categoryFilter.click(function(event) {
 
-		contentFilter.click(singleTab);
+			if ($(this).hasClass('active__filter-category')) {
+				event.preventDefault();
+				$(this).addClass('active__filter-open');
+				categoryFilter.filter(':not(.active__filter-category)').toggle();
+			} else {
+				categoryUl.find('.active__filter-category').removeClass('active__filter-category active__filter-open');
+				$(this).addClass('active__filter-category');
+				categoryFilter.filter(':not(.active__filter-category)').hide();
+			}
+			let top = $(this).position().top;
+			$(this).parent().scrollTop(top);
+
+		});
 
 		typeFilter.click(singleTab);
 

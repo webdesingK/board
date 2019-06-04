@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 .none,
 .js-none {
   display: none !important;
@@ -207,6 +209,7 @@
   border: 2px solid rgba(21, 233, 221, 0.4);
   border-radius: 5px;
   background: #fff;
+  display: none;
 }
 
 .menu a,
@@ -356,6 +359,67 @@
   color: green;
 }
 
+.multitype-filter {
+  width: 100%;
+  font: 18px sans-serif;
+  border: 1px solid #000;
+  margin-top: 20px;
+  background: #f3f3f3;
+}
+
+.multitype-filter ul {
+  max-height: 200px;
+  overflow: auto;
+  position: relative;
+}
+
+.multitype-filter li,
+.multitype-filter p {
+  line-height: 35px;
+  padding: 0px 10px;
+  cursor: pointer;
+}
+
+.multitype-filter li span,
+.multitype-filter p span {
+  line-height: inherit;
+  float: right;
+}
+
+.multitype-filter a {
+  line-height: inherit;
+  display: inline-block;
+  width: 100%;
+  color: #000;
+}
+
+.multitype-filter a:hover {
+  color: #19DDE5;
+  text-shadow: 1px 1px 1px #333;
+}
+
+.active__filter-category {
+  display: block !important;
+  position: relative;
+}
+
+.active__filter-category:after {
+  content: '➤';
+  display: inline-block;
+  line-height: inherit;
+  position: absolute;
+  right: 10px;
+}
+
+.active__filter-open:after {
+  content: '✔';
+  color: #19DDE5;
+}
+
+.active__filter-open a {
+  color: #19DDE5;
+}
+
 .content {
   max-width: 1365px;
   margin: 0 auto;
@@ -369,45 +433,12 @@
   margin-right: 1.25%;
 }
 
-.content__filter-category,
-.content__filter-type,
-.content__filter-price,
-.content__filter-btn {
-  width: 100%;
-  font: 18px sans-serif;
-  border: 1px solid #000;
-  margin-top: 20px;
-  background: #f3f3f3;
+.content__filter-category li {
+  display: none;
 }
 
-.content__filter-category p,
-.content__filter-type p,
-.content__filter-price p,
-.content__filter-btn p {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.content__filter-category p span,
-.content__filter-type p span,
-.content__filter-price p span,
-.content__filter-btn p span {
-  float: right;
-}
-
-.content__filter-category a,
-.content__filter-type a,
-.content__filter-price a,
-.content__filter-btn a {
-  color: #000;
-}
-
-.content__filter-category a:hover,
-.content__filter-type a:hover,
-.content__filter-price a:hover,
-.content__filter-btn a:hover {
-  color: blue;
-  text-shadow: 1px 1px 1px #333;
+.content__filter-type ul {
+  display: none;
 }
 
 .content__filter-type input {
@@ -444,6 +475,7 @@
   margin-right: 1.25%;
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .content__wrap-header {
@@ -454,7 +486,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
   padding: 10px;
 }
 
@@ -484,12 +515,6 @@
   font-size: 25pt;
   cursor: pointer;
   color: blue;
-}
-
-.sub-menu {
-  padding: 10px;
-  max-height: 200px;
-  overflow: auto;
 }
 
 .item-city {
