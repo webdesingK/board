@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use backend\assets\AdminAsset;
+use yii\widgets\Pjax;
 
 AdminAsset::register($this);
 
@@ -19,11 +20,16 @@ AdminAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-		<ul class="menu">
-			<li><a href="/admin">Главная</a></li>
-			<li><a href="/admin/tree-manager">Менджер меню</a></li>
-		</ul>
+<ul class="menu">
+    <li><a href="/">Главная frontend</a></li>
+    <li><a href="/админка">Главная backend</a></li>
+    <hr>
+    <li><a href="/админка/мененджер-категорий">Менеджер категорий</a></li>
+    <li><a href="/админка/мененджер-городов">Менеджер городов</a></li>
+</ul>
+
     <?= $content ?>
+
 
 <?php $this->endBody() ?>
 </body>

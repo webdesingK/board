@@ -2,6 +2,12 @@
 /yii
 /yii_test
 /yii_test.bat
+.gitignore
+composer.json
+composer.lock
+
+#node
+/node_modules
 
 # phpstorm project files
 .idea

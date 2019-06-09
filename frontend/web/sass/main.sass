@@ -1,0 +1,306 @@
+@import '_mixin'
+@import '_smart-grid'
+@import '_var'
+@import '_total'
+
+// header------------------------------------------------
+.header
+	width: 100%
+	height: $header_height_G
+	background: #333
+	position: relative
+	&__wrap
+		+wrap
+		height: 100%
+		position: relative
+		& > a
+			color: #fff
+			padding: 0 10px
+			font: 20px sans-serif
+
+// auth---------------------------------------------------			
+.auth
+	float: right
+	margin-top: 20px
+	margin-right: 50px
+	color: #fff
+	cursor: pointer
+	text-align: center
+	&__user
+		border: 1px solid white
+		margin-top: 10px
+		background: #333
+		padding: 20px
+		text-align: left
+		a
+			display: block
+			color: #fff
+			padding: 5px 0
+#auth-user
+	border-radius: 50%
+	border: 3px solid orange
+	width: 50px
+	height: 50px
+	line-height: 50px
+	font-size: 20pt
+	margin-left: auto
+	&:hover
+		border-color: green 
+#auth
+	border: 1px solid red
+	padding: 5px 10px
+	font: 20px sans-serif
+#sign-in
+	position: fixed
+	z-index: $index_2_G
+	width: 300px
+	height: 280px
+	padding: 20px
+	margin: auto
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	border-radius: 10px
+	box-shadow: 0 0 0 5000px #fff
+	background: #ccc
+	p
+		margin-bottom: 15px
+		font-size: 25px
+	input, button
+		display: block
+		width: 100%
+		margin-bottom: 15px
+		padding: 5px 15px
+	& > a
+		font: bold 18px sans-serif
+		margin: 0px 10px
+#sign-up
+	@extend #sign-in
+	height: 320px
+
+// menu---------------------------------------------------
+#menu-btn
+	color: $color_btn_menu_G
+	cursor: pointer
+	width: $menu_left_G
+	height: $height_btn_menu_G
+	padding: 0 20px
+	background: $bg_btn_menu_G
+	display: block
+	font: bold 20px sans-serif
+	line-height: $height_btn_menu_G
+	text-transform: capitalize
+	position: absolute
+	bottom: 0
+	left: 0
+	z-index: $index_2_G
+	&:hover
+		color: $link_hover_color_G
+#menu-close
+	position: absolute
+	z-index: $index_1_G
+	top: 5px
+	right: 10px
+	font-size: 25pt
+	cursor: pointer
+	color: red
+.menu
+	width: 100%
+	position: absolute
+	z-index: $index_1_G
+	height: $height_menu_G
+	left: 0
+	right: 0
+	top: 100%
+	font-family: sans-serif
+	font-weight: bold
+	border: 2px solid rgba(#15E9DD, .4)
+	border-radius: 5px
+	background: #fff
+	a
+		width: 100%
+		display: inline-block
+		&:hover
+			color: $link_hover_color_G
+			span
+				color: $link_hover_color_G
+	&__first
+		width: inherit
+		height: $height_menu_G
+		overflow: hidden
+		position: relative
+		& > li
+			width: $menu_left_G
+			& > a
+				display: inline-block
+				padding: $first_height_a_G $first_a_right_G $first_height_a_G $first_a_left_G
+				color: $first_color_link_G
+				span
+					float: right
+				&:hover
+					background: $first_bg_link_G
+	&__second
+		position: absolute
+		width: 100%
+		height: $height_menu_G
+		left: $menu_left_G
+		top: 0
+		padding-top: $second_top_G
+		display: flex
+		flex-wrap: wrap
+		flex-direction: column
+		align-content: flex-start
+		& > li
+			width: $second_li_width_G
+			& > a
+				padding: $second_a_padding_top_bottom_G $second_a_padding_left_right_G
+				font-size: $second_a_fs_G
+				color: $second_a_color_G
+				span
+					margin-left: $second_span_ml_G
+					font-size: $second_span_fs_G
+					display: inline-block
+					vertical-align: middle
+	&__third
+		width: 100%
+		& > li
+			overflow: hidden
+			position: relative
+			&:before
+				content: ''
+				display: block
+				width: 30px
+				height: 100%
+				position: absolute
+				top: 0
+				right: 0
+				background-image: linear-gradient(to right, rgba(#fff, 0), #fff 90%)
+			& > a
+				padding: $third_a_padding_top_bottom_G $third_a_pr_G $third_a_padding_top_bottom_G $third_a_pl_G
+				white-space: nowrap
+				font-weight: 200
+				letter-spacing: 2px
+				font-size: $third_a_fs_G
+				color: $third_a_color
+
+// city---------------------------------------------------
+#city-btn
+	@extend #menu-btn
+	margin-left: $menu_left_G + 10px
+#city-close
+	@extend #menu-close
+.city
+	@extend .menu
+	&__wrap
+		+flex
+		padding: 40px 0 20px
+	ul:not([class=city__first])
+		padding-left: 15px
+		a
+			padding: 2px 0
+			font-weight: 400
+	&__first
+		+size(6)
+		+col
+		box-shadow: 3px 3px 3px #ccc, -3px -3px 3px #ccc, 3px -3px 3px #ccc, -3px 3px 3px #ccc
+		padding: 5px
+	&__second
+		height: $height_menu_G - 95px
+		display: flex
+		flex-wrap: wrap
+		flex-direction: column
+		align-content: flex-start
+		li
+			width: $second_li_width_G - 20px
+	&__thrid
+		padding: 5px 0
+		li
+			a
+				color: green
+
+// content
+.content
+	+wrap
+	+flex
+	&__filter
+		+size(3)
+		+col
+		&-category
+			width: 100%
+			font: 18px sans-serif
+			padding: 10px
+			border: 1px solid #000
+			margin-top: 20px
+			position: relative
+			p
+				cursor: pointer
+				span
+					float: right
+			ul
+				border: 1px solid #000
+				overflow: auto
+				height: 300px
+				position: absolute
+				padding: 10px
+				top: -1px
+				left: -1px
+				right: -1px
+				z-index: $index_1_G
+				background: lighten(silver, 15%)
+			a
+				color: #000
+		&-type
+			@extend .content__filter-category
+			input
+				float: right
+			ul
+				top: 100%
+		&-price
+			@extend .content__filter-category
+			p
+				margin-bottom: 5px
+				cursor: default
+			input
+				+size(6)
+				padding: 5px 10px
+		&-btn
+			@extend .content__filter-category
+			text-align: center
+			color: blue
+			cursor: pointer
+	&__wrap
+		+size(9)
+		+col
+		&-item
+			margin: 10px 0
+			width: 100%
+			min-height: 50px
+			padding: 10px 30px
+			background: lighten(silver, 15%)
+			border: 1px solid #000
+			a
+				font: bold 22px sans-serif
+				color: blue
+				text-transform: uppercase
+.item
+	&-city
+		display: inline-block
+		float: right
+		font: bold 20px sans-serif
+		color: orange
+		text-transform: capitalize
+	&-price
+		width: 100%
+		text-align: right
+		margin: 10px 0
+		padding-right: 20px
+		color: #999
+		font: 20px sans-serif
+	&-category
+		font: 18px sans-serif
+		font-style: italic
+		letter-spacing: 2px
+		color: red
+		margin: 10px
+				

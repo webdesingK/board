@@ -1,7 +1,10 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} ^/admin
-RewriteRule ^admin(\/?.*)$ backend/web/$1 [L]
+RewriteCond %{REQUEST_URI} ^/админка
+RewriteRule ^админка(\/?.*)$ backend/web/$1 [L]
+
+#RewriteCond %{REQUEST_URI} ^/memcached
+#RewriteRule ^memcached(\/?.*)$ memcached/$1 [L]
 
 RewriteCond %{REQUEST_URI} ^/
 RewriteRule ^(\/?.*)$ frontend/web/$1 [L]
