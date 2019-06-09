@@ -20,6 +20,9 @@ class AdminController extends Controller {
         if (Yii::$app->request->isAjax) {
             $model->postData = Yii::$app->request->post();
             $result = null;
+
+//            Yii::$app->cache->delete('categoryMenuAllData');
+
             switch ($model->postData['nameOfAction']) {
                 case 'create':
                     $result = $model->createNode();
@@ -50,7 +53,7 @@ class AdminController extends Controller {
         }
 
         return $this->render('categories-manager', compact('model'));
-}
+    }
 
     public function actionCitiesManager() {
 
@@ -59,6 +62,9 @@ class AdminController extends Controller {
         if (Yii::$app->request->isAjax) {
             $model->postData = Yii::$app->request->post();
             $result = null;
+
+//            Yii::$app->cache->delete('cityMenuAllData');
+
             switch ($model->postData['nameOfAction']) {
                 case 'create':
                     $result = $model->createNode();

@@ -20,6 +20,7 @@ class m190510_174607_create_cities_table extends Migration
             'parent_id' => $this->smallInteger()->notNull()->unsigned(),
             'active' => $this->tinyInteger()->notNull()->unsigned(),
             'name' => $this->string()->notNull()->unique(),
+            'url' => $this->string()
         ]);
         $this->insert('{{%cities}}', [
             'lft' => 1,

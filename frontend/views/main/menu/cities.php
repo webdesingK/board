@@ -3,7 +3,7 @@
 use frontend\models\Cities;
 use yii\helpers\Html;
 
-$cities = Cities::createArray();
+$cities = Cities::getAllData();
 $lvl = 1;
 
 echo Html::beginTag('ul', ['class' => 'city__first']);
@@ -34,8 +34,7 @@ foreach ($cities as $key => $city) {
         }
     }
 
-    $linkUrl = !$this->context->urlCategory ? '/' . $city['name'] : '/' . $city['name'] . '/' . $this->context->urlCategory;
-
+    $linkUrl = empty($url['category']['url']) ? '/' . $city['url'] : '/' . $city['url'] . '/' . $url['category']['url'];
     echo Html::beginTag('li');
     echo Html::a(Html::encode($city['name']), $linkUrl);
     $lvl = $city['depth'];

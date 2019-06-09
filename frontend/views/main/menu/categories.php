@@ -2,9 +2,8 @@
 
 use frontend\models\Categories;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
-$categories = Categories::createArray();
+$categories = Categories::getAllData();
 $lvl = 1;
 
 echo Html::beginTag('ul', ['class' => 'menu__first']);
@@ -32,11 +31,14 @@ foreach ($categories as $key => $category) {
     }
 
     echo Html::beginTag('li');
-    $linkUrl = $this->context->urlCity ? '/' . $this->context->urlCity . '/' . $category['name'] : '/всегорода/' . $category['name'];
+
     $linkContent = Html::encode($category['name']);
+    $linkUrl = !empty($url) ? '/' . $url['city']['url'] . '/' . $category['url'] : '/Все-города/' . $category['url'];
+
     if ($category['depth'] == 1) {
         $linkContent .= Html::tag('span', '>');
     }
+
     echo Html::a($linkContent, $linkUrl);
     $lvl = $category['depth'];
 }

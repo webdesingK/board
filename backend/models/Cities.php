@@ -20,8 +20,8 @@ class Cities extends \common\models\cities\Cities {
 
     public function rules() {
         return [
-            [['name', 'parent_id'], 'required'],
-            ['name', 'string'],
+            [['name','url', 'parent_id'], 'required'],
+            [['name', 'url'], 'string'],
             [['parent_id', 'active'], 'integer'],
         ];
     }
@@ -40,6 +40,7 @@ class Cities extends \common\models\cities\Cities {
         $dataForTable = [
             'parent_id' => $this->postData['id'],
             'name' => $this->postData['name'],
+            'url' => preg_replace('/\s/', '-', $this->postData['name']),
             'active' => 1
         ];
         $parentNode = self::find()->where(['id' => $dataForTable['parent_id']])->one();
@@ -72,6 +73,7 @@ class Cities extends \common\models\cities\Cities {
     public function renameNode() {
         $node = self::find()->where(['id' => $this->postData['id']])->one();
         $node->name = $this->postData['newName'];
+        $node->url = preg_replace('/\s/', '-', $this->postData['newName']);
         if ($node->update()) {
             return true;
         }
