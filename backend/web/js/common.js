@@ -385,12 +385,11 @@ $(document).ready(function () {
 		//  end tabs ------------------------------------------
 
 		// structureMovements category
-
 		function structureMovements() {
 
 			let motionUp     = $('.motion__up-category'),
-					motionDown   = $('.motion__down-category');
-					// categoryList = $('.category__list').children('.category__list').children('.category__list').children('.category__list');
+					motionDown   = $('.motion__down-category'),
+					categoryList = $('.category__list');
 
 				motionUp.each(function(){
 					if (!$(this).parents('.category__list:first').prev().hasClass('category__list')) {
@@ -404,9 +403,12 @@ $(document).ready(function () {
 					}
 				});
 
-				// categoryList.each(function(){
-				// 	$(this).find('.add-category').remove();
-				// });
+				// удаление кнопки (+) для добавления категории в 4 потомстве
+				categoryList.each(function(){
+					if ($(this).parents('.category__list').length == 4) {
+						$(this).find('.add-category:first').remove();
+					}
+				});
 
 		};
 

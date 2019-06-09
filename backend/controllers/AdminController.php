@@ -21,7 +21,7 @@ class AdminController extends Controller {
             $model->postData = Yii::$app->request->post();
             $result = null;
 
-            Yii::$app->cache->delete('categoryMenuAllData');
+//            Yii::$app->cache->delete('categoryMenuAllData');
 
             switch ($model->postData['nameOfAction']) {
                 case 'create':
@@ -63,7 +63,7 @@ class AdminController extends Controller {
             $model->postData = Yii::$app->request->post();
             $result = null;
 
-            Yii::$app->cache->delete('cityMenuAllData');
+//            Yii::$app->cache->delete('cityMenuAllData');
 
             switch ($model->postData['nameOfAction']) {
                 case 'create':

@@ -17,15 +17,6 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <style>
-        .breadcrumbs {
-            margin: 5px;
-        }
-
-        .breadcrumbs li {
-            display: inline-block;
-        }
-    </style>
 </head>
 <body>
 <?php $this->beginBody() ?>
@@ -69,13 +60,13 @@ AppAsset::register($this);
                 <span>Вход</span>
             </div>
         </div>
-        <div id="menu-btn">Категории</div>
+        <div id="menu-btn">категории</div>
         <div id="city-btn"><?= (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') ? $this->params['url']['city']['name'] : 'Местоположение' ?></div>
-        <nav class="menu none">
+        <nav class="menu">
             <div id='menu-close'>☒</div>
             <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
         </nav>
-        <nav class="city none">
+        <nav class="city">
             <div id='city-close'>☒</div>
             <div class="city__wrap">
                 <?= $this->render('//main/menu/cities', ['url' => $this->params['url']]) ?>
@@ -91,12 +82,11 @@ AppAsset::register($this);
 <div class="content">
     <div class="content__filter">
         <? if (!empty($this->params['url']['category'])) echo $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-<!--        <div class="content__filter-category">-->
-<!--            <p>lorem <span>></span></p>-->
-<!--            <ul id="filter-category" class="none">-->
+<!--        <div class="content__filter-category multitype-filter">-->
+<!--            <ul>-->
 <!--                <li><a href="#">Lorem ipsum.</a></li>-->
 <!--                <li><a href="#">Iste, nihil.</a></li>-->
-<!--                <li><a href="#">Autem, quisquam.</a></li>-->
+<!--                <li class="active__filter-category"><a href="#">Autem, quisquam.</a></li>-->
 <!--                <li><a href="#">Doloremque, ex.</a></li>-->
 <!--                <li><a href="#">Deserunt, laborum?</a></li>-->
 <!--                <li><a href="#">Reiciendis, animi!</a></li>-->
@@ -116,35 +106,35 @@ AppAsset::register($this);
 <!--                <li><a href="#">Porro, nulla.</a></li>-->
 <!--            </ul>-->
 <!--        </div>-->
-<!--        <div class="content__filter-type">-->
-<!--            <p>Тип <span>></span></p>-->
-<!--            <ul id="filter-type" class="none">-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="1">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="2">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="3">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="4">-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-        <div class="content__filter-price">
+        <div class="content__filter-type multitype-filter">
+            <p>Тип <span class="arrow-open">➤</span></p>
+            <ul>
+                <li>
+                    <label>text</label>
+                    <input type="checkbox" data-id="1">
+                </li>
+                <li>
+                    <label>text</label>
+                    <input type="checkbox" data-id="2">
+                </li>
+                <li>
+                    <label>text</label>
+                    <input type="checkbox" data-id="3">
+                </li>
+                <li>
+                    <label>text</label>
+                    <input type="checkbox" data-id="4">
+                </li>
+            </ul>
+        </div>
+        <div class="content__filter-price multitype-filter">
             <p>Цена</p>
             <div class="price-filter">
                 <input type="text" placeholder="от">
                 <input type="text" placeholder="до">
             </div>
         </div>
-        <div class="content__filter-btn">Применить</div>
+        <div class="content__filter-btn multitype-filter">Применить</div>
     </div>
     <div class="content__wrap">
         <?= $content ?>

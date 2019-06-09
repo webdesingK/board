@@ -9,9 +9,9 @@ use yii\helpers\ArrayHelper;
 class Categories extends \common\models\categories\Categories {
 
     static public function getAllData() {
-        return Yii::$app->cache->getOrSet('categoryMenuAllData', function () {
+//        return Yii::$app->cache->getOrSet('categoryMenuAllData', function () {
             return self::find()->select(['id','depth', 'active', 'name', 'url'])->where('active = 1')->andWhere('id > 1')->orderBy('lft ASC')->asArray()->all();
-        });
+//        });
     }
 
     static public function getUrls() {
