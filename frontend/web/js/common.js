@@ -4,11 +4,11 @@ $(document).ready(function() {
 	$(function() {
 
 		let menu       = $('.menu'),
+				city       = $('.city'),
 				menuBtn    = $('#menu-btn'),
 				cityBtn    = $('#city-btn'),
 				menuClose  = $('#menu-close'),
-				flagBtn    = true,
-				heightMenu = $('.menu__first').outerHeight(true);
+				cityClose  = $('#city-close');
 
 		// функция для скрытия всех категория 2 уровня
 		function hideSubMenu(obj) {// передаем массив обьектов которые нужно скрыть
@@ -22,10 +22,10 @@ $(document).ready(function() {
 
 		// функция для плавного открытия и закрытия меню
 		function clickMenuBtn() {
-			if ($('.city').is(':visible')) {
+			if (city.is(':visible')) {
 				$('#city-btn').click();
 			}
-			$('.menu').slideToggle('slow', function() {// callback функция 
+			menu.slideToggle('slow', function() {// callback функция 
 				hideSubMenu($('.menu__second'));// скрываем все категории второго уровня
 				$(this).find('.menu__second:first').show();// открываем самую первую категорию второго уровня 
 			});
@@ -34,11 +34,16 @@ $(document).ready(function() {
 		menuBtn.on('click', clickMenuBtn);// клик на кнопку меню вызывает функцию скрытия(открытия) меню
 		
 		// функция для плавного открытия и закрытия меню городов
-		function clickCityBtn() {
-			$('.city').slideToggle();// удаляем класс none который задан для скрытия меню
+		function clickCityBtn(el) {
+			el.slideToggle();// удаляем класс none который задан для скрытия меню
 		};
 
-		cityBtn.on('click', clickCityBtn);
+		cityBtn.on('click', function() {
+			clickCityBtn(city);
+		});
+		cityClose.on('click', function() {
+			clickCityBtn(city);
+		});
 
     // клик на кнопку крестика(#menu-close) вызываем вункцию в которой
 		menuClose.on('click', function(){
@@ -58,7 +63,7 @@ $(document).ready(function() {
 		// при нажатии на esc делаем проверки и отрабатываем функционал
 		$(document).keyup(function(evt){
 			if (evt.keyCode == 27 && $('.menu__first').is(':visible')) menuBtn.click();// если меню открыто скрываем его
-			if (evt.keyCode == 27 && $('.city').is(':visible')) cityBtn.click();// если меню городов открыто скрываем его
+			if (evt.keyCode == 27 && city.is(':visible')) cityBtn.click();// если меню городов открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-in').is(':visible')) $('#sign-in').addClass('none');// если окно попап входа открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-up').is(':visible')) $('#sign-up').addClass('none');// если окно попап регистрации открыто скрываем его
 		});
