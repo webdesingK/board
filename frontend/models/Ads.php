@@ -2,65 +2,61 @@
 
 namespace frontend\models;
 
-use Yii;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
+use frontend\models\Categories;
+use yii2tech\filedb;
+class Ads {
 
-/**
- * This is the model class for table "ads".
- *
- * @property int $id
- * @property string $name
- * @property int $id_category
- * @property int $id_city
- */
-class Ads extends \yii\db\ActiveRecord {
-    /**
-     * {@inheritdoc}
-     */
-    public static function tableName() {
-        return 'ads';
+    static private function getTableNames() {
+        return ArrayHelper::getColumn((new Query())->select('table_name')->from('information_schema.tables')->where(['like', 'table_name', 'ads%', false])->all(), 'table_name');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-//    public function rules()
-//    {
-//        return [
-//            [['id_category', 'id_city'], 'integer'],
-//            [['name'], 'string', 'max' => 255],
-//        ];
-//    }
+    static public function getAdsData($url) {
 
-    /**
-     * {@inheritdoc}
-     */
-//    public function attributeLabels() {
-//        return [
-//            'id' => 'ID',
-//            'name' => 'Name',
-//            'id_category' => 'Id Category',
-//            'id_city' => 'Id City',
-//        ];
-//    }
-
-    public function getAdsData($idCity, $idCategory) {
-
+        $tableNames = self::getTableNames();
+        $db = new Query();
         $ads = [];
 
-        if (!$idCity && !$idCategory) {
-            $ads = self::find()->select('name')->asArray()->all();
+        if (empty($tableNames)) return $ads;
+
+        $categories = Categories::getAllData();
+        $categoriesNamesById = ArrayHelper::map($categories, 'id', 'name');
+        $count = 0;
+
+        if (!isset($url['category'])) {
+            foreach ($tableNames as $tableName) {
+                $oneTableData = $db->select(['title', 'price', 'id_category'])->from($tableName)->all();
+                foreach ($oneTableData as $value) {
+                    $ads[$count] = $value;
+                    $ads[$count]['category'] = $categoriesNamesById[$value['id_category']];
+                    unset($ads[$count]['id_category']);
+                    $count++;
+                }
+            }
         }
-        elseif ($idCity && $idCategory) {
-            $ads = self::find()->select('name')->where(['id_city' => $idCity, 'id_category' => $idCategory])->asArray()->all();
-        }
-        elseif ($idCity && !$idCategory) {
-            $ads = self::find()->select('name')->where(['id_city' => $idCity])->asArray()->all();
-        }
-        elseif (!$idCity && $idCategory) {
-            $ads = self::find()->select('name')->where(['id_category' => $idCategory])->asArray()->all();
+        else {
+            $childrenCategory = Categories::getChildrenById($url['category']['id'], 2);
+            $arrayIdsCategories = [$url['category']['id']];
+
+            foreach ($childrenCategory as $item) {
+                array_push($arrayIdsCategories, $item['id']);
+            }
+
+            foreach ($tableNames as $tableName) {
+                $oneTableData = $db->from($tableName)->where(['in', 'id_category', $arrayIdsCategories])->all();
+                foreach ($oneTableData as $value) {
+                    $ads[$count] = $value;
+                    $ads[$count]['category'] = $categoriesNamesById[$value['id_category']];
+                    unset($ads[$count]['id_category']);
+                    $count++;
+                }
+            }
+
         }
 
         return $ads;
 
     }
+
 }

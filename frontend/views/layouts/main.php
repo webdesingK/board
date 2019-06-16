@@ -20,13 +20,13 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
 <header class="header">
 
     <div class="header__wrap">
         <a href="/">Главная</a>
         <a href="http://localhost:3000/админка">localhost-admin</a>
         <a href="/админка">board-admin</a>
+        <a href="/memcached" target="_blank">memcached</a>
         <div class="auth">
             <p id="auth">Вход</p>
             <!-- <div id="auth-user">⛑</div> -->
@@ -61,7 +61,20 @@ AppAsset::register($this);
             </div>
         </div>
         <div id="menu-btn">категории</div>
-        <div id="city-btn"><?= (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') ? $this->params['url']['city']['name'] : 'Местоположение' ?></div>
+        <div id="city-btn">
+            <?
+            if (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') {
+                echo $this->params['url']['city']['name'];
+                echo "\t";
+                $linkUrl = empty($this->params['url']['category']['url']) ? '/' : '/Все-города/' . $this->params['url']['category']['url'];
+                echo Html::a('X', $linkUrl);
+            }
+            else {
+                echo 'Местоположение';
+            }
+            ?>
+        </div>
+
         <nav class="menu">
             <div id='menu-close'>☒</div>
             <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
@@ -81,31 +94,31 @@ AppAsset::register($this);
 <!-- content -->
 <div class="content">
     <div class="content__filter">
-        <? if (!empty($this->params['url']['category'])) echo $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-<!--        <div class="content__filter-category multitype-filter">-->
-<!--            <ul>-->
-<!--                <li><a href="#">Lorem ipsum.</a></li>-->
-<!--                <li><a href="#">Iste, nihil.</a></li>-->
-<!--                <li class="active__filter-category"><a href="#">Autem, quisquam.</a></li>-->
-<!--                <li><a href="#">Doloremque, ex.</a></li>-->
-<!--                <li><a href="#">Deserunt, laborum?</a></li>-->
-<!--                <li><a href="#">Reiciendis, animi!</a></li>-->
-<!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
-<!--                <li><a href="#">Quis, incidunt.</a></li>-->
-<!--                <li><a href="#">Neque, itaque.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
+        <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
+        <!--        <div class="content__filter-category multitype-filter">-->
+        <!--            <ul>-->
+        <!--                <li><a href="#">Lorem ipsum.</a></li>-->
+        <!--                <li><a href="#">Iste, nihil.</a></li>-->
+        <!--                <li class="active__filter-category"><a href="#">Autem, quisquam.</a></li>-->
+        <!--                <li><a href="#">Doloremque, ex.</a></li>-->
+        <!--                <li><a href="#">Deserunt, laborum?</a></li>-->
+        <!--                <li><a href="#">Reiciendis, animi!</a></li>-->
+        <!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
+        <!--                <li><a href="#">Quis, incidunt.</a></li>-->
+        <!--                <li><a href="#">Neque, itaque.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
         <div class="content__filter-type multitype-filter">
             <p>Тип <span class="arrow-open">➤</span></p>
             <ul>
@@ -140,11 +153,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </div>
-<?//
-//    $query = new Query;
-//    $ads = $query->from('User')->where(['name' => 'admin'])->one();
 
-//    dump($ads)?>
 <?php $this->endBody() ?>
 </body>
 </html>
