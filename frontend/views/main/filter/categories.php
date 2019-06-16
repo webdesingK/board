@@ -39,7 +39,9 @@ if (!isset($url['category'])) {
 
         $siblings = Categories::getSiblingNodesByParentId($url['category']['parent_id']);
 
-        echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-1']);
+        if ($parent['depth'] > 0) {
+            echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-1']);
+        }
 
         foreach ($siblings as $sibling) {
             if ($sibling['name'] == $url['category']['name']) {
