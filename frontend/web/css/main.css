@@ -5,6 +5,22 @@
   display: none !important;
 }
 
+.lvl-1 {
+  margin-left: 10px;
+}
+
+.lvl-2 {
+  margin-left: 20px;
+}
+
+.lvl-3 {
+  margin-left: 30px;
+}
+
+.ml0 {
+  margin-left: 0;
+}
+
 .load {
   width: 0;
   height: 2px;

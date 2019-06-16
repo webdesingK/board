@@ -212,6 +212,7 @@ $(document).ready(function() {
 		    typeFilter      = $('.content__filter-type p'),
 				btn             = $('.content__filter-btn');
 
+		$('.active__filter-category').addClass('ml0');
 		categoryFilter.click(function(event) {
 
 			if ($(this).hasClass('active__filter-category')) {
