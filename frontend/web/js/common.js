@@ -217,7 +217,9 @@ $(document).ready(function() {
 
 			if ($(this).hasClass('active__filter-category')) {
 				event.preventDefault();
-				$('.active__filter-category').removeClass('ml0');
+				let active = $('.active__filter-category');
+						lvl    = active.attr('data-lvl');
+				active.addClass('lvl-' + lvl);
 
 				$(this).toggleClass('active__filter-open');
 				categoryFilter.filter(':not(.active__filter-category)').toggle();
