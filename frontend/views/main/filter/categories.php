@@ -13,7 +13,7 @@ if (!isset($url['category'])) {
     echo Html::tag('li', Html::a('Все категории', '/' . $url['city']['url']), ['class' => 'active__filter-category']);
 
     foreach ($children as $item) {
-        echo Html::tag('li', Html::a($item['name'], '/' . $url['city']['url'] . '/' . $item['url']));
+        echo Html::tag('li', Html::a($item['name'], '/' . $url['city']['url'] . '/' . $item['url']), ['class' => 'lvl-' . $item['depth']]);
     }
 
 } else {
@@ -26,27 +26,27 @@ if (!isset($url['category'])) {
     if (!empty($children)) {
 
         if ($parent['depth'] > 0) {
-            echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']));
+            echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-'.$parent['depth']]);
         }
 
-        echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category']);
+        echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category lvl-'.$url['category']['depth']]);
 
         foreach ($children as $child) {
-            echo Html::tag('li', Html::a($child['name'], '/' . $url['city']['url'] . '/' . $child['url']));
+            echo Html::tag('li', Html::a($child['name'], '/' . $url['city']['url'] . '/' . $child['url']), ['class' => 'lvl-' . $child['depth']]);
         }
 
     } else {
 
         $siblings = Categories::getSiblingNodesByParentId($url['category']['parent_id']);
 
-        echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']));
+        echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-1']);
 
         foreach ($siblings as $sibling) {
             if ($sibling['name'] == $url['category']['name']) {
-                echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category']);
+                echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category lvl-2']);
                 continue;
             }
-            echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['url'] . '/' . $sibling['url']));
+            echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['url'] . '/' . $sibling['url']), ['class' => 'lvl-2']);
         }
 
     }
