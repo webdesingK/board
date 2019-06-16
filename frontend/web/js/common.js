@@ -212,10 +212,13 @@ $(document).ready(function() {
 		    typeFilter      = $('.content__filter-type p'),
 				btn             = $('.content__filter-btn');
 
+		$('.active__filter-category').addClass('ml0');
 		categoryFilter.click(function(event) {
 
 			if ($(this).hasClass('active__filter-category')) {
 				event.preventDefault();
+				$('.active__filter-category').removeClass('ml0');
+
 				$(this).toggleClass('active__filter-open');
 				categoryFilter.filter(':not(.active__filter-category)').toggle();
 			} else {
