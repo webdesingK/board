@@ -29,7 +29,7 @@ if (!isset($url['category'])) {
             echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-'.$parent['depth']]);
         }
 
-        echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category lvl-'.$url['category']['depth']]);
+        echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category ml0 lvl-'.$url['category']['depth']]);
 
         foreach ($children as $child) {
             echo Html::tag('li', Html::a($child['name'], '/' . $url['city']['url'] . '/' . $child['url']), ['class' => 'lvl-' . $child['depth']]);
@@ -43,7 +43,7 @@ if (!isset($url['category'])) {
 
         foreach ($siblings as $sibling) {
             if ($sibling['name'] == $url['category']['name']) {
-                echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category lvl-2']);
+                echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category ml0 lvl-2']);
                 continue;
             }
             echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['url'] . '/' . $sibling['url']), ['class' => 'lvl-2']);
