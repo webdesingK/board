@@ -212,24 +212,25 @@ $(document).ready(function() {
 		    typeFilter      = $('.content__filter-type p'),
 				btn             = $('.content__filter-btn');
 
-		$('.active__filter-category').addClass('ml0');
 		categoryFilter.click(function(event) {
 
-			if ($(this).hasClass('active__filter-category')) {
-				event.preventDefault();
-				let active = $('.active__filter-category');
-						lvl    = active.attr('data-lvl');
-				active.addClass('lvl-' + lvl);
+				let self = $(this);
+						lvl    = self.attr('data-lvl');
 
-				$(this).toggleClass('active__filter-open');
+			if (self.hasClass('active__filter-category')) {
+				event.preventDefault();
+				self.toggleClass('lvl-' + lvl);
+
+				self.toggleClass('active__filter-open');
 				categoryFilter.filter(':not(.active__filter-category)').toggle();
 			} else {
+				self.removeClass();
 				categoryUl.find('.active__filter-category').removeClass('active__filter-category active__filter-open');
-				$(this).addClass('active__filter-category');
+				self.addClass('active__filter-category');
 				categoryFilter.filter(':not(.active__filter-category)').hide();
 			}
-			let top = $(this).position().top;
-			$(this).parent().scrollTop(top);
+			let top = self.position().top;
+			self.parent().scrollTop(top);
 
 		});
 
