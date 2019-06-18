@@ -4,8 +4,7 @@ namespace frontend\models;
 
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use frontend\models\Categories;
-use yii2tech\filedb;
+
 class Ads {
 
     static private function getTableNames() {
@@ -22,37 +21,61 @@ class Ads {
 
         $categories = Categories::getAllData();
         $categoriesNamesById = ArrayHelper::map($categories, 'id', 'name');
+
+        $cities = Cities::getAllData();
+        $citiesNamesById = ArrayHelper::map($cities, 'id', 'name');
+
         $count = 0;
 
-        if (!isset($url['category'])) {
-            foreach ($tableNames as $tableName) {
-                $oneTableData = $db->select(['title', 'price', 'id_category'])->from($tableName)->all();
-                foreach ($oneTableData as $value) {
-                    $ads[$count] = $value;
-                    $ads[$count]['category'] = $categoriesNamesById[$value['id_category']];
-                    unset($ads[$count]['id_category']);
-                    $count++;
-                }
+        if (isset($url['category'])) {
+
+            $childrenIds = Categories::getChildrenIds($url['category']);
+
+            if (empty($childrenIds)) {
+                $childrenIds = [$url['category']['id']];
             }
+
+            $parentId = Categories::getParentId($url['category']['id']);
+
+            $tableName = $db->select('tableName')->from('category_adsTable')->where(['id_category' => $parentId])->one()['tableName'];
+
+            $tableData = null;
+
+            if ($url['city']['name'] != 'Все города') {
+                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->andWhere(['id_city' => $url['city']['id']])->all();
+            }
+            else {
+                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->all();
+            }
+
+            foreach ($tableData as $tableDatum) {
+                $ads[$count] = $tableDatum;
+                $ads[$count]['category'] = $categoriesNamesById[$tableDatum['id_category']];
+                $ads[$count]['city'] = $citiesNamesById[$tableDatum['id_city']];
+                unset($ads[$count]['id_city']);
+                unset($ads[$count]['id_category']);
+                $count++;
+            }
+
         }
         else {
-            $childrenCategory = Categories::getChildrenById($url['category']['id'], 2);
-            $arrayIdsCategories = [$url['category']['id']];
-
-            foreach ($childrenCategory as $item) {
-                array_push($arrayIdsCategories, $item['id']);
-            }
-
+            $oneTableData = null;
             foreach ($tableNames as $tableName) {
-                $oneTableData = $db->from($tableName)->where(['in', 'id_category', $arrayIdsCategories])->all();
+                if ($url['city']['name'] != 'Все города') {
+                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['id_city' => $url['city']['id']])->all();
+                }
+                else {
+                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->all();
+                }
                 foreach ($oneTableData as $value) {
                     $ads[$count] = $value;
                     $ads[$count]['category'] = $categoriesNamesById[$value['id_category']];
+                    $ads[$count]['city'] = $citiesNamesById[$value['id_city']];
+                    unset($ads[$count]['id_city']);
                     unset($ads[$count]['id_category']);
                     $count++;
                 }
             }
-
         }
 
         return $ads;

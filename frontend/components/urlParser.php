@@ -1,4 +1,4 @@
-<?php
+<?
 
 
 namespace frontend\components;
@@ -23,12 +23,14 @@ class urlParser {
                         'name' => 'Все города',
                         'url' => 'Все-города'
                     ];
-                } else {
+                }
+                else {
                     foreach ($cities as $city) {
                         if ($city['url'] == $get['city']) {
                             $array['city'] = $city;
                             break;
-                        } else {
+                        }
+                        else {
                             $array['city'] = 'error';
                         }
                     }
@@ -40,13 +42,15 @@ class urlParser {
                     if ($category['url'] == $get['category']) {
                         $array['category'] = $category;
                         break;
-                    } else {
+                    }
+                    else {
                         $array['category'] = 'error';
                     }
                 }
             }
 
-        } else {
+        }
+        else {
             $array['city'] = [
                 'name' => 'Все города',
                 'url' => 'Все-города'

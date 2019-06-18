@@ -4,6 +4,7 @@ use frontend\models\Categories;
 use yii\helpers\Html;
 
 $categories = Categories::getAllData();
+$lvl = 1;
 
 echo Html::beginTag('ul', ['class' => 'menu__first']);
 

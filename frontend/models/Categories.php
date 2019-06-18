@@ -28,4 +28,43 @@ class Categories extends \common\models\categories\Categories {
         return self::find()->select(['name', 'url', 'depth'])->where(['parent_id' => $parentId])->orderBy('lft ASC')->asArray()->all();
     }
 
+    static public function getChildrenIds($category) {
+
+        $ids = [];
+
+        if (($category['rgt'] - $category['lft']) > 1) {
+            $node = self::find()->where(['id' => $category['id']])->one();
+            $firstChildren = $node->children(1)->all();
+
+            foreach ($firstChildren as $firstChild) {
+                if (($firstChild['rgt'] - $firstChild['lft'] > 1)) {
+                    $secondChildren = $firstChild->children(1)->all();
+                    foreach ($secondChildren as $secondChild) {
+                        array_push($ids, $secondChild->id);
+                    }
+                }
+                else {
+                    array_push($ids, $firstChild->id);
+                }
+            }
+
+        }
+
+        return $ids;
+    }
+
+    static public function getParentId($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        $parent = $node->parents()->select('id')->andWhere('depth = 1')->one();
+
+        if ($parent === null) {
+            $parentId = (int)$id;
+        }
+        else {
+            $parentId = $parent->id;
+        }
+
+        return $parentId;
+    }
+
 }

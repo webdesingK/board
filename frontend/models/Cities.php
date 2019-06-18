@@ -14,7 +14,7 @@ class Cities extends \common\models\cities\Cities {
 
     static public function getAllData() {
         return Yii::$app->cache->getOrSet('cityMenuAllData', function () {
-            return self::find()->select(['id', 'depth', 'active', 'name', 'url'])->where('active = 1')->andWhere('id > 1')->orderBy('lft ASC')->asArray()->all();
+            return self::find()->where('active = 1')->andWhere('id > 1')->orderBy('lft ASC')->asArray()->all();
         });
     }
 
