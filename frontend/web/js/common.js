@@ -1,12 +1,23 @@
 $(document).ready(function() {
 
+	// когда открыто меню при нажатии в любом месте кроме самого меню скрываем меню
+	function closeCLick(e, elements) {
+		let div = elements; // тут указываем ID элемента
+		if (!div.is(e.target) // если клик был не по нашему блоку
+		    && div.has(e.target).length === 0) { // и не по его дочерним элементам
+				div.click(); // скрываем его
+		}
+	};
+
 	// menu
 	$(function() {
 
 		let menu       = $('.menu'),
+				city       = $('.city'),
 				menuBtn    = $('#menu-btn'),
 				cityBtn    = $('#city-btn'),
 				menuClose  = $('#menu-close'),
+				cityClose  = $('#city-close'),
 				flagBtn    = true,
 				heightMenu = $('.menu__first').outerHeight(true);
 
@@ -17,15 +28,12 @@ $(document).ready(function() {
 			});
 		};
 
-		// при загрузке страницы запускаем функцию скрытия категория 2 уровня
+		// при загрузке страницы запускаем функцию скрытия категорий 2 уровня
 		hideSubMenu($('.menu__first li:not(:first) .menu__second'));// передаем в аргумент все категории 2 уровня кроме первого
 
 		// функция для плавного открытия и закрытия меню
 		function clickMenuBtn() {
-			if ($('.city').is(':visible')) {
-				$('#city-btn').click();
-			}
-			$('.menu').slideToggle('slow', function() {// callback функция 
+			menu.slideToggle('slow', function() {// callback функция 
 				hideSubMenu($('.menu__second'));// скрываем все категории второго уровня
 				$(this).find('.menu__second:first').show();// открываем самую первую категорию второго уровня 
 			});
@@ -35,7 +43,7 @@ $(document).ready(function() {
 		
 		// функция для плавного открытия и закрытия меню городов
 		function clickCityBtn() {
-			$('.city').slideToggle();// удаляем класс none который задан для скрытия меню
+			city.slideToggle();// удаляем класс none который задан для скрытия меню
 		};
 
 		cityBtn.on('click', clickCityBtn);
@@ -45,20 +53,24 @@ $(document).ready(function() {
 			menuBtn.click();// эмитируем клик на кнопку меню для закрытия меню
 		});
 
-		// когда открыто меню при нажатии в любом месте кроме самого меню скрываем меню
+    // клик на кнопку крестика(#city-close) вызываем вункцию в которой
+		cityClose.on('click', function(){
+			cityBtn.click();// эмитируем клик на кнопку меню для закрытия меню
+		});
+
 		$(document).mouseup(function (e){ // событие клика по веб-документу
-			let div = $('.menu, #menu-btn'); // тут указываем ID элемента
-			if (!div.is(e.target) // если клик был не по нашему блоку
-			    && div.has(e.target).length === 0 // и не по его дочерним элементам
-			    && $('.menu__first').is(':visible')) { // и когда меню открыто
-				menuBtn.click(); // скрываем его
+			if (menu.is(':visible')) {
+				closeCLick(e, $('.menu, #menu-btn'));
+			}
+			if (city.is(':visible')) {
+				closeCLick(e, $('.city, #city-btn'));
 			}
 		});
 
 		// при нажатии на esc делаем проверки и отрабатываем функционал
 		$(document).keyup(function(evt){
-			if (evt.keyCode == 27 && $('.menu__first').is(':visible')) menuBtn.click();// если меню открыто скрываем его
-			if (evt.keyCode == 27 && $('.city').is(':visible')) cityBtn.click();// если меню городов открыто скрываем его
+			if (evt.keyCode == 27 && menu.is(':visible')) menuBtn.click();// если меню открыто скрываем его
+			if (evt.keyCode == 27 && city.is(':visible')) cityBtn.click();// если меню городов открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-in').is(':visible')) $('#sign-in').addClass('none');// если окно попап входа открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-up').is(':visible')) $('#sign-up').addClass('none');// если окно попап регистрации открыто скрываем его
 		});
@@ -204,18 +216,17 @@ $(document).ready(function() {
 		$(this).next().slideToggle(speed);
 	};
 
-	// filter
+	// filter работа с визуализацией
 	$(function() {
 
 		let categoryUl      = $('.content__filter-category ul'),
 				categoryFilter  = categoryUl.children(),
-		    typeFilter      = $('.content__filter-type p'),
-				btn             = $('.content__filter-btn');
+		    typeFilter      = $('.content__filter-type p');
 
 		categoryFilter.click(function(event) {
 
-				let self = $(this);
-						lvl    = self.attr('data-lvl');
+			let self = $(this);
+					lvl  = self.attr('data-lvl');
 
 			if (self.hasClass('active__filter-category')) {
 				event.preventDefault();
@@ -236,33 +247,74 @@ $(document).ready(function() {
 
 		typeFilter.click(singleTab);
 
-		btn.click(function() {
+		$(document).mouseup(function (e){ // событие клика по веб-документу
+			if (categoryFilter.filter(':visible').length > 1) {
+				closeCLick(e, categoryFilter.filter('.active__filter-category'));
+			}
+		});
 
-			let inputId    = $('#filter-type input'),
-					data = {
-						arrInputId: [],
-						min: $('.price-filter input').eq(0).val(),
-						max: $('.price-filter input').eq(1).val()
-					};
+		$(document).keyup(function(evt){
+			if (evt.keyCode == 27 && categoryFilter.filter(':visible').length > 1) categoryFilter.filter('.active__filter-category').click();// если меню открыто скрываем его
+		});
 
-			inputId.each(function() {
-				if ($(this).prop('checked')) {
-					data.arrInputId.push($(this).attr('data-id'));
-				}
-			});
+	});
 
-			$.ajax({
+	// filter сбор строки фильтров
+	$(function() {
 
-				type: "POST",
-				data: data,
-				success: function(resp) {
-					$('.content__wrap').html(resp);
-				},
-				error: function(resp) {
-					alert(resp);
-				}
+		let btnFilter = $('.content__filter-btn'),
+				priceMin  = $('#price__filter-min'),
+				priceMax  = $('#price__filter-max'),
+				price     = $('#price__filter-min, #price__filter-max'),
+				filterStr = '',
+				locHref   = document.location.href,
+				options   = {
+					max: 12
+				};
 
-			});
+		function isNumber(val) {
+			if (val == '') {
+				return;
+			} else if (val.length > options.max) {
+				return val.slice(0, options.max);
+			} else if (!isNaN(val)) {
+				return Math.round(val);
+			} else {
+				let num = val.search(/[^\d]/gi),
+						str = val.split('');
+				str.splice(num, 1);
+				return str.join('');
+			}
+
+		};
+
+		price.keyup(function() {
+
+			let val = $(this).val().trim(),
+					result = isNumber(val);
+			$(this).val(result);
+
+		});
+
+		function priceMinMax() {
+
+			let priceHref = '';
+			if (!priceMin.val() && !priceMax.val() || priceMin.val() == 0 && priceMax.val() == 0) {
+				return priceHref;
+			} else if(!priceMin.val() || priceMin.val() == 0 && priceMax.val()) {
+				return 'цена:от-0,до-' + priceMax.val() + ';';
+			} else if (priceMin.val() > priceMax.val()) {
+				return 'цена:от-' + priceMin.val() + ',до-макс;';
+			} else{
+				return 'цена:от-' + priceMin.val() + ',до-' + priceMax.val() + ';';
+			}
+		};
+
+		btnFilter.on('click', function() {
+
+			let getHref = priceMinMax();
+			// document.location.href = getHref;
+			console.log(getHref)
 
 		});
 

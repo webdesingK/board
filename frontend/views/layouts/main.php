@@ -96,7 +96,7 @@ AppAsset::register($this);
     <div class="content__filter">
         <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
         <div class="content__filter-type multitype-filter">
-            <p>Тип <span class="arrow-open">➤</span></p>
+            <p>Тип<span class="arrow-open">➤</span></p>
             <ul>
                 <li>
                     <label for="test">text</label>
@@ -118,9 +118,9 @@ AppAsset::register($this);
         </div>
         <div class="content__filter-price multitype-filter">
             <p>Цена</p>
-            <div class="price-filter">
-                <input type="text" placeholder="от">
-                <input type="text" placeholder="до">
+            <div class="price__filter">
+                <input id="price__filter-min" type="text" placeholder="от">
+                <input id="price__filter-max" type="text" placeholder="до">
             </div>
         </div>
         <div class="content__filter-btn multitype-filter">Применить</div>
