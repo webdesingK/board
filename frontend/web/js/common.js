@@ -266,6 +266,7 @@ $(document).ready(function() {
 				priceMin  = $('#price__filter-min'),
 				priceMax  = $('#price__filter-max'),
 				price     = $('#price__filter-min, #price__filter-max'),
+				checkType = $('.content__filter-type').find('input'),
 				filterStr = '',
 				locHref   = document.location.href,
 				options   = {
@@ -290,31 +291,63 @@ $(document).ready(function() {
 
 		price.keyup(function() {
 
-			let val = $(this).val().trim(),
-					result = isNumber(val);
+			let val    = $(this).val().trim(),
+			    result = isNumber(val);
 			$(this).val(result);
 
 		});
 
 		function priceMinMax() {
 
-			let priceHref = '';
 			if (!priceMin.val() && !priceMax.val() || priceMin.val() == 0 && priceMax.val() == 0) {
-				return priceHref;
+				return '';
 			} else if(!priceMin.val() || priceMin.val() == 0 && priceMax.val()) {
 				return 'цена:от-0,до-' + priceMax.val() + ';';
-			} else if (priceMin.val() > priceMax.val()) {
+			} else if (priceMin.val() >= priceMax.val()) {
 				return 'цена:от-' + priceMin.val() + ',до-макс;';
 			} else{
 				return 'цена:от-' + priceMin.val() + ',до-' + priceMax.val() + ';';
 			}
 		};
 
+		function filterCheckbox(arr) {
+			let nameType = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + ':',
+					str      = '';
+
+			arr.each(function() {
+				if ($(this).prop('checked')) {
+					str += $(this).siblings('label').text() + ',';
+				}
+			});
+
+			if (str) {
+				return nameType + str.slice(0, -1) + ';';
+			} else{
+				return '';
+			}
+		};
+
 		btnFilter.on('click', function() {
 
-			let getHref = priceMinMax();
-			// document.location.href = getHref;
-			console.log(getHref)
+			let getHref = priceMinMax(),
+					url     = locHref+ '/' + filterCheckbox(checkType) + getHref;
+
+			console.log(url)
+
+			history.pushState('', '', url);
+
+			$.ajax({
+
+				type: 'GET',
+				data: url,
+				success: function() {
+					console.log('good')
+				},
+				error: function() {
+					console.log('error')
+				}
+
+			});
 
 		});
 

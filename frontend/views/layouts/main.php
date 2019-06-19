@@ -95,35 +95,19 @@ AppAsset::register($this);
 <div class="content">
     <div class="content__filter">
         <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-        <!--        <div class="content__filter-category multitype-filter">-->
-        <!--            <ul>-->
-        <!--                <li><a href="#">Lorem ipsum.</a></li>-->
-        <!--                <li><a href="#">Iste, nihil.</a></li>-->
-        <!--                <li class="active__filter-category"><a href="#">Autem, quisquam.</a></li>-->
-        <!--                <li><a href="#">Doloremque, ex.</a></li>-->
-        <!--                <li><a href="#">Deserunt, laborum?</a></li>-->
-        <!--                <li><a href="#">Reiciendis, animi!</a></li>-->
-        <!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
-        <!--                <li><a href="#">Quis, incidunt.</a></li>-->
-        <!--                <li><a href="#">Neque, itaque.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--                <li><a href="#">Porro, nulla.</a></li>-->
-        <!--            </ul>-->
-        <!--        </div>-->
+        <?
+            if (isset($this->params['url']['category']) && $this->params['url']['category']['depth'] == 3) {
+                if (($this->params['url']['category']['rgt'] - $this->params['url']['category']['lft']) > 1) {
+                    echo $this->render('//main/filter/type', ['url' => $this->params['url']]);
+                }
+            }
+
+        ?>
         <div class="content__filter-price multitype-filter">
             <p>Цена</p>
             <div class="price-filter">
-                <input type="text" placeholder="от">
-                <input type="text" placeholder="до">
+                <input id="price__filter-min" type="text" placeholder="от">
+                <input id="price__filter-max" type="text" placeholder="до">
             </div>
         </div>
         <div class="content__filter-btn multitype-filter">Применить</div>
