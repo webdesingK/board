@@ -273,18 +273,21 @@ $(document).ready(function() {
 					max: 12
 				};
 
-		function isNumber(val) {
+		function isNumber(value) {
+			let val = value.replace(/\s/g, '');
 			if (val == '') {
-				return;
+				return '';
 			} else if (val.length > options.max) {
-				return val.slice(0, options.max);
+				if (!isNaN(val)) {
+					return Math.round(val.slice(0, options.max));
+				} else{
+					return val.replace(/\D/g, '');
+				}
+				
 			} else if (!isNaN(val)) {
 				return Math.round(val);
 			} else {
-				let num = val.search(/[^\d]/gi),
-						str = val.split('');
-				str.splice(num, 1);
-				return str.join('');
+				return val.replace(/\D/g, '');
 			}
 
 		};
@@ -292,9 +295,9 @@ $(document).ready(function() {
 		price.keyup(function() {
 
 			let val    = $(this).val().trim(),
-			    result = isNumber(val);
+			    str    = isNumber(val) + '',
+			    result = str.replace(/(?=\B(?:\d{3})+(?!\d))/g, ' ');
 			$(this).val(result);
-
 		});
 
 		function priceMinMax() {
@@ -302,16 +305,16 @@ $(document).ready(function() {
 			if (!priceMin.val() && !priceMax.val() || priceMin.val() == 0 && priceMax.val() == 0) {
 				return '';
 			} else if(!priceMin.val() || priceMin.val() == 0 && priceMax.val()) {
-				return 'цена:от-0,до-' + priceMax.val() + ';';
+				return 'цена=0-' + priceMax.val() + ';';
 			} else if (priceMin.val() >= priceMax.val()) {
-				return 'цена:от-' + priceMin.val() + ',до-макс;';
+				return 'цена=' + priceMin.val() + '-' + priceMax.attr('data-max') + ';';
 			} else{
-				return 'цена:от-' + priceMin.val() + ',до-' + priceMax.val() + ';';
+				return 'цена=' + priceMin.val() + '-' + priceMax.val() + ';';
 			}
 		};
 
 		function filterCheckbox(arr) {
-			let nameType = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + ':',
+			let nameType = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + '=',
 					str      = '';
 
 			arr.each(function() {
@@ -328,11 +331,19 @@ $(document).ready(function() {
 		};
 
 		btnFilter.on('click', function() {
+			let getHref = priceMinMax().replace(/\s/g, '').toLowerCase(),
+					check   = filterCheckbox(checkType).toLowerCase(),
+					url;
 
-			let getHref = priceMinMax(),
-					url     = locHref+ '/' + filterCheckbox(checkType) + getHref;
+			if (getHref || check) {
+				console.log('есть')
+				url = locHref + '/фильтры/' + getHref + check;
+			} else {
+				console.log('пусто')
+				return;
+			}
 
-			console.log(url)
+
 
 			history.pushState('', '', url);
 
