@@ -107,7 +107,7 @@ AppAsset::register($this);
             <p>Цена</p>
             <div class="price-filter">
                 <input id="price__filter-min" type="text" placeholder="от">
-                <input id="price__filter-max" type="text" placeholder="до">
+                <input id="price__filter-max" type="text" data-max="7777777777" placeholder="до">
             </div>
         </div>
         <div class="content__filter-btn multitype-filter">Применить</div>
