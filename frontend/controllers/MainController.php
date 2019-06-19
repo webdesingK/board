@@ -25,6 +25,10 @@ class MainController extends Controller {
         $get = Yii::$app->request->get();
         $url = urlParser::getArray($get);
 
+        if (Yii::$app->request->isAjax) {
+            dump(Yii::$app->request->get());die;
+        }
+
         if ((isset($get['city']) && $get['city'] === 'Все-города') && !isset($get['category'])) $this->redirect('/', 301);
 
         if ((isset($url['city']) && $url['city'] == 'error') || (isset($url['category']) && $url['category'] == 'error')) {

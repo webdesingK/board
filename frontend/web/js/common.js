@@ -339,7 +339,7 @@ $(document).ready(function() {
 			$.ajax({
 
 				type: 'GET',
-				data: url,
+				// data: url,
 				success: function() {
 					console.log('good')
 				},
