@@ -3,9 +3,10 @@
 
 namespace console\controllers;
 
+use console\models\Categories;
+use console\models\Cities;
 use yii\console\Controller;
 use yii\db\Query;
-use console\models\Categories;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Console;
 use console\components\Translate;
@@ -88,7 +89,8 @@ class AdsTablesController extends Controller {
                 'id' => 'pk',
                 'title' => 'string',
                 'price' => 'string',
-                'id_category' => 'integer'
+                'id_category' => 'integer',
+                'id_city' => 'integer'
             ])->execute();
 
             $db->createCommand()->insert('category_adsTable', [
@@ -121,13 +123,15 @@ class AdsTablesController extends Controller {
                 self::actionCreateTables();
                 echo $this->ansiFormat("\v Запись значений в бд ... \n\v", Console::FG_GREEN);
 
-                $childrenOfRoot = Categories::getChildrenOfRoot();
+                $childrenOfRootCategories = Categories::getChildrenOfRoot();
+                $childrenOfRootCities = Cities::getChildrenOfRoot();
+                $countCities = count($childrenOfRootCities) - 1;
 
                 Console::startProgress(0, $adsCount);
 
                 $countString = 0;
 
-                foreach ($childrenOfRoot as $item) {
+                foreach ($childrenOfRootCategories as $item) {
 
                     $childrenCategories = Categories::getChildren($item['id']);
                     $translateName = Translate::translateRuToEn($item['name']);
@@ -139,11 +143,13 @@ class AdsTablesController extends Controller {
 
                     for ($i = 0; $i < $adsCount; $i++) {
                         $randNumCategory = rand(0, $countCategories);
+                        $randNumCity = rand(0, $countCities);
                         $randPrice = rand(0, $countPriceArray);
                         $res = $db->createCommand()->insert('ads_' . $translateName, [
                             'title' => 'Продам ' . $childrenCategories[$randNumCategory]['name'],
                             'price' => $priceArray[$randPrice],
-                            'id_category' => $childrenCategories[$randNumCategory]['id']
+                            'id_category' => $childrenCategories[$randNumCategory]['id'],
+                            'id_city' => $childrenOfRootCities[$randNumCity]['id']
                         ])->execute();
                         if ($res) {
                             $countString++;

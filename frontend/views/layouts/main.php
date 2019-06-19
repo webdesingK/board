@@ -95,32 +95,35 @@ AppAsset::register($this);
 <div class="content">
     <div class="content__filter">
         <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-        <div class="content__filter-type multitype-filter">
-            <p>Тип<span class="arrow-open">➤</span></p>
-            <ul>
-                <li>
-                    <label for="test">text</label>
-                    <input id="test" type="checkbox" data-id="1">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="2">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="3">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="4">
-                </li>
-            </ul>
-        </div>
+        <!--        <div class="content__filter-category multitype-filter">-->
+        <!--            <ul>-->
+        <!--                <li><a href="#">Lorem ipsum.</a></li>-->
+        <!--                <li><a href="#">Iste, nihil.</a></li>-->
+        <!--                <li class="active__filter-category"><a href="#">Autem, quisquam.</a></li>-->
+        <!--                <li><a href="#">Doloremque, ex.</a></li>-->
+        <!--                <li><a href="#">Deserunt, laborum?</a></li>-->
+        <!--                <li><a href="#">Reiciendis, animi!</a></li>-->
+        <!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
+        <!--                <li><a href="#">Quis, incidunt.</a></li>-->
+        <!--                <li><a href="#">Neque, itaque.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--                <li><a href="#">Porro, nulla.</a></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
         <div class="content__filter-price multitype-filter">
             <p>Цена</p>
-            <div class="price__filter">
-                <input id="price__filter-min" type="text" placeholder="от">
-                <input id="price__filter-max" type="text" placeholder="до">
+            <div class="price-filter">
+                <input type="text" placeholder="от">
+                <input type="text" placeholder="до">
             </div>
         </div>
         <div class="content__filter-btn multitype-filter">Применить</div>

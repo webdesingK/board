@@ -4,10 +4,12 @@ use frontend\models\Categories;
 use yii\helpers\Html;
 
 $categories = Categories::getAllData();
+$lvl = 1;
 
 echo Html::beginTag('ul', ['class' => 'menu__first']);
 
 foreach ($categories as $key => $category) {
+
     if ($category['depth'] == $lvl) {
         if ($key > 0) {
             echo Html::endTag('li');
