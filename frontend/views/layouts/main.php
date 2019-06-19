@@ -95,27 +95,36 @@ AppAsset::register($this);
 <div class="content">
     <div class="content__filter">
         <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-        <div class="content__filter-type multitype-filter">
-            <p>Тип <span class="arrow-open">➤</span></p>
-            <ul>
-                <li>
-                    <label for="test">text</label>
-                    <input id="test" type="checkbox" data-id="1">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="2">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="3">
-                </li>
-                <li>
-                    <label>text</label>
-                    <input type="checkbox" data-id="4">
-                </li>
-            </ul>
-        </div>
+
+        <?
+            if (isset($this->params['url']['category']) && $this->params['url']['category']['depth'] == 3) {
+                if (($this->params['url']['category']['rgt'] - $this->params['url']['category']['lft']) > 1) {
+                    echo $this->render('//main/filter/type', ['url' => $this->params['url']]);
+                }
+            }
+
+        ?>
+<!--        <div class="content__filter-type multitype-filter">-->
+<!--            <p>Тип <span class="arrow-open">➤</span></p>-->
+<!--            <ul>-->
+<!--                <li>-->
+<!--                    <label for="test">text</label>-->
+<!--                    <input id="test" type="checkbox" data-id="1">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="2">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="3">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="4">-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
         <div class="content__filter-price multitype-filter">
             <p>Цена</p>
             <div class="price-filter">

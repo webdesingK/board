@@ -10,7 +10,7 @@ class Categories extends \common\models\categories\Categories {
 
     static public function getAllData() {
         return Yii::$app->cache->getOrSet('categoryMenuAllData', function () {
-            return self::find()->where('active = 1')->andWhere('id > 1')->orderBy('lft ASC')->asArray()->all();
+            return self::find()->where('active = 1')->andWhere('id > 1')->andWhere('depth < 4')->orderBy('lft ASC')->asArray()->all();
         });
     }
 
@@ -21,7 +21,7 @@ class Categories extends \common\models\categories\Categories {
 
     static public function getChildrenById($id, $lvl) {
         $node = self::find()->where(['id' => $id])->one();
-        return $node->children($lvl)->asArray()->all();
+        return $node->children($lvl)->andWhere('depth < 4')->asArray()->all();
     }
 
     static public function getSiblingNodesByParentId($parentId) {
@@ -65,6 +65,11 @@ class Categories extends \common\models\categories\Categories {
         }
 
         return $parentId;
+    }
+
+    static public function getTypes($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        return $node->children(1)->asArray()->all();
     }
 
 }
