@@ -298,18 +298,21 @@ $(document).ready(function() {
 			    str    = isNumber(val) + '',
 			    result = str.replace(/(?=\B(?:\d{3})+(?!\d))/g, ' ');
 			$(this).val(result);
+
 		});
 
 		function priceMinMax() {
 
-			if (!priceMin.val() && !priceMax.val() || priceMin.val() == 0 && priceMax.val() == 0) {
+			let min = +priceMin.val().replace(/\s/gi, ''),
+			    max = +priceMax.val().replace(/\s/gi, '');
+			if (!min && !max || min == 0 && max == 0) {
 				return '';
-			} else if(!priceMin.val() || priceMin.val() == 0 && priceMax.val()) {
-				return 'цена=0-' + priceMax.val() + ';';
-			} else if (priceMin.val() >= priceMax.val()) {
-				return 'цена=' + priceMin.val() + '-' + priceMax.attr('data-max') + ';';
+			} else if(!min || min == 0 && max) {
+				return 'цена=0-' + max;
+			} else if (min >= max) {
+				return 'цена=' + min + '-' + priceMax.attr('data-max');
 			} else{
-				return 'цена=' + priceMin.val() + '-' + priceMax.val() + ';';
+				return 'цена=' + min + '-' + max;
 			}
 		};
 
@@ -324,26 +327,37 @@ $(document).ready(function() {
 			});
 
 			if (str) {
-				return nameType + str.slice(0, -1) + ';';
+				return nameType + str.slice(0, -1);
 			} else{
 				return '';
 			}
 		};
 
 		btnFilter.on('click', function() {
-			let getHref = priceMinMax().replace(/\s/g, '').toLowerCase(),
-					check   = filterCheckbox(checkType).toLowerCase(),
+			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
+					check     = filterCheckbox(checkType).toLowerCase(),
+					semicolon = '',
 					url;
 
-			if (getHref || check) {
-				console.log('есть')
-				url = locHref + '/фильтры/' + getHref + check;
+			if (minMax || check) {
+				if (minMax && check) {
+					semicolon = ';';
+				}
+				url = locHref + '/фильтры/' + minMax + semicolon + check;
+				console.log('sd')
 			} else {
 				console.log('пусто')
 				return;
 			}
 
+			if (locHref == url) {
+				return;
+			}
 
+			if (/фильтры/gi.test(locHref)) {
+				url = url.replace(/\/фильтры[^]*/gi, '');
+				url = locHref + '/фильтры/' + minMax + semicolon + check;
+			}
 
 			history.pushState('', '', url);
 
@@ -352,10 +366,10 @@ $(document).ready(function() {
 				type: 'GET',
 				// data: url,
 				success: function() {
-					console.log('good')
+					// console.log('good')
 				},
 				error: function() {
-					console.log('error')
+					// console.log('error')
 				}
 
 			});
