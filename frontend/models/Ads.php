@@ -27,6 +27,16 @@ class Ads {
 
         $count = 0;
 
+        $price = [
+            'min' => 0,
+            'max' => 1000000
+        ];
+
+        if (isset($url['filters']['price'])) {
+            $price['min'] = (int)$url['filters']['price']['min'];
+            $price['max'] = (int)$url['filters']['price']['max'];
+        }
+
         if (isset($url['category'])) {
 
             $childrenIds = Categories::getChildrenIds($url['category']);
@@ -42,10 +52,10 @@ class Ads {
             $tableData = null;
 
             if ($url['city']['name'] != 'Все города') {
-                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->andWhere(['id_city' => $url['city']['id']])->all();
+                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->andWhere(['id_city' => $url['city']['id']])->andWhere(['between', 'price', $price['min'], $price['max']])->all();
             }
             else {
-                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->all();
+                $tableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['in', 'id_category', $childrenIds])->andWhere(['between', 'price', $price['min'], $price['max']])->all();
             }
 
             foreach ($tableData as $tableDatum) {
@@ -62,10 +72,10 @@ class Ads {
             $oneTableData = null;
             foreach ($tableNames as $tableName) {
                 if ($url['city']['name'] != 'Все города') {
-                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['id_city' => $url['city']['id']])->all();
+                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['id_city' => $url['city']['id']])->andWhere(['between', 'price', $price['min'], $price['max']])->all();
                 }
                 else {
-                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->all();
+                    $oneTableData = $db->select(['title', 'price', 'id_category', 'id_city'])->from($tableName)->where(['between', 'price', $price['min'], $price['max']])->all();
                 }
                 foreach ($oneTableData as $value) {
                     $ads[$count] = $value;

@@ -350,8 +350,9 @@ $(document).ready(function() {
 			$.ajax({
 
 				type: 'GET',
-				// data: url,
-				success: function() {
+				url: url,
+				success: function(resp) {
+				    $('.content__wrap').html(resp);
 					console.log('good')
 				},
 				error: function() {
