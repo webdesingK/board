@@ -20,7 +20,7 @@ class Categories extends \common\models\categories\Categories {
 
         foreach ($allChildren as $key => $child) {
 
-            $children = $child->children()->all();
+            $children = $child->children()->andWhere('depth < 4')->all();
 
             if (!empty($children)) {
                 foreach ($children as $item) {

@@ -79,7 +79,7 @@ class AdsTablesController extends Controller {
         $db->createCommand()->createTable('category_adsTable', [
             'id_category' => 'integer',
             'tableName' => 'string'
-        ])->execute();
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB')->execute();
 
         foreach ($childrenOfRoot as $key => $value) {
 
@@ -91,7 +91,7 @@ class AdsTablesController extends Controller {
                 'price' => 'string',
                 'id_category' => 'integer',
                 'id_city' => 'integer'
-            ])->execute();
+            ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB')->execute();
 
             $db->createCommand()->insert('category_adsTable', [
                 'id_category' => $value['id'],
@@ -235,9 +235,6 @@ class AdsTablesController extends Controller {
         for ($i = 0; $i < 1000; $i++) {
             array_push($priceArray, $minPrice);
             $minPrice += 10;
-            if (strlen($minPrice) > 3) {
-                $priceArray[$i] = substr_replace($minPrice, '.', -3, 0);
-            }
         }
 
         return $priceArray;
