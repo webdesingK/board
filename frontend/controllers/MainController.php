@@ -25,9 +25,6 @@ class MainController extends Controller {
         $get = Yii::$app->request->get();
         $url = urlParser::getArray($get);
 
-        if (Yii::$app->request->isAjax) {
-            dump(Yii::$app->request->get());die;
-        }
 
         if ((isset($get['city']) && $get['city'] === 'Все-города') && !isset($get['category'])) $this->redirect('/', 301);
 
@@ -37,12 +34,22 @@ class MainController extends Controller {
 
         $adsData = Ads::getAdsData($url);
 
+        if (Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', [
+                'url' => $url,
+                'adsData' => $adsData
+            ]);
+        }
+
         return $this->render('index', [
             'url' => $url,
             'adsData' => $adsData
         ]);
     }
 
+    public function actionFilters() {
+
+    }
 
 }
 

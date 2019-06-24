@@ -45,7 +45,7 @@ return [
             'rules' => [
                 '<city:[а-яА-Я\-]+>' => 'main/index',
                 '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>' => 'main/index',
-                '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>/<filter>' => 'main/index',
+                '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>/фильтры/<filters>' => 'main/index',
             ],
         ],
     ],

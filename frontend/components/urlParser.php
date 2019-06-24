@@ -3,8 +3,10 @@
 
 namespace frontend\components;
 
+use yii\db\Query;
 use frontend\models\Categories;
 use frontend\models\Cities;
+use yii\helpers\ArrayHelper;
 
 class urlParser {
 
@@ -47,6 +49,38 @@ class urlParser {
                         $array['category'] = 'error';
                     }
                 }
+            }
+
+            if (isset($get['filters'])) {
+                $filters = explode(';', $get['filters']);
+                $newFilters = [];
+                foreach ($filters as $key => $value) {
+
+                    if (empty($value)) continue;
+
+                    $filter = explode('=', $value);
+
+                    if ($filter[0] == 'цена') {
+                        $priceValues = explode('-', $filter[1]);
+                        $newFilters['price'] = [
+                            'min' => $priceValues[0],
+                            'max' => $priceValues[1]
+                        ];
+                    }
+
+                    if ($filter[0] == 'тип') {
+                        $typeFilter = explode(',', $filter[1]);
+                        if (count($typeFilter) > 1) {
+                            $newFilters['type'] = $typeFilter;
+                        }
+                        else {
+                            $newFilters['type'] = $typeFilter[0];
+                        }
+                    }
+
+                }
+
+                $array['filters'] = $newFilters;
             }
 
         }

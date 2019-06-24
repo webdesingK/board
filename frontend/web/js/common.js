@@ -268,7 +268,6 @@ $(document).ready(function() {
 				price     = $('#price__filter-min, #price__filter-max'),
 				checkType = $('.content__filter-type').find('input'),
 				filterStr = '',
-				locHref   = document.location.href,
 				options   = {
 					max: 12
 				};
@@ -336,6 +335,7 @@ $(document).ready(function() {
 		btnFilter.on('click', function() {
 			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
 					check     = filterCheckbox(checkType).toLowerCase(),
+					locHref   = decodeURI(document.location.href),
 					semicolon = '',
 					url;
 
@@ -343,10 +343,8 @@ $(document).ready(function() {
 				if (minMax && check) {
 					semicolon = ';';
 				}
-				url = locHref + '/фильтры/' + minMax + semicolon + check;
-				console.log('sd')
+				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + semicolon + check;
 			} else {
-				console.log('пусто')
 				return;
 			}
 
@@ -356,7 +354,7 @@ $(document).ready(function() {
 
 			if (/фильтры/gi.test(locHref)) {
 				url = url.replace(/\/фильтры[^]*/gi, '');
-				url = locHref + '/фильтры/' + minMax + semicolon + check;
+				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + semicolon + check;
 			}
 
 			history.pushState('', '', url);
@@ -364,12 +362,12 @@ $(document).ready(function() {
 			$.ajax({
 
 				type: 'GET',
-				// data: url,
-				success: function() {
-					// console.log('good')
+				url: url,
+				success: function(resp) {
+				    $('.content__wrap').html(resp);
 				},
 				error: function() {
-					// console.log('error')
+					console.error('error')
 				}
 
 			});
