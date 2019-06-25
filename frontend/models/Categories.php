@@ -34,11 +34,11 @@ class Categories extends \common\models\categories\Categories {
 
         if (($category['rgt'] - $category['lft']) > 1) {
             $node = self::find()->where(['id' => $category['id']])->one();
-            $firstChildren = $node->children(1)->all();
+            $firstChildren = $node->children(1)->andWhere('depth < 4')->all();
 
             foreach ($firstChildren as $firstChild) {
                 if (($firstChild['rgt'] - $firstChild['lft'] > 1)) {
-                    $secondChildren = $firstChild->children(1)->all();
+                    $secondChildren = $firstChild->children(1)->andWhere('depth < 4')->all();
                     foreach ($secondChildren as $secondChild) {
                         array_push($ids, $secondChild->id);
                     }

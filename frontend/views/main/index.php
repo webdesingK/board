@@ -35,20 +35,17 @@
         <div class="item__content">
             <a href="#" class="item__content-name"><?= $value['title'] ?></a>
             <p class="item__content-city"><?= $value['city'] ?></p>
-            <p class="item__content-price"><?= $value['price'] ?> руб.</p>
+            <p class="item__content-price"><?
+                            if (strlen($value['price']) > 3) {
+                                echo substr_replace($value['price'], '.', -3, 0);
+                            }
+                            else {
+                                echo $value['price'];
+                            }
+                ?> руб.</p>
             <p class="item__content-category"><?= $value['category']?></p>
         </div>
-        <!-- <a href="#" class="name-item"><?= $value['title'] ?></a>
-        <p class="item-city"><?= $value['city'] ?></p>
-        <p class="item-price"><?
-            if (strlen($value['price']) > 3) {
-                echo substr_replace($value['price'], '.', -3, 0);
-            }
-            else {
-                echo $value['price'];
-            }
-            ?> руб.</p>
-        <p class="item-category"><?= $value['category'] ?></p> -->
+
     </div>
 
 <? endforeach ?>
