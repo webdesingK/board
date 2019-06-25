@@ -345,8 +345,9 @@
 		overflow: hidden
 		position: relative
 		&:hover
-			.mini__slide-after:after
-				opacity: .5
+			.mini__slide
+				&:after
+					opacity: .5
 	&__content
 		padding-left: 10px
 		flex: 1 1
@@ -380,46 +381,55 @@
 .mini__slide
 	position: absolute
 	top: 0
-	right: 0
 	bottom: 0
-	left: 0
-	background: #fff
-	img
+	height: 100%
+	&:nth-child(1)
+		left: 0
+		img
+			z-index: 1
+			left: 0px 
+	&:after
+		content: ''
+		display: block
+		position: absolute
+		border-radius: 5px 5px 0 0
+		width: 95%
+		height: 6px
+		background: yellow
+		bottom: 0
+		left: 50%
+		margin-left: -47.5%
+		opacity: 0
+		z-index: 10
+	&:before
+		content: ''
 		width: 100%
-		+center-absolute
+		height: 100%
+		position: absolute
+		z-index: 10
+	&:hover
+		img
+			z-index: 2
+		&:after
+			opacity: 1!important
+	img
+		height: 150px
+		width: 200px
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
 .mini__slide-4
-	& > .mini__slide
-		& > .mini__slide-after
-			position: absolute
-			z-index: 10
-			top: 0
-			bottom: 0
-			height: 100%
-			width: 25%
-			&:after
-				content: ''
-				display: block
-				position: absolute
-				border-radius: 5px 5px 0 0
-				width: 95%
-				height: 8px
-				background: #fff
-				bottom: 0
-				left: 50%
-				margin-left: -47.5%
-				opacity: 0
-			&:hover
-				&:after
-					opacity: 1
-		&:nth-child(1)
-			& > .mini__slide-after
-				left: 0
+	.mini__slide
+		width: 100 / 4 * 1%
 		&:nth-child(2)
-			& > .mini__slide-after
-				left: 25%
+			left: 100 / 4 * 1%
+			img
+				left: -50px 
 		&:nth-child(3)
-			& > .mini__slide-after
-				left: 50%
+			left: 100 / 4 * 2%
+			img
+				left: -100px 
 		&:nth-child(4)
-			& > .mini__slide-after
-				left: 75%
+			left: 100 / 4 * 3%
+			img
+				left: -150px 
