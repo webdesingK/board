@@ -546,7 +546,7 @@
   position: relative;
 }
 
-.item__img:hover .mini__slide-after:after {
+.item__img:hover .mini__slide:after {
   opacity: .5;
 }
 
@@ -598,59 +598,82 @@
 .mini__slide {
   position: absolute;
   top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: #fff;
-}
-
-.mini__slide img {
-  width: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.mini__slide-4 > .mini__slide > .mini__slide-after {
-  position: absolute;
-  z-index: 10;
-  top: 0;
   bottom: 0;
   height: 100%;
-  width: 25%;
 }
 
-.mini__slide-4 > .mini__slide > .mini__slide-after:after {
+.mini__slide:nth-child(1) {
+  left: 0;
+}
+
+.mini__slide:nth-child(1) img {
+  z-index: 1;
+  left: 0px;
+}
+
+.mini__slide:after {
   content: '';
   display: block;
   position: absolute;
   border-radius: 5px 5px 0 0;
   width: 95%;
-  height: 8px;
-  background: #fff;
+  height: 6px;
+  background: yellow;
   bottom: 0;
   left: 50%;
   margin-left: -47.5%;
   opacity: 0;
+  z-index: 10;
 }
 
-.mini__slide-4 > .mini__slide > .mini__slide-after:hover:after {
-  opacity: 1;
+.mini__slide:before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
 }
 
-.mini__slide-4 > .mini__slide:nth-child(1) > .mini__slide-after {
-  left: 0;
+.mini__slide:hover img {
+  z-index: 2;
 }
 
-.mini__slide-4 > .mini__slide:nth-child(2) > .mini__slide-after {
+.mini__slide:hover:after {
+  opacity: 1 !important;
+}
+
+.mini__slide img {
+  height: 150px;
+  width: 200px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mini__slide-4 .mini__slide {
+  width: 25%;
+}
+
+.mini__slide-4 .mini__slide:nth-child(2) {
   left: 25%;
 }
 
-.mini__slide-4 > .mini__slide:nth-child(3) > .mini__slide-after {
+.mini__slide-4 .mini__slide:nth-child(2) img {
+  left: -50px;
+}
+
+.mini__slide-4 .mini__slide:nth-child(3) {
   left: 50%;
 }
 
-.mini__slide-4 > .mini__slide:nth-child(4) > .mini__slide-after {
+.mini__slide-4 .mini__slide:nth-child(3) img {
+  left: -100px;
+}
+
+.mini__slide-4 .mini__slide:nth-child(4) {
   left: 75%;
+}
+
+.mini__slide-4 .mini__slide:nth-child(4) img {
+  left: -150px;
 }

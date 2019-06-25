@@ -17,19 +17,15 @@
         <div class="item__img mini__slide-4">
             <div class="mini__slide">
                 <img src="/img/photo1.jpg" alt="">
-                <div class="mini__slide-after"></div>
             </div>
             <div class="mini__slide">
                 <img src="/img/photo2.jpg" alt="">
-                <div class="mini__slide-after"></div>
             </div>
             <div class="mini__slide">
                 <img src="/img/photo5.jpg" alt="">
-                <div class="mini__slide-after"></div>
             </div>
             <div class="mini__slide">
                 <img src="/img/photo3.jpg" alt="">
-                <div class="mini__slide-after"></div>
             </div>
         </div>
         <div class="item__content">

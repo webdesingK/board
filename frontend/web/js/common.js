@@ -272,6 +272,33 @@ $(document).ready(function() {
 					max: 12
 				};
 
+		window.addEventListener("popstate", function(e) {
+		    // Передаем текущий URL
+		    getContent(location.pathname, false);
+		});
+
+		// Функция загрузки контента
+		function getContent(url, addEntry) {
+
+			$.ajax({
+
+				type: 'GET',
+				url: url,
+				success: function(resp) {
+				    $('.content__wrap').html(resp);
+				},
+				error: function() {
+					console.error('error')
+				}
+			});
+
+      if(addEntry == true) {
+          // Добавляем запись в историю, используя pushState
+          history.pushState(null, null, url); 
+      }
+
+		};
+
 		function isNumber(value) {
 			let val = value.replace(/\s/g, '');
 			if (val == '') {
@@ -333,6 +360,7 @@ $(document).ready(function() {
 		};
 
 		btnFilter.on('click', function() {
+
 			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
 					check     = filterCheckbox(checkType).toLowerCase(),
 					locHref   = decodeURI(document.location.href),
@@ -357,20 +385,7 @@ $(document).ready(function() {
 				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + semicolon + check;
 			}
 
-			history.pushState('', '', url);
-
-			$.ajax({
-
-				type: 'GET',
-				url: url,
-				success: function(resp) {
-				    $('.content__wrap').html(resp);
-				},
-				error: function() {
-					console.error('error')
-				}
-
-			});
+			getContent(url, true);
 
 		});
 
