@@ -3,7 +3,7 @@
 $wrapper: 1365px
 $colums: 12
 $offset: 2.5%
-$max-min: min
+$max-min: max
 
 // smart-grid ======================================
 
@@ -48,6 +48,8 @@ $offset_one_side: ($offset / 2)
 
 =size($n)
     	width: $atom * $n - $offset
+=size-basis($n)
+    	flex-basis: $atom * $n - $offset
 
 =size-0($n)
     	width: $atom * $n
