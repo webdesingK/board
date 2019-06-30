@@ -1,12 +1,12 @@
 $(document).ready(function() {
 
 	// когда открыто меню при нажатии в любом месте кроме самого меню скрываем меню
-	function closeCLick(e, elements) {
+	function closeCLick(e, elements, btn) {
 		let div = elements; // тут указываем ID элемента
 		if (!div.is(e.target) // если клик был не по нашему блоку
 		    && div.has(e.target).length === 0) { // и не по его дочерним элементам
-				div.click(); // скрываем его
-		}
+				btn.click(); // скрываем его
+		} 
 	};
 
 	// menu
@@ -60,10 +60,10 @@ $(document).ready(function() {
 
 		$(document).mouseup(function (e){ // событие клика по веб-документу
 			if (menu.is(':visible')) {
-				closeCLick(e, $('.menu, #menu-btn'));
+				closeCLick(e, $('.menu, #menu-btn'), menuBtn);
 			}
 			if (city.is(':visible')) {
-				closeCLick(e, $('.city, #city-btn'));
+				closeCLick(e, $('.city, #city-btn'), cityBtn);
 			}
 		});
 
@@ -158,45 +158,38 @@ $(document).ready(function() {
 
 	});
 
-	// load line
-	$(function() {
-
-		var load        = $('.load'),
-				btn         = $('.btn-load'),
-				loadOpacity = $('.load-opacity'),
-				flag        = false,
-				options     = {
-					speedStart: 300,
-					speedJump: 20,
-					speedEnd: 300
-				};
-
-		function loads() {
-			let set = setInterval(setLoads, options.speedStart + options.speedJump),
-					i   = 1;
-			function setLoads() {
-				if (flag) return clearInterval(set);
-				loadOpacity.show().removeClass('none');
-				load.animate({
-					width: i * 10 + '%'
-				}, options.speedStart, 'linear');
-				if(i <= 7) i++;
+	var load        = $('.load'),
+			loadOpacity = $('.load-opacity'),
+			flagLoad        = false,
+			options     = {
+				speedStart: 300,
+				speedJump: 20,
+				speedEnd: 800
 			};
-		};
 
-		function endLoads() {
-			flag = true;
+	function loads() {
+		let set = setInterval(setLoads, options.speedStart + options.speedJump),
+				i   = 1;
+		loadOpacity.show();
+		function setLoads() {
+			if (flagLoad) return clearInterval(set);
 			load.animate({
-				width: '100%'
-			}, options.speedEnd, function() {
-				load.css('width', '0%');
-				loadOpacity.hide();
-				flag = false;
-			});
+				width: i * 10 + '%'
+			}, options.speedStart, 'linear');
+			if(i <= 7) i++;
 		};
-		btn.on('click', loads);
+	};
 
-	});
+	function endLoads() {
+		flagLoad = true;
+		load.animate({
+			width: '100%'
+		}, options.speedEnd, function() {
+			load.css('width', '0%');
+			loadOpacity.hide();
+			flagLoad = false;
+		});
+	};
 
 	// tabs and js-none
 	function singleTab(event) {
@@ -219,9 +212,11 @@ $(document).ready(function() {
 	// filter работа с визуализацией
 	$(function() {
 
-		let categoryUl      = $('.content__filter-category ul'),
-				categoryFilter  = categoryUl.children(),
-		    typeFilter      = $('.content__filter-type p');
+		let categoryUl           = $('.content__filter-category ul'),
+				categoryFilter       = categoryUl.children(),
+		    countCategory        = $('.content__filter div'),
+		    btnCategory          = countCategory.not('.content__filter-price').children('p'),
+		    catFilters           = $('.content__filter').children(':not(.content__filter-category, .content__filter-btn)').find('ul');
 
 		categoryFilter.click(function(event) {
 
@@ -245,16 +240,32 @@ $(document).ready(function() {
 
 		});
 
-		typeFilter.click(singleTab);
+		btnCategory.click(singleTab);
 
 		$(document).mouseup(function (e){ // событие клика по веб-документу
 			if (categoryFilter.filter(':visible').length > 1) {
-				closeCLick(e, categoryFilter.filter('.active__filter-category'));
+				closeCLick(e, countCategory, categoryFilter.filter('.active__filter-category'));
 			}
+			catFilters.each(function() {
+
+				if ($(this).is(':visible')) {
+					closeCLick(e, countCategory, $(this).prev());
+				}
+
+			});
 		});
 
 		$(document).keyup(function(evt){
 			if (evt.keyCode == 27 && categoryFilter.filter(':visible').length > 1) categoryFilter.filter('.active__filter-category').click();// если меню открыто скрываем его
+			
+			catFilters.each(function() {
+
+				if ($(this).is(':visible')) {
+					$(this).prev().click();
+				}
+
+			});
+
 		});
 
 	});
@@ -272,20 +283,27 @@ $(document).ready(function() {
 					max: 12
 				};
 
-		window.addEventListener("popstate", function(e) {
-		    // Передаем текущий URL
-		    getContent(location.pathname, false);
-		});
+		function changeTitle() {
+
+			let url = decodeURI(location.pathname).slice(1).replace(/\/фильтры[^]*/gi, '');
+
+			let title = url;
+
+			$('title').text(decodeURI(title));
+
+		};
 
 		// Функция загрузки контента
 		function getContent(url, addEntry) {
-
+			loads();
+			changeTitle(url);
 			$.ajax({
 
 				type: 'GET',
 				url: url,
 				success: function(resp) {
-				    $('.content__wrap').html(resp);
+			    $('.content__wrap').html(resp);
+			    endLoads();
 				},
 				error: function() {
 					console.error('error')
@@ -298,6 +316,11 @@ $(document).ready(function() {
       }
 
 		};
+
+		window.addEventListener("popstate", function(e) {
+		    // Передаем текущий URL
+		    getContent(location.pathname, false);
+		});
 
 		function isNumber(value) {
 			let val = value.replace(/\s/g, '');
@@ -342,8 +365,9 @@ $(document).ready(function() {
 			}
 		};
 
-		function filterCheckbox(arr) {
+		function filterCheckbox(arr, index) {
 			let nameType = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + '=',
+					semicolon = '',
 					str      = '';
 
 			arr.each(function() {
@@ -351,9 +375,11 @@ $(document).ready(function() {
 					str += $(this).siblings('label').text() + ',';
 				}
 			});
-
 			if (str) {
-				return nameType + str.slice(0, -1);
+				if(index != 0 || priceMinMax()) {
+					semicolon = ';';
+				}
+				return semicolon + nameType + str.slice(0, -1);
 			} else{
 				return '';
 			}
@@ -362,16 +388,19 @@ $(document).ready(function() {
 		btnFilter.on('click', function() {
 
 			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
-					check     = filterCheckbox(checkType).toLowerCase(),
 					locHref   = decodeURI(document.location.href),
-					semicolon = '',
+			    arrFilter = $('.filter-js'),
+			    arrString = '',
 					url;
 
-			if (minMax || check) {
-				if (minMax && check) {
-					semicolon = ';';
-				}
-				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + semicolon + check;
+			arrFilter.each(function(index) {
+				
+				arrString += filterCheckbox($(this).find('input'), index).replace(/\([^]*/gi, '');
+
+			});
+
+			if (minMax || arrString) {
+				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + arrString;
 			} else {
 				return;
 			}
@@ -382,10 +411,12 @@ $(document).ready(function() {
 
 			if (/фильтры/gi.test(locHref)) {
 				url = url.replace(/\/фильтры[^]*/gi, '');
-				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + semicolon + check;
+				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + arrString;
 			}
+			url = url.replace(/\s/g, '-').toLowerCase();
+			console.log(url)	
 
-			getContent(url, true);
+			// getContent(url, true);
 
 		});
 

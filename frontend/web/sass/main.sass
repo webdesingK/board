@@ -189,9 +189,10 @@
 			& > a
 				padding: $third_a_padding_top_bottom_G $third_a_pr_G $third_a_padding_top_bottom_G $third_a_pl_G
 				font-weight: 200
-				letter-spacing: 2px
+				letter-spacing: 1px
 				font-size: $third_a_fs_G
 				color: $third_a_color
+				white-space: nowrap
 
 // city---------------------------------------------------
 #city-btn
@@ -231,21 +232,26 @@
 // content
 .multitype-filter
 	width: 100%
-	font: 18px sans-serif
+	font: 16px sans-serif
 	border: 1px solid #000
 	margin-top: 20px
 	background: lighten(silver, 20%)
+	padding: 5px 0
 	ul
 		max-height: 200px
 		overflow: auto
 		position: relative
 	li, p
-		line-height: 35px
 		padding: 0px 10px
 		cursor: pointer
+		display: flex
+		align-items: center
+		justify-content: space-between
 		span
 			line-height: inherit
 			float: right
+		label
+			flex: 1
 	a
 		line-height: inherit
 		display: inline-block
@@ -255,14 +261,10 @@
 			color: $link_color_G
 			text-shadow: 1px 1px 1px #333
 .active__filter-category
-	display: block!important
+	display: flex!important
 	position: relative
 	&:after
 		content: '➤'
-		display: inline-block
-		line-height: inherit
-		position: absolute
-		right: 10px
 .active__filter-open
 	&:after
 		content: '✔'
@@ -276,19 +278,11 @@
 	&__filter
 		+size(3)
 		+col
+		ul:not(:first-child)
+			display: none
 		&-category
 			li
 				display: none
-		&-type
-			ul
-				display: none
-				li
-					display: flex
-					align-items: center
-					label
-						flex: 1
-			input
-				float: right
 		&-price
 			text-align: center
 			p
@@ -309,6 +303,7 @@
 		+size(9)
 		+col
 		+flex
+		justify-content: center
 		&-header
 			border-bottom: 1px solid red
 			+size(12)
@@ -320,6 +315,7 @@
 			+size(12)
 			+col
 			+flex
+			justify-content: center
 			margin-top: 10px
 			padding: 10px
 			background: lighten(silver, 15%)
@@ -337,10 +333,12 @@
 		font-size: 25pt
 		cursor: pointer
 		color: blue
+$width_l: 250px
+$height_l: 200px
 .item
 	&__img
-		flex-basis: 200px
-		height: 150px
+		width: $width_l
+		height: $height_l
 		border: 1px solid red
 		overflow: hidden
 		position: relative
@@ -413,23 +411,101 @@
 		&:after
 			opacity: 1!important
 	img
-		height: 150px
-		width: 200px
+		height: $height_l
+		width: $width_l
 		position: absolute
 		top: 50%
 		transform: translateY(-50%)
+.count__photo
+	position: absolute
+	padding: 2px
+	z-index: 5
+	left: 5px
+	bottom: 13px
+	background: rgba(#000, .4)
+	border-radius: 5px
+	display: flex
+	align-items: flex-end
+	&-num
+		margin-left: 5px
+		color: #fff
+		font-weight: bold
+		font-family: sans-serif
+	img
+		width: 30px
+		display: block
+
+// function
+@function percent($numm)
+	@return percentage(1) / $numm
+
+@function left($numm, $list)
+	@return - (($width_l / $numm) * $list)
+
+
+.mini__slide-2
+	.mini__slide
+		width: percent(2)
+		&:nth-child(2)
+			left: percent(2)
+			img
+				left: left(2, 1) 
+.mini__slide-3
+	.mini__slide
+		width: percent(3)
+		&:nth-child(2)
+			left: percent(3)
+			img
+				left: left(3, 1) 
+		&:nth-child(3)
+			left: percent(3) * 2
+			img
+				left: left(3, 2)
 .mini__slide-4
 	.mini__slide
-		width: 100 / 4 * 1%
+		width: percent(4)
 		&:nth-child(2)
-			left: 100 / 4 * 1%
+			left: percent(4)
 			img
-				left: -50px 
+				left: left(4, 1) 
 		&:nth-child(3)
-			left: 100 / 4 * 2%
+			left: percent(4) * 2
 			img
-				left: -100px 
+				left: left(4, 2) 
 		&:nth-child(4)
-			left: 100 / 4 * 3%
+			left: percent(4) * 3
 			img
-				left: -150px 
+				left: left(4, 3) 
+.mini__slide-5
+	p
+		position: absolute
+		width: $width_l
+		text-align: center
+		background: rgba(#000, .7)
+		box-shadow: 0 0 0 $width_l rgba(#000, .7)
+		color: #fff
+		top: 50%
+		transform: translateY(-50%)
+		left: left(5, 4)
+	.mini__slide
+		width: percent(5)
+		&:nth-child(2)
+			left: percent(5)
+			img
+				left: left(5, 1) 
+		&:nth-child(3)
+			left: percent(5) * 2
+			img
+				left: left(5, 2) 
+		&:nth-child(4)
+			left: percent(5) * 3
+			img
+				left: left(5, 3)
+		&:nth-child(5)
+			background: #000
+			left: percent(5) * 4
+			img
+				left: left(5, 4) 
+		&:hover
+			p
+				z-index: 6
