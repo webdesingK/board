@@ -192,22 +192,22 @@ $(document).ready(function() {
 	};
 
 	// tabs and js-none
-	function singleTab(event) {
+	// function singleTab(event) {
 
-		let speed = 200,
-				arrow = true;
+	// 	let speed = 200,
+	// 			arrow = true;
+	// 			console.log($(this))
+	// 	if (event.data !== null) {
+	// 		if (event.data.arrow !== undefined) arrow = event.data.arrow
+	// 		if (event.data.speed !== undefined) speed = event.data.speed
+	// 	}
 
-		if (event.data !== null) {
-			if (event.data.arrow !== undefined) arrow = event.data.arrow
-			if (event.data.speed !== undefined) speed = event.data.speed
-		}
+	// 	if (arrow) {
+	// 		$(this).children('.arrow-open').toggleClass('arrow-close');
+	// 	}
 
-		if (arrow) {
-			$(this).children('.arrow-open').toggleClass('arrow-close');
-		}
-
-		$(this).next().slideToggle(speed);
-	};
+	// 	$(this).next().toggleClass('none');
+	// };
 
 	// filter работа с визуализацией
 	$(function() {
@@ -240,7 +240,12 @@ $(document).ready(function() {
 
 		});
 
-		btnCategory.click(singleTab);
+		btnCategory.click(function() {
+
+			// $(this).children().toggleClass('arrow-close');
+			$(this).next().toggleClass('none');
+
+		});
 
 		$(document).mouseup(function (e){ // событие клика по веб-документу
 			if (categoryFilter.filter(':visible').length > 1) {
@@ -365,21 +370,16 @@ $(document).ready(function() {
 			}
 		};
 
-		function filterCheckbox(arr, index) {
-			let nameType = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + '=',
-					semicolon = '',
-					str      = '';
-
+		function filterCheckbox(arr) {
+			let nameType  = arr.eq(0).parents('ul').siblings('p').text().slice(0, -1) + '=',
+					str       = '';
 			arr.each(function() {
 				if ($(this).prop('checked')) {
 					str += $(this).siblings('label').text() + ',';
 				}
 			});
 			if (str) {
-				if(index != 0 || priceMinMax()) {
-					semicolon = ';';
-				}
-				return semicolon + nameType + str.slice(0, -1);
+				return ';' + nameType + str.slice(0, -1);
 			} else{
 				return '';
 			}
@@ -390,13 +390,12 @@ $(document).ready(function() {
 			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
 					locHref   = decodeURI(document.location.href),
 			    arrFilter = $('.filter-js'),
+					semicolon = '',
 			    arrString = '',
 					url;
 
-			arrFilter.each(function(index) {
-				
-				arrString += filterCheckbox($(this).find('input'), index).replace(/\([^]*/gi, '');
-
+			arrFilter.each(function() {
+				arrString += semicolon + filterCheckbox($(this).find('input'));
 			});
 
 			if (minMax || arrString) {
@@ -414,9 +413,10 @@ $(document).ready(function() {
 				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + arrString;
 			}
 			url = url.replace(/\s/g, '-').toLowerCase();
-			console.log(url)	
+			url = url.replace(/фильтры\/[;]/gi, '');
+			url = url.replace(/(\[.*?\]|\(.*?\)) */gi, '');
 
-			// getContent(url, true);
+			getContent(url, true);
 
 		});
 

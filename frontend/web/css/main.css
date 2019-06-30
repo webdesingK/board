@@ -454,10 +454,6 @@ body {
   margin-right: 1.25%;
 }
 
-.content__filter ul:not(:first-child) {
-  display: none;
-}
-
 .content__filter-category li {
   display: none;
 }

@@ -11,7 +11,7 @@
         </div>
     </div>
 
-<? foreach ($adsData as $value): ?>
+<? foreach ($adsData as $key => $value): ?>
 
     <div class="content__wrap-item">
         <div class="item__img mini__slide-5">
