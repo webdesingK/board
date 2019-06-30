@@ -25,7 +25,6 @@ class MainController extends Controller {
         $get = Yii::$app->request->get();
         $url = urlParser::getArray($get);
 
-
         if ((isset($get['city']) && $get['city'] === 'Все-города') && !isset($get['category'])) $this->redirect('/', 301);
 
         if ((isset($url['city']) && $url['city'] == 'error') || (isset($url['category']) && $url['category'] == 'error')) {
@@ -43,7 +42,7 @@ class MainController extends Controller {
 
         return $this->render('index', [
             'url' => $url,
-            'adsData' => $adsData
+            'adsData' => $adsData,
         ]);
     }
 
