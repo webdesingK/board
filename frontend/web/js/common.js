@@ -390,12 +390,11 @@ $(document).ready(function() {
 			let minMax    = priceMinMax().replace(/\s/g, '').toLowerCase(),
 					locHref   = decodeURI(document.location.href),
 			    arrFilter = $('.filter-js'),
-					semicolon = '',
 			    arrString = '',
 					url;
 
 			arrFilter.each(function() {
-				arrString += semicolon + filterCheckbox($(this).find('input'));
+				arrString += filterCheckbox($(this).find('input'));
 			});
 
 			if (minMax || arrString) {
@@ -412,8 +411,9 @@ $(document).ready(function() {
 				url = url.replace(/\/фильтры[^]*/gi, '');
 				url = locHref.replace(/\/фильтры[^]*/gi, '') + '/фильтры/' + minMax + arrString;
 			}
+
 			url = url.replace(/\s/g, '-').toLowerCase();
-			url = url.replace(/фильтры\/[;]/gi, '');
+			url = url.replace(/(фильтры\/)(;)/, '$1');
 			url = url.replace(/(\[.*?\]|\(.*?\)) */gi, '');
 
 			getContent(url, true);
