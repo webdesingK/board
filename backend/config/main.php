@@ -17,8 +17,8 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
-						'baseUrl' => '/admin',
-						'enableCsrfValidation' => false,
+            'baseUrl' => '/админка',
+            'enableCsrfValidation' => false,
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -29,15 +29,15 @@ return [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                ],
+//            ],
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -45,7 +45,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<action>' => 'admin/<action>'
+                'мененджер-категорий' => 'admin/categories-manager',
+                'мененджер-городов' => 'admin/cities-manager'
             ],
         ],
     ],

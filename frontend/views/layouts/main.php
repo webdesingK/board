@@ -1,16 +1,11 @@
 <?php
 
-/* @var $this \yii\web\View */
-/* @var $content string */
-
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
+use yii\widgets\Breadcrumbs;
 
 AppAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -19,65 +14,142 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        .breadcrumbs {
+            margin: 5px;
+        }
+
+        .breadcrumbs li {
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Админка', 'url' => ['/admin']],
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
+<header class="header">
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
+    <div class="header__wrap">
+        <a href="/">Главная</a>
+        <a href="http://localhost:3000/админка">localhost-admin</a>
+        <a href="/админка">board-admin</a>
+        <div class="auth">
+            <p id="auth">Вход</p>
+            <!-- <div id="auth-user">⛑</div> -->
+            <div class="auth__user none">
+                <a href="#">Личный кабинет</a>
+                <a href="#">Выйти</a>
+            </div>
+            <div id="sign-in" class="none">
+                <p>Вход</p>
+                <form>
+                    <input type="text" placeholder="Электронная почта">
+                    <input type="text" placeholder="Пароль">
+                    <button>Войти</button>
+                </form>
+                <a href="#">BK</a>
+                <a href="#">ОД</a>
+                <hr>
+                <span>Регистрация</span>
+            </div>
+            <div id="sign-up" class="none">
+                <p>Регистрация</p>
+                <form>
+                    <input type="text" placeholder="Электронная почта">
+                    <input type="text" placeholder="Пароль">
+                    <input type="text" placeholder="Подтверждение пароля">
+                    <button>Зарегистрироваться</button>
+                </form>
+                <a href="#">BK</a>
+                <a href="#">ОД</a>
+                <hr>
+                <span>Вход</span>
+            </div>
+        </div>
+        <div id="menu-btn">Категории</div>
+        <div id="city-btn"><?= (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') ? $this->params['url']['city']['name'] : 'Местоположение' ?></div>
+        <nav class="menu none">
+            <div id='menu-close'>☒</div>
+            <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
+        </nav>
+        <nav class="city none">
+            <div id='city-close'>☒</div>
+            <div class="city__wrap">
+                <?= $this->render('//main/menu/cities', ['url' => $this->params['url']]) ?>
+            </div>
+        </nav>
+    </div>
+</header>
+<div class="load"></div>
+<div class="load-opacity none"></div>
+<!-- <div class="btn-load"></div> -->
+
+<!-- content -->
+<div class="content">
+    <div class="content__filter">
+        <? if (!empty($this->params['url']['category'])) echo $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
+<!--        <div class="content__filter-category">-->
+<!--            <p>lorem <span>></span></p>-->
+<!--            <ul id="filter-category" class="none">-->
+<!--                <li><a href="#">Lorem ipsum.</a></li>-->
+<!--                <li><a href="#">Iste, nihil.</a></li>-->
+<!--                <li><a href="#">Autem, quisquam.</a></li>-->
+<!--                <li><a href="#">Doloremque, ex.</a></li>-->
+<!--                <li><a href="#">Deserunt, laborum?</a></li>-->
+<!--                <li><a href="#">Reiciendis, animi!</a></li>-->
+<!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
+<!--                <li><a href="#">Quis, incidunt.</a></li>-->
+<!--                <li><a href="#">Neque, itaque.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--                <li><a href="#">Porro, nulla.</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div class="content__filter-type">-->
+<!--            <p>Тип <span>></span></p>-->
+<!--            <ul id="filter-type" class="none">-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="1">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="2">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="3">-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <label>text</label>-->
+<!--                    <input type="checkbox" data-id="4">-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+        <div class="content__filter-price">
+            <p>Цена</p>
+            <div class="price-filter">
+                <input type="text" placeholder="от">
+                <input type="text" placeholder="до">
+            </div>
+        </div>
+        <div class="content__filter-btn">Применить</div>
+    </div>
+    <div class="content__wrap">
         <?= $content ?>
     </div>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
+<?// dump($this->params['url'])?>
 <?php $this->endBody() ?>
 </body>
 </html>
