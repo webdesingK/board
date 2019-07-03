@@ -15,19 +15,19 @@
     <div class="content__wrap-item">
         <div class="item__img mini__slide-5">
             <div class="mini__slide">
-                <img src="/img/photo4.jpg" alt="">
+                <img src="/img/photo1.jpg" alt="">
             </div>
             <div class="mini__slide">
-                <img src="/img/photo5.jpg" alt="">
-            </div>
-            <div class="mini__slide">
-                <img src="/img/photo5.jpg" alt="">
+                <img src="/img/photo2.jpg" alt="">
             </div>
             <div class="mini__slide">
                 <img src="/img/photo3.jpg" alt="">
             </div>
             <div class="mini__slide">
                 <img src="/img/photo4.jpg" alt="">
+            </div>
+            <div class="mini__slide">
+                <img src="/img/photo5.jpg" alt="">
                 <p>ещё 3 фото</p>
             </div>
             <div class="count__photo">

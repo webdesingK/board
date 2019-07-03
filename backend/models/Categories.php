@@ -48,7 +48,7 @@ class Categories extends \common\models\categories\Categories {
             $dataForTable['active'] = 0;
         }
         if (self::load($dataForTable, '')) {
-            if (self::prependTo($parentNode)) {
+            if (self::appendTo($parentNode)) {
                 $lastId = self::find()->max('id');
                 array_push($this->postData['openedIds'], $lastId);
                 return true;

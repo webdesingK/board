@@ -45,7 +45,12 @@ use yii\helpers\Html;
                 }
 
                 echo Html::beginTag('div', ['class' => 'category__list-block']);
-                echo Html::tag('span', Html::encode($category['name']), ['class' => 'name-category']);
+                if ($category['id'] == 1) {
+                    echo Html::tag('span', Html::encode($category['name']) . ' (' . (count($categories) - 1) . ')', ['class' => 'name-category']);
+                }
+                else {
+                    echo Html::tag('span', $category['id'] . ' ' . Html::encode($category['name']), ['class' => 'name-category']);
+                }
                 echo Html::tag('span', '&plus;', ['class' => 'add-category', 'title' => 'Добавить новую категорию']);
                 echo Html::tag('span', '✎', ['class' => 'edit-category', 'title' => 'Редактирование названия категории']);
                 echo Html::tag('span', '✘', ['class' => 'del-category', 'title' => 'Удалить категорию и подкатегории']);
