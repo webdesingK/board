@@ -21,6 +21,10 @@ return [
                 ]
             ]
         ],
+        'filedb' => [
+            'class' => 'yii2tech\filedb\Connection',
+            'path' => '@app/data/static',
+        ],
     ],
     'language' => 'ru-RU',
     'timeZone' => 'Europe/Moscow'

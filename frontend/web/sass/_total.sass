@@ -1,6 +1,13 @@
-.none
+body 
+	overflow-y: scroll
+.none, .js-none
 	display: none!important
-
+.lvl-1
+	margin-left: $margin__left_G
+.lvl-2
+	margin-left: $margin__left_G * 2
+.lvl-3
+	margin-left: $margin__left_G * 3
 .load
 	width: 0
 	height: 2px
@@ -11,18 +18,16 @@
 	top: 0
 	display: inline-block
 .load-opacity
+	display: none
 	&:before
 		content: ''
-		display: block
-		position: absolute
+		position: fixed
 		z-index: 500
 		top: 0
 		left: 0
 		right: 0
 		bottom: 0
-		width: 100vw
-		height: 100vh
-		background: rgba(#000, .3)
+		background: rgba(#000, .5)
 .btn-load
 	width: 50px
 	height: 20px

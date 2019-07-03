@@ -7,4 +7,4 @@ RewriteRule ^админка(\/?.*)$ backend/web/$1 [L]
 #RewriteRule ^memcached(\/?.*)$ memcached/$1 [L]
 
 RewriteCond %{REQUEST_URI} ^/
-RewriteRule ^(\/?.*)$ frontend/web/$1 [L]
+RewriteRule (\/?.*) frontend/web/$1 [L]

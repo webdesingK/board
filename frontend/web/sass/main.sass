@@ -24,7 +24,6 @@
 	margin-top: 20px
 	margin-right: 50px
 	color: #fff
-	cursor: pointer
 	text-align: center
 	&__user
 		border: 1px solid white
@@ -62,8 +61,16 @@
 	left: 0
 	right: 0
 	border-radius: 10px
-	box-shadow: 0 0 0 5000px #fff
 	background: #ccc
+	box-shadow: 0 0 0 2000px #fff
+	&:after
+		content: ''
+		position: fixed
+		z-index: -1
+		left: 0
+		top: 0
+		right: 0
+		bottom: 0
 	p
 		margin-bottom: 15px
 		font-size: 25px
@@ -72,6 +79,8 @@
 		width: 100%
 		margin-bottom: 15px
 		padding: 5px 15px
+	button, span
+		cursor: pointer
 	& > a
 		font: bold 18px sans-serif
 		margin: 0px 10px
@@ -94,7 +103,7 @@
 	position: absolute
 	bottom: 0
 	left: 0
-	z-index: $index_2_G
+	z-index: $index_1_G
 	&:hover
 		color: $link_hover_color_G
 #menu-close
@@ -118,6 +127,7 @@
 	border: 2px solid rgba(#15E9DD, .4)
 	border-radius: 5px
 	background: #fff
+	display: none
 	a
 		width: 100%
 		display: inline-block
@@ -145,7 +155,7 @@
 		width: 100%
 		height: $height_menu_G
 		left: $menu_left_G
-		top: 0
+		top: 10px
 		padding-top: $second_top_G
 		display: flex
 		flex-wrap: wrap
@@ -178,11 +188,11 @@
 				background-image: linear-gradient(to right, rgba(#fff, 0), #fff 90%)
 			& > a
 				padding: $third_a_padding_top_bottom_G $third_a_pr_G $third_a_padding_top_bottom_G $third_a_pl_G
-				white-space: nowrap
 				font-weight: 200
-				letter-spacing: 2px
+				letter-spacing: 1px
 				font-size: $third_a_fs_G
 				color: $third_a_color
+				white-space: nowrap
 
 // city---------------------------------------------------
 #city-btn
@@ -220,87 +230,282 @@
 				color: green
 
 // content
+.multitype-filter
+	width: 100%
+	font: 16px sans-serif
+	border: 1px solid #000
+	margin-top: 20px
+	background: lighten(silver, 20%)
+	padding: 5px 0
+	ul
+		max-height: 200px
+		overflow: auto
+		position: relative
+	li, p
+		padding: 0px 10px
+		cursor: pointer
+		display: flex
+		align-items: center
+		justify-content: space-between
+		span
+			line-height: inherit
+			float: right
+		label
+			flex: 1
+	a
+		line-height: inherit
+		display: inline-block
+		width: 100%
+		color: #000
+		&:hover
+			color: $link_color_G
+			text-shadow: 1px 1px 1px #333
+.active__filter-category
+	display: flex!important
+	position: relative
+	&:after
+		content: '➤'
+.active__filter-open
+	&:after
+		content: '✔'
+		color: $link_color_G
+	a
+		color: $link_color_G
+.active
 .content
 	+wrap
 	+flex
 	&__filter
 		+size(3)
 		+col
+		ul:not(:first-child)
+			// display: none
 		&-category
-			width: 100%
-			font: 18px sans-serif
-			padding: 10px
-			border: 1px solid #000
-			margin-top: 20px
-			position: relative
-			p
-				cursor: pointer
-				span
-					float: right
-			ul
-				border: 1px solid #000
-				overflow: auto
-				height: 300px
-				position: absolute
-				padding: 10px
-				top: -1px
-				left: -1px
-				right: -1px
-				z-index: $index_1_G
-				background: lighten(silver, 15%)
-			a
-				color: #000
-		&-type
-			@extend .content__filter-category
-			input
-				float: right
-			ul
-				top: 100%
+			li
+				display: none
 		&-price
-			@extend .content__filter-category
+			text-align: center
 			p
 				margin-bottom: 5px
 				cursor: default
+				text-align: left
 			input
 				+size(6)
+				display: inline-block
 				padding: 5px 10px
+				margin-bottom: 15px
 		&-btn
-			@extend .content__filter-category
 			text-align: center
 			color: blue
 			cursor: pointer
+			padding: 10px
 	&__wrap
 		+size(9)
 		+col
+		+flex
+		justify-content: center
+		&-header
+			border-bottom: 1px solid red
+			+size(12)
+			+col
+			+flex
+			justify-content: space-between
+			padding: 10px
 		&-item
-			margin: 10px 0
-			width: 100%
-			min-height: 50px
-			padding: 10px 30px
+			+size(12)
+			+col
+			+flex
+			justify-content: center
+			margin-top: 10px
+			padding: 10px
 			background: lighten(silver, 15%)
 			border: 1px solid #000
 			a
 				font: bold 22px sans-serif
 				color: blue
 				text-transform: uppercase
-.item
-	&-city
+.square-wrap .content__wrap-item
+	+size(4)
+	justify-content: center
+.view
+	& > div
 		display: inline-block
-		float: right
-		font: bold 20px sans-serif
-		color: orange
-		text-transform: capitalize
-	&-price
+		font-size: 25pt
+		cursor: pointer
+		color: blue
+$width_l: 250px
+$height_l: 200px
+.item
+	&__img
+		width: $width_l
+		height: $height_l
+		border: 1px solid red
+		overflow: hidden
+		position: relative
+		&:hover
+			.mini__slide
+				&:after
+					opacity: .5
+	&__content
+		padding-left: 10px
+		flex: 1 1
+		+flex
+		&-city
+			margin-left: auto
+			font: bold 20px sans-serif
+			color: orange
+			text-transform: capitalize
+		&-price
+			width: 100%
+			text-align: right
+			margin: 10px 0
+			padding-right: 20px
+			color: #999
+			font: 20px sans-serif
+		&-category
+			font: 18px sans-serif
+			font-style: italic
+			letter-spacing: 2px
+			color: red
+			margin: auto 10px 10px
+.arrow-open
+	transform: rotate(0deg)
+	transition: transform .2s
+.arrow-close
+	transform: rotate(90deg)
+	transition: transform .2s	
+.price-filter input
+	text-align: right
+.mini__slide
+	position: absolute
+	top: 0
+	bottom: 0
+	height: 100%
+	&:nth-child(1)
+		left: 0
+		img
+			z-index: 1
+			left: 0px 
+	&:after
+		content: ''
+		display: block
+		position: absolute
+		border-radius: 5px 5px 0 0
+		width: 95%
+		height: 6px
+		background: yellow
+		bottom: 0
+		left: 50%
+		margin-left: -47.5%
+		opacity: 0
+		z-index: 10
+	&:before
+		content: ''
 		width: 100%
-		text-align: right
-		margin: 10px 0
-		padding-right: 20px
-		color: #999
-		font: 20px sans-serif
-	&-category
-		font: 18px sans-serif
-		font-style: italic
-		letter-spacing: 2px
-		color: red
-		margin: 10px
-				
+		height: 100%
+		position: absolute
+		z-index: 10
+	&:hover
+		img
+			z-index: 2
+		&:after
+			opacity: 1!important
+	img
+		height: $height_l
+		width: $width_l
+		position: absolute
+		top: 50%
+		transform: translateY(-50%)
+.count__photo
+	position: absolute
+	padding: 2px
+	z-index: 5
+	left: 5px
+	bottom: 13px
+	background: rgba(#000, .4)
+	border-radius: 5px
+	display: flex
+	align-items: flex-end
+	&-num
+		margin-left: 5px
+		color: #fff
+		font-weight: bold
+		font-family: sans-serif
+	img
+		width: 30px
+		display: block
+
+// function
+@function percent($numm)
+	@return percentage(1) / $numm
+
+@function left($numm, $list)
+	@return - (($width_l / $numm) * $list)
+
+
+.mini__slide-2
+	.mini__slide
+		width: percent(2)
+		&:nth-child(2)
+			left: percent(2)
+			img
+				left: left(2, 1) 
+.mini__slide-3
+	.mini__slide
+		width: percent(3)
+		&:nth-child(2)
+			left: percent(3)
+			img
+				left: left(3, 1) 
+		&:nth-child(3)
+			left: percent(3) * 2
+			img
+				left: left(3, 2)
+.mini__slide-4
+	.mini__slide
+		width: percent(4)
+		&:nth-child(2)
+			left: percent(4)
+			img
+				left: left(4, 1) 
+		&:nth-child(3)
+			left: percent(4) * 2
+			img
+				left: left(4, 2) 
+		&:nth-child(4)
+			left: percent(4) * 3
+			img
+				left: left(4, 3) 
+.mini__slide-5
+	p
+		position: absolute
+		width: $width_l
+		text-align: center
+		background: rgba(#000, .7)
+		box-shadow: 0 0 0 $width_l rgba(#000, .7)
+		color: #fff
+		top: 50%
+		transform: translateY(-50%)
+		left: left(5, 4)
+	.mini__slide
+		width: percent(5)
+		&:nth-child(2)
+			left: percent(5)
+			img
+				left: left(5, 1) 
+		&:nth-child(3)
+			left: percent(5) * 2
+			img
+				left: left(5, 2) 
+		&:nth-child(4)
+			left: percent(5) * 3
+			img
+				left: left(5, 3)
+		&:nth-child(5)
+			background: #000
+			left: percent(5) * 4
+			img
+				left: left(5, 4) 
+		&:hover
+			p
+				z-index: 6

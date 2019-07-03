@@ -8,10 +8,10 @@ class Categories extends \common\models\categories\Categories {
 
     static public function getChildrenOfRoot() {
         $root = self::find()->roots()->one();
-        return $root->children(1)->all();
+        return $root->children(1)->asArray()->all();
     }
 
-    public function getChildren($id) {
+    static public function getChildren($id) {
 
         $node = self::find()->where(['id' => $id])->one();
         $allChildren = $node->children()->all();
@@ -20,7 +20,7 @@ class Categories extends \common\models\categories\Categories {
 
         foreach ($allChildren as $key => $child) {
 
-            $children = $child->children()->all();
+            $children = $child->children()->andWhere('depth < 4')->all();
 
             if (!empty($children)) {
                 foreach ($children as $item) {

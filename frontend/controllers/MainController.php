@@ -8,6 +8,7 @@ use frontend\models\Ads;
 use frontend\models\Cities;
 use frontend\models\Categories;
 use yii\web\NotFoundHttpException;
+use frontend\components\urlParser;
 
 class MainController extends Controller {
 
@@ -22,45 +23,32 @@ class MainController extends Controller {
     public function actionIndex() {
 
         $get = Yii::$app->request->get();
-        $url = [];
+        $url = urlParser::getArray($get);
 
-        if (isset($get['city']) && $get['city'] === 'Все-города' && !isset($get['category'])) $this->redirect('/', 301);
+        if ((isset($get['city']) && $get['city'] === 'Все-города') && !isset($get['category'])) $this->redirect('/', 301);
 
-        $citiesUrl = Cities::getUrls();
-        array_unshift($citiesUrl, 'Все-города');
-        $categoriesUrl = Categories::getUrls();
-
-        if (isset($get['city']) && !in_array($get['city'], $citiesUrl, true) || isset($get['category']) && !in_array($get['category'], $categoriesUrl, true)) {
+        if ((isset($url['city']) && $url['city'] == 'error') || (isset($url['category']) && $url['category'] == 'error')) {
             throw new NotFoundHttpException();
         }
 
-        if (isset($get['city'])) {
-            if ($get['city'] == 'Все-города') {
-                $url['city'] = [
-                    'name' => 'Все города',
-                    'url' => 'Все-города'
-                ];
-            }
-            else {
-                $url['city'] = [
-                    'name' => Cities::getNameByUrl($get['city']),
-                    'url' => $get['city']
-                ];
-            }
-        }
+        $adsData = Ads::getAdsData($url);
 
-        if (isset($get['category'])) {
-            $url['category'] = [
-                'name' => Categories::getNameByUrl($get['category']),
-                'url' => $get['category'],
-            ];
+        if (Yii::$app->request->isAjax) {
+            return $this->renderPartial('index', [
+                'url' => $url,
+                'adsData' => $adsData
+            ]);
         }
 
         return $this->render('index', [
-            'url' => $url
+            'url' => $url,
+            'adsData' => $adsData,
         ]);
     }
 
+    public function actionFilters() {
+
+    }
 
 }
 

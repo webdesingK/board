@@ -10,41 +10,66 @@ class Categories extends \common\models\categories\Categories {
 
     static public function getAllData() {
         return Yii::$app->cache->getOrSet('categoryMenuAllData', function () {
-            return self::find()->select(['id','depth', 'active', 'name', 'url'])->where('active = 1')->andWhere('id > 1')->orderBy('lft ASC')->asArray()->all();
+            return self::find()->where('active = 1')->andWhere('id > 1')->andWhere('depth < 4')->orderBy('lft ASC')->asArray()->all();
         });
     }
 
-    static public function getUrls() {
-        return ArrayHelper::getColumn(self::getAllData(), 'url');
+    static public function getParentById($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        return $node->parents(1)->select(['name', 'url', 'depth'])->asArray()->one();
     }
 
-    static public function getNameByUrl($url) {
-        return self::find()->select('name')->where('url = :url', [':url' => $url])->one()->name;
-    }
-
-    static public function getParentByName($name, $lvl) {
-        $node = self::find()->where(['name' => $name])->one();
-        return $node->parents($lvl)->select(['name', 'url'])->andWhere('id > 1')->asArray()->all();
-    }
-
-    static public function getChildrenByName($name) {
-        $node = self::find()->where(['name' => $name])->one();
-        return $node->children(1)->select(['name', 'url'])->asArray()->all();
-    }
-
-    static public function getDepthByName($name) {
-        return self::find()->select('depth')->where(['name' => $name])->one()->depth;
-    }
-
-    static public function getParentIdByName($name) {
-        return self::find()->select('parent_id')->where(['name' => $name])->one()->parent_id;
+    static public function getChildrenById($id, $lvl) {
+        $node = self::find()->where(['id' => $id])->one();
+        return $node->children($lvl)->andWhere('depth < 4')->asArray()->all();
     }
 
     static public function getSiblingNodesByParentId($parentId) {
-        return self::find()->select(['name', 'url'])->where(['parent_id' => $parentId])->asArray()->all();
+        return self::find()->select(['name', 'url', 'depth'])->where(['parent_id' => $parentId])->orderBy('lft ASC')->asArray()->all();
     }
 
-    static public function getIdByName($name) {
-        return self::find()->select('id')->where(['name' => $name])->asArray()->one()['id'];
+    static public function getChildrenIds($category) {
+
+        $ids = [];
+
+        if (($category['rgt'] - $category['lft']) > 1) {
+            $node = self::find()->where(['id' => $category['id']])->one();
+            $firstChildren = $node->children(1)->andWhere('depth < 4')->all();
+
+            foreach ($firstChildren as $firstChild) {
+                if (($firstChild['rgt'] - $firstChild['lft'] > 1)) {
+                    $secondChildren = $firstChild->children(1)->andWhere('depth < 4')->all();
+                    foreach ($secondChildren as $secondChild) {
+                        array_push($ids, $secondChild->id);
+                    }
+                }
+                else {
+                    array_push($ids, $firstChild->id);
+                }
+            }
+
+        }
+
+        return $ids;
     }
+
+    static public function getParentId($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        $parent = $node->parents()->select('id')->andWhere('depth = 1')->one();
+
+        if ($parent === null) {
+            $parentId = (int)$id;
+        }
+        else {
+            $parentId = $parent->id;
+        }
+
+        return $parentId;
+    }
+
+    static public function getTypes($id) {
+        $node = self::find()->where(['id' => $id])->one();
+        return $node->children(1)->asArray()->all();
+    }
+
 }

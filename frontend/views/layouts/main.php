@@ -1,8 +1,8 @@
 <?php
-
 use yii\helpers\Html;
 use frontend\assets\AppAsset;
 use yii\widgets\Breadcrumbs;
+use yii2tech\filedb\Query;
 
 AppAsset::register($this);
 
@@ -16,25 +16,16 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <style>
-        .breadcrumbs {
-            margin: 5px;
-        }
-
-        .breadcrumbs li {
-            display: inline-block;
-        }
-    </style>
 </head>
 <body>
 <?php $this->beginBody() ?>
-
 <header class="header">
 
     <div class="header__wrap">
         <a href="/">Главная</a>
         <a href="http://localhost:3000/админка">localhost-admin</a>
         <a href="/админка">board-admin</a>
+        <a href="/memcached" target="_blank">memcached</a>
         <div class="auth">
             <p id="auth">Вход</p>
             <!-- <div id="auth-user">⛑</div> -->
@@ -68,13 +59,26 @@ AppAsset::register($this);
                 <span>Вход</span>
             </div>
         </div>
-        <div id="menu-btn">Категории</div>
-        <div id="city-btn"><?= (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') ? $this->params['url']['city']['name'] : 'Местоположение' ?></div>
-        <nav class="menu none">
+        <div id="menu-btn">категории</div>
+        <div id="city-btn">
+            <?
+            if (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') {
+                echo $this->params['url']['city']['name'];
+                echo "\t";
+                $linkUrl = empty($this->params['url']['category']['url']) ? '/' : '/Все-города/' . $this->params['url']['category']['url'];
+                echo Html::a('X', $linkUrl);
+            }
+            else {
+                echo 'Местоположение';
+            }
+            ?>
+        </div>
+
+        <nav class="menu">
             <div id='menu-close'>☒</div>
             <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
         </nav>
-        <nav class="city none">
+        <nav class="city">
             <div id='city-close'>☒</div>
             <div class="city__wrap">
                 <?= $this->render('//main/menu/cities', ['url' => $this->params['url']]) ?>
@@ -83,73 +87,133 @@ AppAsset::register($this);
     </div>
 </header>
 <div class="load"></div>
-<div class="load-opacity none"></div>
-<!-- <div class="btn-load"></div> -->
+<div class="load-opacity"></div>
 
 <!-- content -->
 <div class="content">
     <div class="content__filter">
-        <? if (!empty($this->params['url']['category'])) echo $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-<!--        <div class="content__filter-category">-->
-<!--            <p>lorem <span>></span></p>-->
-<!--            <ul id="filter-category" class="none">-->
-<!--                <li><a href="#">Lorem ipsum.</a></li>-->
-<!--                <li><a href="#">Iste, nihil.</a></li>-->
-<!--                <li><a href="#">Autem, quisquam.</a></li>-->
-<!--                <li><a href="#">Doloremque, ex.</a></li>-->
-<!--                <li><a href="#">Deserunt, laborum?</a></li>-->
-<!--                <li><a href="#">Reiciendis, animi!</a></li>-->
-<!--                <li><a href="#">Expedita, consequuntur.</a></li>-->
-<!--                <li><a href="#">Quis, incidunt.</a></li>-->
-<!--                <li><a href="#">Neque, itaque.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--                <li><a href="#">Porro, nulla.</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--        <div class="content__filter-type">-->
-<!--            <p>Тип <span>></span></p>-->
-<!--            <ul id="filter-type" class="none">-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="1">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="2">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="3">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label>text</label>-->
-<!--                    <input type="checkbox" data-id="4">-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-        <div class="content__filter-price">
+        <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
+        <?
+            if (isset($this->params['url']['category']) && $this->params['url']['category']['depth'] == 3) {
+                if (($this->params['url']['category']['rgt'] - $this->params['url']['category']['lft']) > 1) {
+                    echo $this->render('//main/filter/type', ['url' => $this->params['url']]);
+                }
+            }
+
+        ?>
+        <div class="filter-js multitype-filter">
+            <p>Размер<span class="arrow-open">➤</span></p>
+            <ul class="none">
+                <li>
+                    <label for="womens-40_42">40-42(XS)</label>
+                    <input type="checkbox" id="womens-40_42">
+                </li>
+                <li>
+                    <label for="womens-42_44">42-44(S)</label>
+                    <input type="checkbox" id="womens-42_44">
+                </li>
+                <li>
+                    <label for="womens-44_46">44-46(M)</label>
+                    <input type="checkbox" id="womens-44_46">
+                </li>
+                <li>
+                    <label for="womens-46_48">46-48(L)</label>
+                    <input type="checkbox" id="womens-46_48">
+                </li>
+                <li>
+                    <label for="womens-48_50">48-50(XL)</label>
+                    <input type="checkbox" id="womens-48_50">
+                </li>
+                <li>
+                    <label for="womens-50_52">50-52(XXL)</label>
+                    <input type="checkbox" id="womens-50_52">
+                </li>
+                <li>
+                    <label for="womens-52_54">52-54(XXXL) и больше</label>
+                    <input type="checkbox" id="womens-52_54">
+                </li>
+            </ul>
+        </div>
+        <div class="filter-js multitype-filter">
+            <p>Размер<span class="arrow-open">➤</span></p>
+            <ul class="none">
+                <li>
+                    <label for="womens-40_42">40-42(XS)</label>
+                    <input type="checkbox" id="womens-40_42">
+                </li>
+                <li>
+                    <label for="womens-42_44">42-44(S)</label>
+                    <input type="checkbox" id="womens-42_44">
+                </li>
+                <li>
+                    <label for="womens-44_46">44-46(M)</label>
+                    <input type="checkbox" id="womens-44_46">
+                </li>
+                <li>
+                    <label for="womens-46_48">46-48(L)</label>
+                    <input type="checkbox" id="womens-46_48">
+                </li>
+                <li>
+                    <label for="womens-48_50">48-50(XL)</label>
+                    <input type="checkbox" id="womens-48_50">
+                </li>
+                <li>
+                    <label for="womens-50_52">50-52(XXL)</label>
+                    <input type="checkbox" id="womens-50_52">
+                </li>
+                <li>
+                    <label for="womens-52_54">52-54(XXXL) и больше</label>
+                    <input type="checkbox" id="womens-52_54">
+                </li>
+            </ul>
+        </div>
+        <div class="filter-js multitype-filter">
+            <p>Размер<span class="arrow-open">➤</span></p>
+            <ul class="none">
+                <li>
+                    <label for="womens-40_42">40-42(XS)</label>
+                    <input type="checkbox" id="womens-40_42">
+                </li>
+                <li>
+                    <label for="womens-42_44">42-44(S)</label>
+                    <input type="checkbox" id="womens-42_44">
+                </li>
+                <li>
+                    <label for="womens-44_46">44-46(M)</label>
+                    <input type="checkbox" id="womens-44_46">
+                </li>
+                <li>
+                    <label for="womens-46_48">46-48(L)</label>
+                    <input type="checkbox" id="womens-46_48">
+                </li>
+                <li>
+                    <label for="womens-48_50">48-50(XL)</label>
+                    <input type="checkbox" id="womens-48_50">
+                </li>
+                <li>
+                    <label for="womens-50_52">50-52(XXL)</label>
+                    <input type="checkbox" id="womens-50_52">
+                </li>
+                <li>
+                    <label for="womens-52_54">52-54(XXXL) и больше</label>
+                    <input type="checkbox" id="womens-52_54">
+                </li>
+            </ul>
+        </div>
+        <div class="content__filter-price multitype-filter">
             <p>Цена</p>
             <div class="price-filter">
-                <input type="text" placeholder="от">
-                <input type="text" placeholder="до">
+                <input id="price__filter-min" type="text" placeholder="от">
+                <input id="price__filter-max" type="text" data-max="7777777777" placeholder="до">
             </div>
         </div>
-        <div class="content__filter-btn">Применить</div>
+        <div class="content__filter-btn multitype-filter">Применить</div>
     </div>
     <div class="content__wrap">
         <?= $content ?>
     </div>
 </div>
-<?// dump($this->params['url'])?>
+
 <?php $this->endBody() ?>
 </body>
 </html>
