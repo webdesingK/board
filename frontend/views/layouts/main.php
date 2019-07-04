@@ -74,7 +74,7 @@ AppAsset::register($this);
             ?>
         </div>
 
-        <nav class="menu">
+        <nav class="menu none">
             <div id='menu-close'>☒</div>
             <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
         </nav>
@@ -91,7 +91,7 @@ AppAsset::register($this);
 
 <!-- content -->
 <div class="content">
-    <div class="content__filter">
+    <div class="content__filter" id="filter">
         <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
         <?
             if (isset($this->params['url']['category']) && $this->params['url']['category']['depth'] == 3) {

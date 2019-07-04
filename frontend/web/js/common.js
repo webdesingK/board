@@ -31,15 +31,7 @@ $(document).ready(function() {
 		// при загрузке страницы запускаем функцию скрытия категорий 2 уровня
 		hideSubMenu($('.menu__first li:not(:first) .menu__second'));// передаем в аргумент все категории 2 уровня кроме первого
 
-		// функция для плавного открытия и закрытия меню
-		function clickMenuBtn() {
-			menu.slideToggle('slow', function() {// callback функция 
-				hideSubMenu($('.menu__second'));// скрываем все категории второго уровня
-				$(this).find('.menu__second:first').show();// открываем самую первую категорию второго уровня 
-			});
-		};
-
-		menuBtn.on('click', clickMenuBtn);// клик на кнопку меню вызывает функцию скрытия(открытия) меню
+		// menuBtn.on('click', clickMenuBtn);// клик на кнопку меню вызывает функцию скрытия(открытия) меню
 		
 		// функция для плавного открытия и закрытия меню городов
 		function clickCityBtn() {
@@ -69,8 +61,6 @@ $(document).ready(function() {
 
 		// при нажатии на esc делаем проверки и отрабатываем функционал
 		$(document).keyup(function(evt){
-			if (evt.keyCode == 27 && menu.is(':visible')) menuBtn.click();// если меню открыто скрываем его
-			if (evt.keyCode == 27 && city.is(':visible')) cityBtn.click();// если меню городов открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-in').is(':visible')) $('#sign-in').addClass('none');// если окно попап входа открыто скрываем его
 			if (evt.keyCode == 27 && $('#sign-up').is(':visible')) $('#sign-up').addClass('none');// если окно попап регистрации открыто скрываем его
 		});
@@ -191,23 +181,6 @@ $(document).ready(function() {
 		});
 	};
 
-	// tabs and js-none
-	// function singleTab(event) {
-
-	// 	let speed = 200,
-	// 			arrow = true;
-	// 			console.log($(this))
-	// 	if (event.data !== null) {
-	// 		if (event.data.arrow !== undefined) arrow = event.data.arrow
-	// 		if (event.data.speed !== undefined) speed = event.data.speed
-	// 	}
-
-	// 	if (arrow) {
-	// 		$(this).children('.arrow-open').toggleClass('arrow-close');
-	// 	}
-
-	// 	$(this).next().toggleClass('none');
-	// };
 
 	// filter работа с визуализацией
 	$(function() {
@@ -240,37 +213,11 @@ $(document).ready(function() {
 
 		});
 
-		btnCategory.click(function() {
-
-			// $(this).children().toggleClass('arrow-close');
-			$(this).next().toggleClass('none');
-
-		});
-
 		$(document).mouseup(function (e){ // событие клика по веб-документу
 			if (categoryFilter.filter(':visible').length > 1) {
 				closeCLick(e, countCategory, categoryFilter.filter('.active__filter-category'));
 			}
-			catFilters.each(function() {
-
-				if ($(this).is(':visible')) {
-					closeCLick(e, countCategory, $(this).prev());
-				}
-
-			});
-		});
-
-		$(document).keyup(function(evt){
-			if (evt.keyCode == 27 && categoryFilter.filter(':visible').length > 1) categoryFilter.filter('.active__filter-category').click();// если меню открыто скрываем его
 			
-			catFilters.each(function() {
-
-				if ($(this).is(':visible')) {
-					$(this).prev().click();
-				}
-
-			});
-
 		});
 
 	});
@@ -438,4 +385,123 @@ $(document).ready(function() {
 
 	});
 
+});
+
+function Tabs(options) {
+
+	let arrNode      = options.arrNodeClick,
+			nodeNotHide  = options.nodeNotHide,
+			nodeHide     = options.nodeHide;
+
+
+	this.toggleBlock = function(obj) {
+
+		let arrow        = obj.arrow || false,
+				animClass    = options.animClass || 'none';
+		function toggleClass(el, ind) {
+			obj.nodeHide[ind].classList.toggle(animClass);
+			if (typeof arrow === 'string' || arrow instanceof String) {
+				el.firstElementChild.classList.toggle(arrow);
+			}
+		}
+
+		for (let i = 0; i < obj.arrNode.length; i++) {
+			obj.arrNode[i].addEventListener('click', function() {
+				toggleClass(this, i)
+			});
+		}
+
+	};
+
+	// глобальная функция для скрытия элементов при клике на esc
+	this.esc = function(obj) {// с обьектом содержащих два обезательных аргумента
+		
+		document.addEventListener('keyup', function(e) {// при клике на любую кнопку на клавиатуре
+			if (e.keyCode == 27) {// если клик был на esc
+				for (let i = 0; i < obj.nodeHide.length; i++) {// запускаем цикл с длиной массива передающего в обьект массива
+					if (obj.nodeHide[i].offsetHeight > 0) {// если один из этих элеметов массива открыт(тоесть высота больше 0)
+						obj.nodeClick[i].click();// тогда производим клик(и) по элементу(там) передаваемого(мых) в обьекте
+					}
+				}		
+			}
+		});
+
+	}
+
+	document.addEventListener('mouseup', function(e) {
+
+		function parent(el) {
+			let bool = false;
+			for (var i = 0; i < el.getElementsByTagName('*').length; i++) {
+				if (e.target == el.getElementsByTagName('*')[i]) {
+					bool = true;
+					break;
+				}
+			}
+			return bool;
+		}
+
+		function close(el) {
+			let bool = true;
+			for (let i = 0; i < el.length; i++) {
+				if (e.target == el[i] || parent(el[i])) {
+					bool = false;
+					break;
+				}
+			}
+			return bool;
+		}
+
+		if (close(nodeNotHide)) {
+			for (let i = 0; i < arrNode.length; i++) {
+				if (nodeHide[i].offsetHeight > 0) {
+					arrNode[i].click();
+				}
+			}
+		}
+
+	});
+};
+
+let tab = new Tabs({
+	arrNodeClick: document.querySelector('#filter').querySelectorAll('.filter-js p'),
+	nodeNotHide: document.querySelectorAll('.multitype-filter'),
+	nodeHide: document.querySelectorAll('.filter-js ul')
+});
+
+// вызываем при клике функцию скрытия открытия блоков фильтров
+tab.toggleBlock({
+	nodeHide: document.querySelectorAll('.filter-js ul'),// элементы которые нужно анимировать или просто скрывать
+	arrNode: document.querySelector('#filter').querySelectorAll('.filter-js p'),// элементы на которые кликаем
+	arrow: 'arrow-close'// анимируем стрелку если она есть
+});
+
+// вызываем при клике функцию скрытия открытия блоков фильтров
+tab.toggleBlock({
+	nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно анимировать или просто скрывать
+	arrNode: document.querySelectorAll('#menu-btn')// элементы на которые кликаем
+});
+
+// при клике на esc скрываем блоки с фильтрами
+tab.esc({
+	nodeHide: document.querySelectorAll('.filter-js ul'),// элементы которые нужно скрывать
+	nodeClick: document.querySelector('#filter').querySelectorAll('.filter-js p')// элементы на которые нужно кликать
+});
+
+// при клике на esc скрываем блок с подкатегориями
+tab.esc({
+	nodeHide: document.querySelectorAll('.content__filter-category li:not(.active__filter-category)'),// элементы которые нужно скрывать
+	nodeClick: document.querySelectorAll('.active__filter-category')// элементы на которые нужно кликать
+});
+
+// при клике на esc скрываем блок с меню
+tab.esc({
+	nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно скрывать
+	nodeClick: document.querySelectorAll('#menu-btn')// элементы на которые нужно кликать
+});
+
+// при клике на esc скрываем блок с городами
+tab.esc({
+	nodeHide: document.querySelectorAll('.city'),// элементы которые нужно скрывать
+	nodeClick: document.querySelectorAll('#city-btn')// элементы на которые нужно кликать
 });
