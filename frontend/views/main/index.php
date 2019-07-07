@@ -2,13 +2,13 @@
 
 //dump($url);
 
-use yii2tech\filedb\Query;
+// use yii2tech\filedb\Query;
 
-$fdb = new Query();
+// $fdb = new Query();
 
-$res = $fdb->from('User')->all();
+// $res = $fdb->from('User')->all();
 
-dump($res);
+// dump($url);
 
 ?>
 

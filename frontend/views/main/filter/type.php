@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use frontend\models\Categories;
 use console\components\Translate;
 
-echo Html::beginTag('div', ['class' => 'content__filter-type multitype-filter']);
+echo Html::beginTag('div', ['class' => 'filter-js multitype-filter']);
 echo Html::tag('p', 'Тип' . Html::tag('span', '➤', ['class' => 'arrow-open']));
 echo Html::beginTag('ul');
 
