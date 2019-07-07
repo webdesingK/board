@@ -8,7 +8,7 @@ echo Html::beginTag('div', ['class' => 'filter-js multitype-filter']);
 echo Html::tag('p', 'Тип' . Html::tag('span', '➤', ['class' => 'arrow-open']));
 echo Html::beginTag('ul', ['class' => 'none']);
 
-$types = Categories::getTypes($url['category']['id']);
+$types = Categories::getTypes($url['currentCategory']);
 
 foreach ($types as $type) {
     $label = Html::tag('label', $type['name'], ['for' => Translate::translateRuToEn($type['name'])]);

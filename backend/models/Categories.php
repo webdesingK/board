@@ -20,9 +20,10 @@ class Categories extends \common\models\categories\Categories {
 
     public function rules() {
         return [
-            [['name','url', 'parent_id'], 'required'],
-            [['name', 'url'], 'string'],
-            [['parent_id', 'active'], 'integer'],
+            ['name', 'required'],
+            ['name', 'string'],
+            ['active', 'integer'],
+            [['shortUrl'], 'safe']
         ];
     }
 
@@ -37,18 +38,33 @@ class Categories extends \common\models\categories\Categories {
      */
 
     public function createNode() {
+
+        $parentNode = self::find()->where('id = :id')->addParams([':id' => $this->postData['id']])->one();
+
+        $shortUrl = preg_replace('/\s/', '-', $this->postData['name']);
+
+        if ($parentNode->depth == 0) {
+            $fullUrl = '/' . $shortUrl;
+        }
+        elseif ($parentNode->depth < 3) {
+            $fullUrl = $parentNode->fullUrl . '/' . $shortUrl;
+        }
+        else {
+            $shortUrl = null;
+            $fullUrl = null;
+        }
+
         $dataForTable = [
-            'parent_id' => $this->postData['id'],
             'name' => $this->postData['name'],
-            'url' => preg_replace('/\s/', '-', $this->postData['name']),
+//            'fullUrl' => $fullUrl,
+            'shortUrl' => $shortUrl,
             'active' => 1
         ];
-        $parentNode = self::find()->where(['id' => $dataForTable['parent_id']])->one();
         if ($parentNode->active == 0) {
             $dataForTable['active'] = 0;
         }
         if (self::load($dataForTable, '')) {
-            if (self::prependTo($parentNode)) {
+            if (self::appendTo($parentNode)) {
                 $lastId = self::find()->max('id');
                 array_push($this->postData['openedIds'], $lastId);
                 return true;
@@ -143,7 +159,7 @@ class Categories extends \common\models\categories\Categories {
 
     public function createArray() {
 
-        $allCategories = self::find()->select(['id', 'parent_id', 'depth', 'name', 'active'])->orderBy('lft ASC')->asArray()->all();
+        $allCategories = self::find()->select(['id', 'depth', 'name', 'active'])->orderBy('lft ASC')->asArray()->all();
 
         foreach ($allCategories as $key => $category) {
 

@@ -36,4 +36,12 @@ class Categories extends \common\models\categories\Categories {
         return $ids;
     }
 
+    static public function getAll() {
+        return self::find()->where('id > 0')->all();
+    }
+
+    static public function getParent($node) {
+        return $node->parents(1)->one();
+    }
+
 }

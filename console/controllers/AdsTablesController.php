@@ -172,6 +172,7 @@ class AdsTablesController extends Controller {
             echo $this->ansiFormat(" Нет значения \n", Console::FG_RED);
             return 1;
         }
+        Console::showCursor();
     }
 
     public function actionDeleteTables() {
@@ -220,6 +221,7 @@ class AdsTablesController extends Controller {
             echo " Нет таблиц для удаления .";
             return 1;
         }
+        Console::showCursor();
     }
 
     public function getTableNames() {

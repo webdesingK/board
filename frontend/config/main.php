@@ -44,8 +44,10 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '<city:[а-яА-Я\-]+>' => 'main/index',
-                '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>' => 'main/index',
-                '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>/фильтры/<filters>' => 'main/index',
+                '<city:[а-яА-Я\-]+>/<categoryFirstLvl:[а-яА-Я\-]+>' => 'main/index',
+                '<city:[а-яА-Я\-]+>/<categoryFirstLvl:[а-яА-Я\-]+>/<categorySecondLvl:[а-яА-Я\-]+>' => 'main/index',
+                '<city:[а-яА-Я\-]+>/<categoryFirstLvl:[а-яА-Я\-]+>/<categorySecondLvl:[а-яА-Я\-]+>/<categoryThirdLvl:[а-яА-Я\-]+>' => 'main/index',
+//                '<city:[а-яА-Я\-]+>/<category:[\dа-яА-Я\-]+>/фильтры/<filters>' => 'main/index',
             ],
         ],
     ],
