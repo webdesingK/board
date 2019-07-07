@@ -44,6 +44,7 @@ AppAsset::register($this);
                 <a href="#">ОД</a>
                 <hr>
                 <span>Регистрация</span>
+                <div class="close-sign">☒</div>
             </div>
             <div id="sign-up" class="none">
                 <p>Регистрация</p>
@@ -57,10 +58,11 @@ AppAsset::register($this);
                 <a href="#">ОД</a>
                 <hr>
                 <span>Вход</span>
+                <div class="close-sign">☒</div>
             </div>
         </div>
-        <div id="menu-btn">категории</div>
-        <div id="city-btn">
+        <div class="menu-btn">категории</div>
+        <div class="city-btn">
             <?
             if (isset($this->params['url']['city']) && $this->params['url']['city']['name'] != 'Все города') {
                 echo $this->params['url']['city']['name'];
@@ -78,7 +80,7 @@ AppAsset::register($this);
             <div id='menu-close'>☒</div>
             <?= $this->render('//main/menu/categories', ['url' => $this->params['url']]) ?>
         </nav>
-        <nav class="city">
+        <nav class="city none">
             <div id='city-close'>☒</div>
             <div class="city__wrap">
                 <?= $this->render('//main/menu/cities', ['url' => $this->params['url']]) ?>
@@ -87,8 +89,7 @@ AppAsset::register($this);
     </div>
 </header>
 <div class="load"></div>
-<div class="load-opacity"></div>
-
+<div class="load-opacity none"></div>
 <!-- content -->
 <div class="content">
     <div class="content__filter" id="filter">

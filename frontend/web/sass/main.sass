@@ -25,16 +25,28 @@
 	margin-right: 50px
 	color: #fff
 	text-align: center
+	position: relative
 	&__user
 		border: 1px solid white
 		margin-top: 10px
 		background: #333
-		padding: 20px
+		padding: 20px 5px
 		text-align: left
+		position: absolute
+		z-index: $index_1_G
+		white-space: nowrap
+		right: 0
+		top: 100%
 		a
 			display: block
 			color: #fff
 			padding: 5px 0
+.close-sign
+	position: fixed
+	top: 50px
+	right: 50px
+	color: #000
+	font-size: 30pt
 #auth-user
 	border-radius: 50%
 	border: 3px solid orange
@@ -89,7 +101,7 @@
 	height: 320px
 
 // menu---------------------------------------------------
-#menu-btn
+.menu-btn
 	color: $color_btn_menu_G
 	cursor: pointer
 	width: $menu_left_G
@@ -194,8 +206,8 @@
 				white-space: nowrap
 
 // city---------------------------------------------------
-#city-btn
-	@extend #menu-btn
+.city-btn
+	@extend .menu-btn
 	margin-left: $menu_left_G + 10px
 #city-close
 	@extend #menu-close
@@ -270,18 +282,15 @@
 		color: $link_color_G
 	a
 		color: $link_color_G
-.active
 .content
 	+wrap
 	+flex
 	&__filter
 		+size(3)
 		+col
-		ul:not(:first-child)
-			// display: none
 		&-category
 			li
-				display: none
+				// display: none
 		&-price
 			text-align: center
 			p
