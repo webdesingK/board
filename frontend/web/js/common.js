@@ -421,8 +421,8 @@ function endLoads() {// функция
 	// функция открытия - закрытия блока с подкатегориями
 	function openSubcategories(e) {// принимает event и this элемента на который кликнули
 		let lvl = this.getAttribute('data-lvl');// считываем атрибут у кликнутого элемента
-			e.preventDefault();// отменяем стандартный переход по ссылке
 		if (this.classList.contains('active__filter-category')) {// проверяем если клик пришелся на элемент у которого есть класс 'active__filter-category'
+			e.preventDefault();// отменяем стандартный переход по ссылке
 			if (lvl !== null) {// проверяем если у кликнутого элемента нет атрибута 'data-lvl'
 				this.classList.toggle('lvl-' + lvl);// тогда при наличии класса 'lvl' убираем его и наоборот
 			}
