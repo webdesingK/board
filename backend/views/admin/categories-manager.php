@@ -49,7 +49,7 @@ use yii\helpers\Html;
                     echo Html::tag('span', Html::encode($category['name']) . ' (' . (count($categories) - 1) . ')', ['class' => 'name-category']);
                 }
                 else {
-                    echo Html::tag('span', $category['id'] . ' ' . Html::encode($category['name']), ['class' => 'name-category']);
+                    echo Html::tag('span', Html::encode($category['name']), ['class' => 'name-category']);
                 }
                 echo Html::tag('span', '&plus;', ['class' => 'add-category', 'title' => 'Добавить новую категорию']);
                 echo Html::tag('span', '✎', ['class' => 'edit-category', 'title' => 'Редактирование названия категории']);

@@ -48,7 +48,7 @@ class Cities extends \common\models\cities\Cities {
             $dataForTable['active'] = 0;
         }
         if (self::load($dataForTable, '')) {
-            if (self::prependTo($parentNode)) {
+            if (self::appendTo($parentNode)) {
                 $lastId = self::find()->max('id');
                 array_push($this->postData['openedIds'], $lastId);
                 return true;

@@ -3,93 +3,78 @@
 
 namespace frontend\components;
 
-use yii\db\Query;
 use frontend\models\Categories;
 use frontend\models\Cities;
-use yii\helpers\ArrayHelper;
 
 class urlParser {
 
     static public function getArray(array $get) {
 
-        $array = null;
-        $categories = Categories::getAllData();
-        $cities = Cities::getAllData();
+        $rootCity = Cities::getRoot();
+        $array = [
+            'city' => [
+                'default' => $rootCity,
+                'current' => $rootCity
+            ]
+        ];
 
         if (!empty($get)) {
 
             if (isset($get['city'])) {
 
-                if ($get['city'] == 'Все-города') {
-                    $array['city'] = [
-                        'name' => 'Все города',
-                        'url' => 'Все-города'
-                    ];
+                $city = Cities::getCityByUrl($get['city']);
+                if ($city) {
+                    $array['city']['current'] = $city;
                 }
                 else {
-                    foreach ($cities as $city) {
-                        if ($city['url'] == $get['city']) {
-                            $array['city'] = $city;
-                            break;
-                        }
-                        else {
-                            $array['city'] = 'error';
-                        }
-                    }
+                    $array['city'] = 'error';
                 }
+
             }
 
-            if (isset($get['category'])) {
-                foreach ($categories as $category) {
-                    if ($category['url'] == $get['category']) {
-                        $array['category'] = $category;
-                        break;
-                    }
-                    else {
-                        $array['category'] = 'error';
-                    }
+            if (isset($get['categoryFirstLvl'])) {
+
+                $categoryFirstLvl = Categories::getFirstLvlByUrl($get['categoryFirstLvl']);
+
+                if ($categoryFirstLvl) {
+                    $array['categories']['categoryFirstLvl'] = $categoryFirstLvl;
+                    $array['currentCategory'] = $categoryFirstLvl;
                 }
+                else {
+                    $array['categories'] = 'error';
+                }
+
+            }
+            if (isset($get['categorySecondLvl']) && $array['categories'] != 'error') {
+
+                $categorySecondLvl = Categories::getSecondLvlByNodeAndUrl($categoryFirstLvl, $get['categorySecondLvl']);
+
+                if ($categorySecondLvl) {
+                    $array['categories']['categorySecondLvl'] = $categorySecondLvl;
+                    $array['currentCategory'] = $categorySecondLvl;
+                }
+                else {
+                    $array['categories'] = 'error';
+                }
+
             }
 
-            if (isset($get['filters'])) {
-                $filters = explode(';', $get['filters']);
-                $newFilters = [];
-                foreach ($filters as $key => $value) {
+            if (isset($get['categoryThirdLvl']) && $array['categories'] != 'error') {
 
-                    if (empty($value)) continue;
+                $categoryThirdLvl = Categories::getThirdLvlByNodeAndUrl($categorySecondLvl, $get['categoryThirdLvl']);
 
-                    $filter = explode('=', $value);
-
-                    if ($filter[0] == 'цена') {
-                        $priceValues = explode('-', $filter[1]);
-                        $newFilters['price'] = [
-                            'min' => $priceValues[0],
-                            'max' => $priceValues[1]
-                        ];
-                    }
-
-                    if ($filter[0] == 'тип') {
-                        $typeFilter = explode(',', $filter[1]);
-                        if (count($typeFilter) > 1) {
-                            $newFilters['type'] = $typeFilter;
-                        }
-                        else {
-                            $newFilters['type'] = $typeFilter[0];
-                        }
-                    }
-
+                if ($categoryThirdLvl) {
+                    $array['categories']['categoryThirdLvl'] = $categoryThirdLvl;
+                    $array['currentCategory'] = $categoryThirdLvl;
+                }
+                else {
+                    $array['categories'] = 'error';
                 }
 
-                $array['filters'] = $newFilters;
             }
 
         }
-        else {
-            $array['city'] = [
-                'name' => 'Все города',
-                'url' => 'Все-города'
-            ];
-        }
+
         return $array;
 
     }

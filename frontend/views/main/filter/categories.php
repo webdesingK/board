@@ -6,49 +6,77 @@ use frontend\models\Categories;
 echo Html::beginTag('div', ['class' => 'content__filter-category multitype-filter']);
 echo Html::beginTag('ul');
 
-if (!isset($url['category'])) {
+if (!isset($url['categories'])) {
 
-    $children = Categories::getChildrenById(1, 1);
+    $childrenOfRoot = Categories::getChildrenOfRoot();
 
-    echo Html::tag('li', Html::a('Все категории', '/' . $url['city']['url']), ['class' => 'active__filter-category']);
-
-    foreach ($children as $item) {
-        echo Html::tag('li', Html::a($item['name'], '/' . $url['city']['url'] . '/' . $item['url']), ['class' => 'lvl-' . $item['depth']]);
+    if ($url['city']['current']['url'] == $url['city']['default']['url']) {
+        $allCategoriesUrl = '/';
+    }
+    else {
+        $allCategoriesUrl = '/' . $url['city']['current']['url'];
     }
 
-} else {
+    echo Html::tag('li', Html::a('Все категории', $allCategoriesUrl), ['class' => 'active__filter-category']);
 
-    $children = Categories::getChildrenById($url['category']['id'], 1);
-    $parent = Categories::getParentById($url['category']['id']);
+    foreach ($childrenOfRoot as $child) {
+        echo Html::tag('li', Html::a($child->name, '/' . $url['city']['current']['url'] . $child->fullUrl), ['class' => 'none lvl-' . $child->depth]);
+    }
 
-    echo Html::tag('li', Html::a('Все категории', '/' . $url['city']['url']));
+}
+else {
+
+    $children = Categories::getChildrenByNode($url['currentCategory']);
+
+    if ($url['currentCategory']->depth == 2) {
+        $parent = $url['categories']['categoryFirstLvl'];
+    }
+    elseif ($url['currentCategory']->depth == 3) {
+        $parent = $url['categories']['categorySecondLvl'];
+    }
+    else {
+        $parent = null;
+    }
+
+    if ($url['city']['current']['url'] == $url['city']['default']['url']) {
+        $allCategoriesUrl = '/';
+    }
+    else {
+        $allCategoriesUrl = '/' . $url['city']['current']['url'];
+    }
+
+    echo Html::tag('li', Html::a('Все категории', $allCategoriesUrl), ['class' => 'none']);
 
     if (!empty($children)) {
 
-        if ($parent['depth'] > 0) {
-            echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-'.$parent['depth']]);
+        if ($parent && $parent->depth > 0) {
+            echo Html::tag('li', Html::a($parent->name, '/' . $url['city']['current']['url'] . $parent->fullUrl), ['class' => 'none lvl-' . $parent->depth]);
         }
 
-        echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category', 'data-lvl' => $url['category']['depth']]);
+        echo Html::tag('li', Html::a($url['currentCategory']->name, '/' . $url['city']['current']['url'] . $url['currentCategory']->fullUrl), ['class' => 'active__filter-category', 'data-lvl' => $url['currentCategory']->depth]);
 
         foreach ($children as $child) {
-            echo Html::tag('li', Html::a($child['name'], '/' . $url['city']['url'] . '/' . $child['url']), ['class' => 'lvl-' . $child['depth']]);
+            echo Html::tag('li', Html::a($child['name'], '/' . $url['city']['current']['url'] . $child['fullUrl']), ['class' => 'none lvl-' . $child['depth']]);
         }
 
-    } else {
+    }
+    else {
 
-        $siblings = Categories::getSiblingNodesByParentId($url['category']['parent_id']);
+        if ($parent) {
 
-        if ($parent['depth'] > 0) {
-            echo Html::tag('li', Html::a($parent['name'], '/' . $url['city']['url'] . '/' . $parent['url']), ['class' => 'lvl-1']);
-        }
+            $siblings = Categories::getSiblingNodesByParent($parent);
 
-        foreach ($siblings as $sibling) {
-            if ($sibling['name'] == $url['category']['name']) {
-                echo Html::tag('li', Html::a($url['category']['name'], '/' . $url['city']['url'] . '/' . $url['category']['url']), ['class' => 'active__filter-category', 'data-lvl' => 2]);
-                continue;
+            if ($parent['depth'] > 0) {
+                echo Html::tag('li', Html::a($parent->name, '/' . $url['city']['current']['url'] . $parent->fullUrl), ['class' => 'none lvl-1']);
             }
-            echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['url'] . '/' . $sibling['url']), ['class' => 'lvl-2']);
+
+            foreach ($siblings as $sibling) {
+                if ($sibling['name'] == $url['currentCategory']->name) {
+                    echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['current']['url'] . $sibling['fullUrl']), ['class' => 'active__filter-category', 'data-lvl' => 2]);
+                    continue;
+                }
+                echo Html::tag('li', Html::a($sibling['name'], '/' . $url['city']['current']['url'] . $sibling['fullUrl']), ['class' => 'none lvl-2']);
+            }
         }
 
     }

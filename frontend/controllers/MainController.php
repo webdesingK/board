@@ -25,20 +25,22 @@ class MainController extends Controller {
         $get = Yii::$app->request->get();
         $url = urlParser::getArray($get);
 
-        if ((isset($get['city']) && $get['city'] === 'Все-города') && !isset($get['category'])) $this->redirect('/', 301);
+        if (isset($get['city']) && $get['city'] == 'Все-города' && !isset($get['categoryFirstLvl'])) $this->redirect('/', 301);
 
-        if ((isset($url['city']) && $url['city'] == 'error') || (isset($url['category']) && $url['category'] == 'error')) {
+        if ($url['city'] == 'error' || (isset($url['categories']) && $url['categories'] == 'error')) {
             throw new NotFoundHttpException();
         }
 
-        $adsData = Ads::getAdsData($url);
+//        $adsData = Ads::getAdsData($url);
 
-        if (Yii::$app->request->isAjax) {
-            return $this->renderPartial('index', [
-                'url' => $url,
-                'adsData' => $adsData
-            ]);
-        }
+        $adsData = [];
+
+//        if (Yii::$app->request->isAjax) {
+//            return $this->renderPartial('index', [
+//                'url' => $url,
+//                'adsData' => $adsData
+//            ]);
+//        }
 
         return $this->render('index', [
             'url' => $url,
