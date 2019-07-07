@@ -37,7 +37,7 @@ class Categories extends \common\models\categories\Categories {
     }
 
     static public function getAll() {
-        return self::find()->where('id > 0')->andWhere('depth < 4')->all();
+        return self::find()->where('id > 0')->all();
     }
 
     static public function getParent($node) {

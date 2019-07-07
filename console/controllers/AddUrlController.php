@@ -41,13 +41,19 @@ class AddUrlController extends Controller {
                     'fullUrl' => $fullUrl
                 ], ['id' => $item->id])->execute();
             }
-
+            elseif ($item->depth == 4) {
+                $db->createCommand()->update('categories', [
+                    'shortUrl' => null,
+                    'fullUrl' => null
+                ], ['id' => $item->id])->execute();
+            }
         }
     }
 
-    public function actionRename() {
+    public function actionBack() {
         $db = new Query();
         $db->createCommand()->renameColumn('categories', 'shortUrl', 'url')->execute();
+        $db->createCommand()->dropColumn('categories', 'fullUrl')->execute();
     }
 
 
