@@ -23,7 +23,7 @@ class Categories extends \common\models\categories\Categories {
             ['name', 'required'],
             ['name', 'string'],
             ['active', 'integer'],
-            [['shortUrl', 'fullUrl'], 'safe']
+            [['shortUrl'], 'safe']
         ];
     }
 
@@ -56,7 +56,7 @@ class Categories extends \common\models\categories\Categories {
 
         $dataForTable = [
             'name' => $this->postData['name'],
-            'fullUrl' => $fullUrl,
+//            'fullUrl' => $fullUrl,
             'shortUrl' => $shortUrl,
             'active' => 1
         ];
