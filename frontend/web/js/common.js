@@ -1,74 +1,5 @@
 $(document).ready(function() {
 
-	// menu
-	$(function() {
-
-		let menu       = $('.menu');
-
-		// функция для скрытия всех категория 2 уровня
-		function hideSubMenu(obj) {// передаем массив обьектов которые нужно скрыть
-			obj.each(function() {// проходим циклом по нему
-				$(this).hide();// и скрываем их
-			});
-		};
-
-		// при загрузке страницы запускаем функцию скрытия категорий 2 уровня
-		hideSubMenu($('.menu__first li:not(:first) .menu__second'));// передаем в аргумент все категории 2 уровня кроме первого
-
-		// функция при наведении на категорию 1 уровня (эфект hover)
-		function mouseShow(self) {
-			hideSubMenu($('.menu__second'));// скрываем открытые категории 2 уровня
-			self.siblings('.menu__second').show();// и открываем категорию 2 уровня на которой наведен курсор
-		};
-
-		let startX,
-				x,
-				flagMenuActive = true,
-				set = setInterval(funInterval,4),
-				flagMainMenu = false;
-
-				clearInterval(set);
-
-		// событие для вычесления позиции курсора по оси x 
-		menu.on('mousemove', '.menu__first > li > a', function(evt) {
-			 x = Math.round(evt.pageX - $(this).offset().left);
-		});
-
-		// функция для запуска в setInterval 
-		function funInterval(self) {// передаем аргумент this элемента на который был наведен курсор
-			if (startX > x && flagMenuActive) {// проверяем если startX++ догнал x(коор. курсора) и курсор находиться в пределах ссылки
-				mouseShow(self);// запускаем функция эфекта hover
-				clearInterval(set);// и останавливаем setInterval
-			}
-			startX++;// добавляем +1 при каждом вызове функции
-		};
-
-		// при наведении курсора на menu__second(то есть курсор покинул menu__first)
-		menu.on('mouseenter', '.menu__second', function(){
-			flagMenuActive = false;// изминяем флаг, для запрета отработки функции mouseShow
-		});
-
-		// отслеживаем покидания курсора со всего меню
-		menu.on('mouseleave', '.menu__first', function() {
-			flagMainMenu = true;// изменяем флаг, для разрешения отработки функции mouseShow
-		});
-
-		// при наведении на любую из ссылок(1 уровня)
-		menu.on('mouseenter', '.menu__first > li > a', function(evt) {
-
-			startX = Math.round(evt.pageX - $(this).offset().left);// считываем коор. где вошел курсор на элемент и записываем в переменную
-			flagMenuActive = true;// изминяем флаг, для разрешения отработки функции mouseShow
-			if (flagMainMenu) {// если разрешено
-				mouseShow($(this));// запускаем hover эффект
-			}
-			flagMainMenu = false;// запрещаем отработку функции mouseShow
-			clearInterval(set);// останавливаем предыдущий setInterval 
-			set = setInterval(funInterval, 15, $(this));// запускаем новый setInterval
-
-		});
-
-	});
-
 	// filter сбор строки фильтров
 	$(function() {
 
@@ -218,6 +149,7 @@ $(document).ready(function() {
 
 });
 
+// нативный=====================================================================================
 function Tabs() {
 	// Глобальная функция скрытия и открытия блоков(с возможностью анимировать стрелку)
 	this.toggleBlock = function(obj) {// принимает обьект с элементами и классом для анимации открытия(кнопки и самого блока)
@@ -286,55 +218,110 @@ function Tabs() {
 		});
 	}
 };
-
 let tab = new Tabs();
-
-
-// вызываем при клике функцию скрытия открытия блока меню
-tab.toggleBlock({
-	nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно анимировать или просто скрывать
-	arrNode: document.querySelectorAll('.menu-btn')// элементы на которые кликаем
-});
-
+// меню
+(function() {
+	let linkFirst      = document.querySelectorAll('.menu__first > li > a'),
+			menuFirst      = document.querySelector('.menu__first'),
+			menuSecond     = document.querySelectorAll('.menu__second'),
+			menuBtn        = document.querySelector('.menu-btn'),
+			flagMenuActive = true,
+			flagMainMenu   = false,
+			speed          = 10,
+		  startX,
+			x,
+			set;
+	menuBtn.addEventListener('click', function() {
+		for (let i = 0; i < menuSecond.length; i++) {// проходим циклом по нему
+			if (i == 0) menuSecond[i].classList.remove('none')
+			else menuSecond[i].classList.add('none')// и скрываем их
+		}
+  });
+	// функция для скрытия всех категория 2 уровня
+	function hideSubMenu(obj) {// передаем массив обьектов которые нужно скрыть
+		for (let i = 0; i < obj.length; i++) {// проходим циклом по нему
+			obj[i].classList.add('none');// и скрываем их
+		}
+	};
+	// функция при наведении на категорию 1 уровня (эфект hover)
+	function mouseShow(self) {
+		hideSubMenu(menuSecond);// скрываем открытые категории 2 уровня
+		self.nextSibling.classList.remove('none');// и открываем категорию 2 уровня на которой наведен курсор
+	};
+	// функция для запуска в setInterval 
+	function funInterval(self) {// передаем аргумент this элемента на который был наведен курсор
+		if (startX > x && flagMenuActive) {// проверяем если startX++ догнал x(коор. курсора) и курсор находиться в пределах ссылки
+			mouseShow(self);// запускаем функция эфекта hover
+			clearInterval(set);// и останавливаем setInterval
+		}
+		startX++;// добавляем +1 при каждом вызове функции
+	};
+	for (let i = 0; i < linkFirst.length; i++) {
+		linkFirst[i].addEventListener('mousemove', function(e) {// событие для вычесления позиции курсора по оси x
+			x = Math.round(e.pageX - this.getBoundingClientRect().left);
+		// при наведении на любую из ссылок(1 уровня)
+		});
+		linkFirst[i].addEventListener('mouseenter', function(e) {
+			startX = Math.round(e.pageX - this.getBoundingClientRect().left);// считываем коор. где вошел курсор на элемент и записываем в переменную
+			flagMenuActive = true;// изминяем флаг, для разрешения отработки функции mouseShow
+			if (flagMainMenu) {// если разрешено
+				mouseShow(this);// запускаем hover эффект
+			}
+			flagMainMenu = false;// запрещаем отработку функции mouseShow
+			clearInterval(set);// останавливаем предыдущий setInterval 
+			set = setInterval(funInterval, speed, this);// запускаем новый setInterval
+		});
+	}
+	// при наведении курсора на menu__second(то есть курсор покинул menu__first)
+	for (let i = 0; i < menuSecond.length; i++) {
+		menuSecond[i].addEventListener('mouseenter', function() {
+			flagMenuActive = false;// изминяем флаг, для запрета отработки функции mouseShow
+			clearInterval(set)
+		})
+	}
+	// отслеживаем покидания курсора со всего меню
+	menuFirst.addEventListener('mouseleave', function() {
+		flagMainMenu = true;// изменяем флаг, для разрешения отработки функции mouseShow
+	});
+	// вызываем при клике функцию скрытия открытия блока меню
+	tab.toggleBlock({
+		nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно анимировать или просто скрывать
+		arrNode: document.querySelectorAll('.menu-btn')// элементы на которые кликаем
+	});
+	// вызываем функцию при клике в любом месте кроме меню
+	tab.clickNoElements({
+		nodesClick: document.querySelectorAll('.menu-btn'),// масив из элементов(та) по которым(ому) произойдет клик
+		nodesNotHide: document.querySelectorAll('.menu, .menu-btn'),// элементы(и их дочерние) при клике на которые не скрывать блоки(тоесть не запускать функцию close)
+		nodesHide: document.querySelectorAll('.menu')// массив элементов(та) которые(й) нужно скрывать
+	});
+	// при клике на esc скрываем блок с меню
+	tab.esc({
+		nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно скрывать
+		nodeClick: document.querySelectorAll('.menu-btn')// элементы на которые нужно кликать
+	});
+	document.querySelector('#menu-close').addEventListener('click', function() {
+		document.querySelector('.menu-btn').click();
+	});
+})();
 // вызываем при клике функцию скрытия открытия блока городов
 tab.toggleBlock({
 	nodeHide: document.querySelectorAll('.city'),// элементы которые нужно анимировать или просто скрывать
 	arrNode: document.querySelectorAll('.city-btn')// элементы на которые кликаем
 });
-// вызываем функцию при клике в любом месте кроме меню
-tab.clickNoElements({
-	nodesClick: document.querySelectorAll('.menu-btn'),// масив из элементов(та) по которым(ому) произойдет клик
-	nodesNotHide: document.querySelectorAll('.menu, .menu-btn'),// элементы(и их дочерние) при клике на которые не скрывать блоки(тоесть не запускать функцию close)
-	nodesHide: document.querySelectorAll('.menu')// массив элементов(та) которые(й) нужно скрывать
-});
-
 // вызываем функцию при клике в любом месте кроме городов
 tab.clickNoElements({
 	nodesClick: document.querySelectorAll('.city-btn'),// масив из элементов(та) по которым(ому) произойдет клик
 	nodesNotHide: document.querySelectorAll('.city, .city-btn'),// элементы(и их дочерние) при клике на которые не скрывать блоки(тоесть не запускать функцию close)
 	nodesHide: document.querySelectorAll('.city')// массив элементов(та) которые(й) нужно скрывать
 });
-
-// при клике на esc скрываем блок с меню
-tab.esc({
-	nodeHide: document.querySelectorAll('.menu'),// элементы которые нужно скрывать
-	nodeClick: document.querySelectorAll('.menu-btn')// элементы на которые нужно кликать
-});
-
 // при клике на esc скрываем блок с городами
 tab.esc({
 	nodeHide: document.querySelectorAll('.city'),// элементы которые нужно скрывать
 	nodeClick: document.querySelectorAll('.city-btn')// элементы на которые нужно кликать
 });
-
-document.querySelector('#menu-close').addEventListener('click', function() {
-	document.querySelector('.menu-btn').click();
-});
-
 document.querySelector('#city-close').addEventListener('click', function() {
 	document.querySelector('.city-btn').click();
 });
-
 // load
 let load        = document.querySelector('.load'),// линия загрузки
 		loadOpacity = document.querySelector('.load-opacity'),// блок по свех элементов с прозрачностью
@@ -346,7 +333,6 @@ let load        = document.querySelector('.load'),// линия загрузки
 		},
 		end         = options.startEnd,// для завершения линии загрузки 
 		set;// для инициализации setInterval
-
 function setLoads() {// функция для обработки setInterval
 	load.style.width = intervalNum + '%';// увеличиваем ширину линии загрузки
 	if(intervalNum <= end) {// если счетчик меньше конечного счетчика загрузки
