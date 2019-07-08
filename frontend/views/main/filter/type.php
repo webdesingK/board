@@ -1,4 +1,4 @@
-<?
+<?php
 
 use yii\helpers\Html;
 use frontend\models\Categories;

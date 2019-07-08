@@ -98,4 +98,16 @@ class AdminController extends Controller {
 
     }
 
+    public function actionCreateFilters() {
+        return $this->render('create-filters');
+    }
+
+    public function actionEditFilters() {
+        return $this->render('edit-filters');
+    }
+
+    public function actionBindFilters() {
+        return $this->render('bind-filters');
+    }
+
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var $model \backend\models\Cities;
  */
@@ -7,17 +7,21 @@ use yii\helpers\Html;
 
 $this->title = 'Манагер городов';
 
+//$this->registerCssFile('@web/css/libs.css');
+//$this->registerCssFile('@web/css/main.css');
+$this->registerJsFile('@web/js/common.js', ['depends' => 'yii\web\JqueryAsset']);
+
 ?>
 
-<? if (!Yii::$app->request->isAjax): ?>
+<?php if (!Yii::$app->request->isAjax): ?>
 
 <div class="category">
 
     <div class="category__main">
 
-        <? endif ?>
+        <?php endif ?>
 
-        <?
+        <?php
 
         $categories = $model->createArray();
         $lvl = 0;
@@ -64,12 +68,12 @@ $this->title = 'Манагер городов';
 
         ?>
 
-        <? if (!Yii::$app->request->isAjax): ?>
+        <?php if (!Yii::$app->request->isAjax): ?>
 
     </div>
 
 </div>
 
-<? endif ?>
+<?php endif ?>
 
 <!-- /.category -->

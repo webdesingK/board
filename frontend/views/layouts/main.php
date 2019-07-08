@@ -63,7 +63,7 @@ AppAsset::register($this);
         </div>
         <div class="menu-btn">категории</div>
         <div class="city-btn">
-            <?
+            <?php
             if ($this->params['url']['city']['current']['name'] != $this->params['url']['city']['default']['name']) {
                 echo $this->params['url']['city']['current']['name'];
                 echo "\t";
@@ -92,15 +92,7 @@ AppAsset::register($this);
 <div class="load-opacity none"></div>
 <!-- content -->
 <div class="content">
-    <div class="content__filter" id="filter">
-        <?= $this->render('//main/filter/categories', ['url' => $this->params['url']]) ?>
-        <?
-            if (isset($this->params['url']['currentCategory']) && $this->params['url']['currentCategory']->depth == 3) {
-                if (($this->params['url']['currentCategory']->rgt - $this->params['url']['currentCategory']->lft) > 1) {
-                    echo $this->render('//main/filter/type', ['url' => $this->params['url']]);
-                }
-            }
-        ?>
+        <?= $this->render('//main/filter', ['url' => $this->params['url']]) ?>
 <!--        <div class="filter-js multitype-filter">-->
 <!--            <p>Размер<span class="arrow-open">➤</span></p>-->
 <!--            <ul class="none">-->
@@ -200,16 +192,8 @@ AppAsset::register($this);
 <!--                </li>-->
 <!--            </ul>-->
 <!--        </div>-->
-<!--        <div class="content__filter-price multitype-filter">-->
-<!--            <p>Цена</p>-->
-<!--            <div class="price-filter">-->
-<!--                <input id="price__filter-min" type="text" placeholder="от">-->
-<!--                <input id="price__filter-max" type="text" data-max="7777777777" placeholder="до">-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="content__filter-btn multitype-filter">Применить</div>
-    </div>
     <div class="content__wrap">
+        <?php dump($this->params['url']) ?>
         <?= $content ?>
     </div>
 </div>
