@@ -23,7 +23,7 @@ return [
         ],
         'filedb' => [
             'class' => 'yii2tech\filedb\Connection',
-            'path' => '@app/data/static',
+            'path' => '@app/file-db',
         ],
     ],
     'language' => 'ru-RU',

@@ -1,14 +1,4 @@
-<?
-
-//dump($url);
-
-// use yii2tech\filedb\Query;
-
-// $fdb = new Query();
-
-// $res = $fdb->from('User')->all();
-
-// dump($url);
+<?php
 
 ?>
 
@@ -21,7 +11,7 @@
         </div>
     </div>
 
-<? foreach ($adsData as $key => $value): ?>
+<?php foreach ($adsData as $key => $value): ?>
 
     <div class="content__wrap-item">
         <div class="item__photo">
@@ -90,7 +80,7 @@
         <div class="item__content">
             <a href="#" class="item__content-name"><?= $value['title'] ?></a>
             <p class="item__content-city"><?= $value['city'] ?></p>
-            <p class="item__content-price"><?
+            <p class="item__content-price"><?php
                             if (strlen($value['price']) > 3) {
                                 echo substr_replace($value['price'], '.', -3, 0);
                             }
@@ -104,9 +94,9 @@
 >>>>>>> backend
     </div>
 
-<? endforeach ?>
+<?php endforeach ?>
 
-<? $this->params['url'] = $url ?>
+<?php $this->params['url'] = $url ?>
 
 <?
 ?>

@@ -46,7 +46,10 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'мененджер-категорий' => 'admin/categories-manager',
-                'мененджер-городов' => 'admin/cities-manager'
+                'мененджер-городов' => 'admin/cities-manager',
+                'создание-фильтров' => 'admin/create-filters',
+                'редактирование-фильтров' => 'admin/edit-filters',
+                'привязка-фильтров' => 'admin/bind-filters',
             ],
         ],
     ],

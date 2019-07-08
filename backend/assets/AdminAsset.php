@@ -16,9 +16,9 @@ class AdminAsset extends AssetBundle
 			'css/main.css'
     ];
     public $js = [
-			'js/common.js'
+//			'js/common.js'
     ];
     public $depends = [
-			'yii\web\JqueryAsset'
+//			'yii\web\JqueryAsset'
     ];
 }

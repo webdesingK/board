@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use backend\assets\AdminAsset;
-use yii\widgets\Pjax;
 
 AdminAsset::register($this);
 
@@ -26,6 +25,9 @@ AdminAsset::register($this);
     <hr>
     <li><a href="/админка/мененджер-категорий">Менеджер категорий</a></li>
     <li><a href="/админка/мененджер-городов">Менеджер городов</a></li>
+    <li><a href="/админка/создание-фильтров">Создание фильтров</a></li>
+    <li><a href="/админка/редактирование-фильтров">Редактирование фильтров</a></li>
+    <li><a href="/админка/привязка-фильтров">Привязка фильтров</a></li>
 </ul>
 
     <?= $content ?>
