@@ -17,7 +17,7 @@ foreach ($categories as $key => $category) {
     }
     elseif ($category->depth > $lvl) {
         if ($category->depth == 2) {
-            echo Html::beginTag('ul', ['class' => 'menu__second']);
+            echo Html::beginTag('ul', ['class' => 'menu__second none']);
         }
         elseif ($category->depth == 3) {
             echo Html::beginTag('ul', ['class' => 'menu__third']);
