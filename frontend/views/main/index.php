@@ -35,7 +35,7 @@
             <a href="#" class="item__content-name"><?= $value['title'] ?></a>
             <p class="item__content-city"><?= $value['city'] ?></p>
             <p class="item__content-price"><?= $value['price'] ?> руб.</p>
-            <p class="item__content-category"><?= $value['category']?></p>
+            <p class="item__content-category"><?= $value['category'] ?></p>
         </div>
         <!-- <div class="item__img mini__slide-5">
             <div class="mini__slide">
@@ -75,23 +75,23 @@
             </div>
 <<<<<<< HEAD
         </div> -->
-=======
-        </div>
-        <div class="item__content">
-            <a href="#" class="item__content-name"><?= $value['title'] ?></a>
-            <p class="item__content-city"><?= $value['city'] ?></p>
-            <p class="item__content-price"><?php
-                            if (strlen($value['price']) > 3) {
-                                echo substr_replace($value['price'], '.', -3, 0);
-                            }
-                            else {
-                                echo $value['price'];
-                            }
-                ?> руб.</p>
-            <p class="item__content-category"><?= $value['category']?></p>
-        </div>
+        =======
+    </div>
+    <div class="item__content">
+        <a href="#" class="item__content-name"><?= $value['title'] ?></a>
+        <p class="item__content-city"><?= $value['city'] ?></p>
+        <p class="item__content-price"><?php
+                if (strlen($value['price']) > 3) {
+                    echo substr_replace($value['price'], '.', -3, 0);
+                }
+                else {
+                    echo $value['price'];
+                }
+            ?> руб.</p>
+        <p class="item__content-category"><?= $value['category'] ?></p>
+    </div>
 
->>>>>>> backend
+    >>>>>>> backend
     </div>
 
 <?php endforeach ?>

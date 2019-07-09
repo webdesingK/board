@@ -50,8 +50,11 @@ return [
                 'создание-фильтров' => 'admin/create-filters',
                 'редактирование-фильтров' => 'admin/edit-filters',
                 'привязка-фильтров' => 'admin/bind-filters',
+                'crud-cities' => 'cities/index',
+                'crud-categories' => 'categories/index'
             ],
         ],
     ],
+    'name' => 'Админка',
     'params' => $params,
 ];

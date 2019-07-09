@@ -28,6 +28,9 @@ AdminAsset::register($this);
     <li><a href="/админка/создание-фильтров">Создание фильтров</a></li>
     <li><a href="/админка/редактирование-фильтров">Редактирование фильтров</a></li>
     <li><a href="/админка/привязка-фильтров">Привязка фильтров</a></li>
+    <li><a href="/админка/crud-cities">CRUD-Cities</a></li>
+    <li><a href="/админка/crud-categories">CRUD-Categories</a></li>
+    <li><a href="/админка/gii">GII</a></li>
 </ul>
 
     <?= $content ?>

@@ -88,8 +88,21 @@ class Categories extends \common\models\categories\Categories {
 
     public function renameNode() {
         $node = self::find()->where(['id' => $this->postData['id']])->one();
+        $parent = $node->parents(1)->one();
+        $shortUrl = null;
+        $fullUrl = null;
+        if ($parent && $parent->depth < 3) {
+            $shortUrl = preg_replace('/\s/', '-', $this->postData['newName']);
+            if ($parent->fullUrl) {
+                $fullUrl = $parent->fullUrl . '/' . $shortUrl;
+            }
+            else {
+                $fullUrl = '/' . $shortUrl;
+            }
+        }
         $node->name = $this->postData['newName'];
-        $node->url = preg_replace('/\s/', '-', $this->postData['newName']);
+        $node->shortUrl = $shortUrl;
+        $node->fullUrl = $fullUrl;
         if ($node->update()) {
             return true;
         }

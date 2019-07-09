@@ -1,10 +1,11 @@
 <?php
-use yii\helpers\Html;
-use frontend\assets\AppAsset;
-use yii\widgets\Breadcrumbs;
-use yii2tech\filedb\Query;
 
-AppAsset::register($this);
+    use yii\helpers\Html;
+    use frontend\assets\AppAsset;
+    use yii\widgets\Breadcrumbs;
+    use yii2tech\filedb\Query;
+
+    AppAsset::register($this);
 
 ?>
 <?php $this->beginPage() ?>
@@ -64,15 +65,15 @@ AppAsset::register($this);
         <div class="menu-btn">категории</div>
         <div class="city-btn">
             <?php
-            if ($this->params['url']['city']['current']['name'] != $this->params['url']['city']['default']['name']) {
-                echo $this->params['url']['city']['current']['name'];
-                echo "\t";
-                $linkUrl = empty($this->params['url']['categories']) ? '/' : '/' . $this->params['url']['city']['default']['url'] . $this->params['url']['currentCategory']->fullUrl;
-                echo Html::a('X', $linkUrl);
-            }
-            else {
-                echo 'Местоположение';
-            }
+                if ($this->params['url']['city']['current']['name'] != $this->params['url']['city']['default']['name']) {
+                    echo $this->params['url']['city']['current']['name'];
+                    echo "\t";
+                    $linkUrl = empty($this->params['url']['categories']) ? '/' : '/' . $this->params['url']['city']['default']['url'] . $this->params['url']['currentCategory']->fullUrl;
+                    echo Html::a('X', $linkUrl);
+                }
+                else {
+                    echo 'Местоположение';
+                }
             ?>
         </div>
 
@@ -92,108 +93,135 @@ AppAsset::register($this);
 <div class="load-opacity none"></div>
 <!-- content -->
 <div class="content">
-        <?= $this->render('//main/filter', ['url' => $this->params['url']]) ?>
-<!--        <div class="filter-js multitype-filter">-->
-<!--            <p>Размер<span class="arrow-open">➤</span></p>-->
-<!--            <ul class="none">-->
-<!--                <li>-->
-<!--                    <label for="womens-40_42">40-42(XS)</label>-->
-<!--                    <input type="checkbox" id="womens-40_42">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-42_44">42-44(S)</label>-->
-<!--                    <input type="checkbox" id="womens-42_44">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-44_46">44-46(M)</label>-->
-<!--                    <input type="checkbox" id="womens-44_46">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-46_48">46-48(L)</label>-->
-<!--                    <input type="checkbox" id="womens-46_48">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-48_50">48-50(XL)</label>-->
-<!--                    <input type="checkbox" id="womens-48_50">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-50_52">50-52(XXL)</label>-->
-<!--                    <input type="checkbox" id="womens-50_52">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
-<!--                    <input type="checkbox" id="womens-52_54">-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--        <div class="filter-js multitype-filter">-->
-<!--            <p>Размер<span class="arrow-open">➤</span></p>-->
-<!--            <ul class="none">-->
-<!--                <li>-->
-<!--                    <label for="womens-40_42">40-42(XS)</label>-->
-<!--                    <input type="checkbox" id="womens-40_42">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-42_44">42-44(S)</label>-->
-<!--                    <input type="checkbox" id="womens-42_44">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-44_46">44-46(M)</label>-->
-<!--                    <input type="checkbox" id="womens-44_46">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-46_48">46-48(L)</label>-->
-<!--                    <input type="checkbox" id="womens-46_48">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-48_50">48-50(XL)</label>-->
-<!--                    <input type="checkbox" id="womens-48_50">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-50_52">50-52(XXL)</label>-->
-<!--                    <input type="checkbox" id="womens-50_52">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
-<!--                    <input type="checkbox" id="womens-52_54">-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
-<!--        <div class="filter-js multitype-filter">-->
-<!--            <p>Размер<span class="arrow-open">➤</span></p>-->
-<!--            <ul class="none">-->
-<!--                <li>-->
-<!--                    <label for="womens-40_42">40-42(XS)</label>-->
-<!--                    <input type="checkbox" id="womens-40_42">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-42_44">42-44(S)</label>-->
-<!--                    <input type="checkbox" id="womens-42_44">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-44_46">44-46(M)</label>-->
-<!--                    <input type="checkbox" id="womens-44_46">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-46_48">46-48(L)</label>-->
-<!--                    <input type="checkbox" id="womens-46_48">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-48_50">48-50(XL)</label>-->
-<!--                    <input type="checkbox" id="womens-48_50">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-50_52">50-52(XXL)</label>-->
-<!--                    <input type="checkbox" id="womens-50_52">-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
-<!--                    <input type="checkbox" id="womens-52_54">-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--        </div>-->
+    <?= $this->render('//main/filter', ['url' => $this->params['url']]) ?>
+    <!--        <div class="filter-js multitype-filter">-->
+    <!--            <p>Размер<span class="arrow-open">➤</span></p>-->
+    <!--            <ul class="none">-->
+    <!--                <li>-->
+    <!--                    <label for="womens-40_42">40-42(XS)</label>-->
+    <!--                    <input type="checkbox" id="womens-40_42">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-42_44">42-44(S)</label>-->
+    <!--                    <input type="checkbox" id="womens-42_44">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-44_46">44-46(M)</label>-->
+    <!--                    <input type="checkbox" id="womens-44_46">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-46_48">46-48(L)</label>-->
+    <!--                    <input type="checkbox" id="womens-46_48">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-48_50">48-50(XL)</label>-->
+    <!--                    <input type="checkbox" id="womens-48_50">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-50_52">50-52(XXL)</label>-->
+    <!--                    <input type="checkbox" id="womens-50_52">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
+    <!--                    <input type="checkbox" id="womens-52_54">-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--        </div>-->
+    <!--        <div class="filter-js multitype-filter">-->
+    <!--            <p>Размер<span class="arrow-open">➤</span></p>-->
+    <!--            <ul class="none">-->
+    <!--                <li>-->
+    <!--                    <label for="womens-40_42">40-42(XS)</label>-->
+    <!--                    <input type="checkbox" id="womens-40_42">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-42_44">42-44(S)</label>-->
+    <!--                    <input type="checkbox" id="womens-42_44">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-44_46">44-46(M)</label>-->
+    <!--                    <input type="checkbox" id="womens-44_46">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-46_48">46-48(L)</label>-->
+    <!--                    <input type="checkbox" id="womens-46_48">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-48_50">48-50(XL)</label>-->
+    <!--                    <input type="checkbox" id="womens-48_50">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-50_52">50-52(XXL)</label>-->
+    <!--                    <input type="checkbox" id="womens-50_52">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
+    <!--                    <input type="checkbox" id="womens-52_54">-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--        </div>-->
+    <!--        <div class="filter-js multitype-filter">-->
+    <!--            <p>Размер<span class="arrow-open">➤</span></p>-->
+    <!--            <ul class="none">-->
+    <!--                <li>-->
+    <!--                    <label for="womens-40_42">40-42(XS)</label>-->
+    <!--                    <input type="checkbox" id="womens-40_42">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-42_44">42-44(S)</label>-->
+    <!--                    <input type="checkbox" id="womens-42_44">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-44_46">44-46(M)</label>-->
+    <!--                    <input type="checkbox" id="womens-44_46">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-46_48">46-48(L)</label>-->
+    <!--                    <input type="checkbox" id="womens-46_48">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-48_50">48-50(XL)</label>-->
+    <!--                    <input type="checkbox" id="womens-48_50">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-50_52">50-52(XXL)</label>-->
+    <!--                    <input type="checkbox" id="womens-50_52">-->
+    <!--                </li>-->
+    <!--                <li>-->
+    <!--                    <label for="womens-52_54">52-54(XXXL) и больше</label>-->
+    <!--                    <input type="checkbox" id="womens-52_54">-->
+    <!--                </li>-->
+    <!--            </ul>-->
+    <!--        </div>-->
+
     <div class="content__wrap">
-        <?php dump($this->params['url']) ?>
+
+        <?php
+
+            $linkMainText = 'Все объявления в ' . $this->params['url']['city']['current']['name'];
+            if ($this->params['url']['city']['current']['url'] == $this->params['url']['city']['default']['url']) {
+                $linkMainUrl = '/';
+            }
+            else {
+                $linkMainUrl = '/' . $this->params['url']['city']['current']['url'];
+            }
+            echo Html::a($linkMainText, $linkMainUrl);
+            if (isset($this->params['url']['currentCategory'])) {
+                $count = count($this->params['url']['categories']);
+                $key = 1;
+                foreach ($this->params['url']['categories'] as $category) {
+                    echo '&nbsp;/&nbsp;';
+                    if ($key == $count) {
+                        echo Html::a($category->name);
+                    }
+                    else {
+                        echo Html::a($category->name, '/' . $this->params['url']['city']['current']['url'] . $category->fullUrl);
+                    }
+                    $key++;
+                }
+            }
+
+        ?>
         <?= $content ?>
     </div>
 </div>
