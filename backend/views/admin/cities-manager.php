@@ -9,7 +9,7 @@ $this->title = 'Манагер городов';
 
 //$this->registerCssFile('@web/css/libs.css');
 //$this->registerCssFile('@web/css/main.css');
-$this->registerJsFile('@web/js/common.js', ['depends' => 'yii\web\JqueryAsset']);
+$this->registerJsFile('@web/js/common.js', ['depends' => 'backend\assets\AdminAsset']);
 
 ?>
 

@@ -19,6 +19,9 @@ return [
             'csrfParam' => '_csrf-backend',
             'baseUrl' => '/админка',
             'enableCsrfValidation' => false,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityClass' => 'common\models\User',

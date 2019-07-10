@@ -48,20 +48,20 @@
 	});
 
 	function ajax() {
-
 		let xhr = new XMLHttpRequest();
-		xhr.open('POST', '/админка/создание-фильтров');
-		xhr.setRequestHeader('Content-Type', 'application/json');
-		data.arrList = JSON.stringify(data.arrList);
+		xhr.open('POST', 'создание-фильтров');
+		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		data = JSON.stringify(data);
 		xhr.send(data);
 
 		xhr.onreadystatechange = function() {
-			if (xhr.readyState != 4) return;
-		  if (xhr.status == 200) {
-	      console.log(xhr.responseText);
-	    } else {
-	      console.log('error');
-	    }
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				console.log(xhr);
+			}
+			else {
+				console.log(xhr);
+			}
 
 		}
 

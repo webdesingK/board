@@ -3,7 +3,9 @@
 $this->title = 'Редактирование фильтров';
 
 //$this->registerCssFile('@web/css/main.css');
-$this->registerJsFile('@web/js/common.js');
+//$this->registerJsFile('@web/js/common.js');
+
+
 
 ?>
 
