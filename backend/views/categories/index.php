@@ -2,7 +2,7 @@
 
     use yii\helpers\Html;
     use yii\grid\GridView;
-//    use yii\widgets\Pjax;
+    use yii\widgets\Pjax;
 
     /* @var $this yii\web\View */
     /* @var $searchModel backend\models\crud\CategoriesSearch */
@@ -15,7 +15,7 @@
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-<!--    --><?php //Pjax::begin(); ?>
+    <?php Pjax::begin(); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -36,6 +36,6 @@
         ],
     ]); ?>
 
-<!--    --><?php //Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 
 </div>
