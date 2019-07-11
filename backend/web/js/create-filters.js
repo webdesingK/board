@@ -5,7 +5,8 @@
 			addList    = document.querySelector('#add-list-js'),
 			tableName  = document.querySelector('#table-name-js'),
 			plug       = document.querySelector('.plug'),
-			count      = 1;
+			count      = 1,
+			btnFlag    = true;
 
 	function inputList(count) {
 		return `
@@ -43,31 +44,32 @@
 		}
 	});
 
-	btnSave.addEventListener('click', function() {
-		let data = {
-			name: '',
-			arrList: []
-		};
-		if (tableName.value) {
-			tableName.parentNode.previousElementSibling.classList.add('none')
-			data.name = tableName.value;
-		} else{
-			tableName.parentNode.previousElementSibling.classList.remove('none');
-			return;
-		}
-		let tableList = addList.querySelectorAll('.form-control');
-		for (var i = 0; i < tableList.length; i++) {
-			data.arrList.push(tableList[i].value);
-			if (!tableList[i].value) {
-				return tableList[i].parentNode.classList.add('error-item');
+		btnSave.addEventListener('click', function() {
+	if (!btnFlag) return
+			btnFlag = false;
+			console.log('test')
+			let data = {
+				name: '',
+				arrList: []
+			};
+			if (tableName.value) {
+				tableName.parentNode.previousElementSibling.classList.add('none')
+				data.name = tableName.value;
 			} else{
-				tableList[i].parentNode.classList.remove('error-item');				
+				tableName.parentNode.previousElementSibling.classList.remove('none');
+				return;
 			}
-		}
-			console.log(data)
-		ajax(data);
-	});
-
+			let tableList = addList.querySelectorAll('.form-control');
+			for (var i = 0; i < tableList.length; i++) {
+				data.arrList.push(tableList[i].value);
+				if (!tableList[i].value) {
+					return tableList[i].parentNode.classList.add('error-item');
+				} else{
+					tableList[i].parentNode.classList.remove('error-item');				
+				}
+			}
+			ajax(data);
+		});
 	function ajax(data) {
 		let xhr = new XMLHttpRequest();
 		xhr.open('POST', 'создание-фильтров');
@@ -80,14 +82,13 @@
 			if (xhr.readyState != 4) return;
 			if (xhr.status == 200) {
 				console.log(JSON.parse(xhr.responseText));
+				btnFlag = true;
 			}
 			else {
+				btnFlag = true;
 				console.log('errror');
 				console.log(xhr);
 			}
-
 		}
-
 	};
-
 })();

@@ -27,8 +27,7 @@
       	<div class="plug"></div>
       </div>
       <div class="filter__add col-md-12 text-success">
-      	<i class="glyphicon glyphicon-plus"></i>
-      	<span> - добавить пункт</span>
+      	<p><i class="glyphicon glyphicon-plus"></i> - добавить пункт</p>
       </div>
     </div>
     <div class="btn-wrap col-md-12 text-right">
