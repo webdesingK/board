@@ -1,53 +1,74 @@
 (function () {
 	
-	let btnSave    = document.querySelector('.btn-save'),
+	let btnSave    = document.querySelector('#btn-save-js'),
 			addFilter  = document.querySelector('.filter__add'),
-			filterName = document.querySelector('.filter-name'),
-			wrapRight  = document.querySelector('.wrap__right'),
-			filterList;
+			addList    = document.querySelector('#add-list-js'),
+			tableName  = document.querySelector('#table-name-js'),
+			plug       = document.querySelector('.plug'),
+			count      = 1;
 
-	let data = {
-		name: '',
-		arrList: []
-	};
-
-	let input = ` 
-		<div class="wrap__right-list">
-			<input type="text" class="filters__list" placeholder="добавить в список фильтра">
-			<div class="filter__remove" title="удалить из списка фильтра">✘</div>
+	function inputList(count) {
+		return `
+		<div class="input-group">
+			<span class="input-group-addon">${count}</span>
+			<input type="text" class="form-control">
+			<span class="input-group-addon" title="Удалить пункт"><i class="glyphicon glyphicon-remove-circle text-danger"></i></span>
 		</div>
 	`;
+	}
 
 	addFilter.addEventListener('click', function() {
-
-		this.parentNode.insertAdjacentHTML('beforeBegin', input);
-		filterList   = document.querySelectorAll('.filters__list');
+		addList.insertAdjacentHTML('beforeEnd', inputList(count));
+		count++;
+		plug.classList.add('none');
 	});
 
-	wrapRight.addEventListener('click', function(e) {
+	function zeroing(parent) {
+		if (parent.querySelectorAll('.input-group').length == 0) {
+			plug.classList.remove('none');
+			count = 1;
+		}		
+	}
+
+	addList.addEventListener('click', function(e) {
 		let target = e.target;
-		if (target.getAttribute('class') == 'filter__remove') {
+		let parent = target.closest('#add-list-js');
+		if (target.getAttribute('class') == 'input-group-addon') {
 			target.parentNode.remove();
+			zeroing(parent);
+		} 
+		if(target.parentNode.getAttribute('class') == 'input-group-addon') {
+			target.closest('.input-group').remove();
+			zeroing(parent);
 		}
 	});
 
 	btnSave.addEventListener('click', function() {
-		if (filterName.value) {
-			filterName.previousElementSibling.classList.add('none')
-			data.name = filterName.value;
+		let data = {
+			name: '',
+			arrList: []
+		};
+		if (tableName.value) {
+			tableName.parentNode.previousElementSibling.classList.add('none')
+			data.name = tableName.value;
 		} else{
-			filterName.previousElementSibling.classList.remove('none');
+			tableName.parentNode.previousElementSibling.classList.remove('none');
+			return;
 		}
-		for (var i = 0; i < filterList.length; i++) {
-			data.arrList.push(filterList[i].value);
+		let tableList = addList.querySelectorAll('.form-control');
+		for (var i = 0; i < tableList.length; i++) {
+			data.arrList.push(tableList[i].value);
+			if (!tableList[i].value) {
+				return tableList[i].parentNode.classList.add('error-item');
+			} else{
+				tableList[i].parentNode.classList.remove('error-item');				
+			}
 		}
-		let cleaningDublicates = Array.from(new Set(data.arrList));
-		data.arrList = cleaningDublicates;
-		console.log(data)
-		ajax();
+			console.log(data)
+		ajax(data);
 	});
 
-	function ajax() {
+	function ajax(data) {
 		let xhr = new XMLHttpRequest();
 		xhr.open('POST', 'создание-фильтров');
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -57,16 +78,14 @@
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState == 4 && xhr.status == 200) {
-				console.log(xhr);
+				console.log('удача');
 			}
 			else {
-				console.log(xhr);
+				console.log('неудача');
 			}
 
 		}
 
 	};
-
-
 
 })();
