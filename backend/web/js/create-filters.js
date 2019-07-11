@@ -77,11 +77,13 @@
 		xhr.send(data);
 
 		xhr.onreadystatechange = function() {
-			if (xhr.readyState == 4 && xhr.status == 200) {
-				console.log('удача');
+			if (xhr.readyState != 4) return;
+			if (xhr.status == 200) {
+				console.log(JSON.parse(xhr.responseText));
 			}
 			else {
-				console.log('неудача');
+				console.log('errror');
+				console.log(xhr);
 			}
 
 		}
