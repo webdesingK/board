@@ -4,6 +4,7 @@
 
     use backend\models\Categories;
     use backend\models\Cities;
+    use backend\models\Filters;
     use yii\helpers\Json;
     use yii\web\Controller;
     use Yii;
@@ -102,10 +103,9 @@
         public function actionCreateFilters() {
 
             if (Yii::$app->request->isAjax) {
-//                $request = file_get_contents('php://input');
-//          $request = json_decode($request);
-//                $request = Json::decode($request);
-//                return $this->renderPartial('create-filters', compact('request'));
+                $request = Json::decode(file_get_contents('php://input'));
+                $result = Filters::createFilter($request);
+                return json_encode($result);
             }
 
             return $this->render('create-filters');
