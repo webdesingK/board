@@ -116,6 +116,22 @@
         }
 
         public function actionBindFilters() {
+
+            if (Yii::$app->request->isAjax) {
+
+                $arr = [
+                    'vasa',
+                    'petya',
+                    'ghora',
+                    'masha',
+                    'pasha',
+                    'dasha',
+                    'kasha'
+                ];
+
+                return json_encode($arr);
+            }
+
             return $this->render('bind-filters');
         }
 
