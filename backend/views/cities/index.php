@@ -8,7 +8,7 @@
     /* @var $searchModel backend\models\crud\CitiesSearch */
     /* @var $dataProvider yii\data\ActiveDataProvider */
 
-    $this->title = 'Cities';
+    $this->title = 'Города';
     $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="cities-index">

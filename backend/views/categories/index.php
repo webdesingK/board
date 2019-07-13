@@ -8,7 +8,7 @@
     /* @var $searchModel backend\models\crud\CategoriesSearch */
     /* @var $dataProvider yii\data\ActiveDataProvider */
 
-    $this->title = 'Categories';
+    $this->title = 'Категории';
     $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="categories-index">

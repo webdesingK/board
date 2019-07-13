@@ -3,8 +3,8 @@
     $this->title = 'Создание фильтров';
 
     //$this->registerCssFile('@web/css/main.css');
-    $this->registerJsFile('@web/js/create-filters.js', ['depends' => 'backend\assets\AdminAsset']);
-    $this->registerCssFile('@web/css/create-filters.css', ['depends' => 'backend\assets\AdminAsset']);
+    $this->registerJsFile('@web/js/create-filters.js', ['depends' => 'backend\assets\AppAsset']);
+    $this->registerCssFile('@web/css/create-filters.css', ['depends' => 'backend\assets\AppAsset']);
 
 ?>
 

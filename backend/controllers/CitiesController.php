@@ -14,7 +14,7 @@
      */
     class CitiesController extends Controller {
 
-        public $layout = 'main';
+//        public $layout = 'main';
 
         /**
          * {@inheritdoc}
