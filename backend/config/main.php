@@ -13,7 +13,7 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'defaultRoute' => 'admin',
-    'layout' => 'admin',
+//    'layout' => 'admin',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -53,8 +53,15 @@ return [
                 'создание-фильтров' => 'admin/create-filters',
                 'редактирование-фильтров' => 'admin/edit-filters',
                 'привязка-фильтров' => 'admin/bind-filters',
-                'crud-cities' => 'cities/index',
-                'crud-categories' => 'categories/index'
+                'просмотр-городов' => 'cities/index',
+                'просмотр-категорий' => 'categories/index'
+            ],
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'backend\assets\AppAsset' => [
+                    'skin' => 'skin-purple',
+                ],
             ],
         ],
     ],

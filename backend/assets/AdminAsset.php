@@ -19,7 +19,7 @@
         ];
         public $depends = [
 //            'yii\bootstrap\BootstrapAsset',
-            'yii\bootstrap\BootstrapPluginAsset',
+//            'yii\bootstrap\BootstrapPluginAsset',
 //			'yii\web\JqueryAsset'
         ];
     }
