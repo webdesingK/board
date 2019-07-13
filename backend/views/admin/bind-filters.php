@@ -14,8 +14,9 @@ $this->registerJsFile('@web/js/bind-filters.js');
 		</div>
 	</div>
 	<div class="row well col-md-10">
-		<div class="col-md-4">
-			<select class="form-control select-categories-css" id="select-categories-js">
+		<div class="col-md-5 select-categories-css">
+			<label class="text-info">Категории</label>
+			<select class="form-control" id="select-categories-js">
 				<option disabled="disabled" selected="selected">Выбрать категорию</option>
 				<optgroup label="1 уровень категории">
 					<option value="id категории">трусы</option>
@@ -25,7 +26,7 @@ $this->registerJsFile('@web/js/bind-filters.js');
 				</optgroup>
 			</select>
 		</div>
-		<div class="col-md-8 table-responsive">
+		<div class="col-md-7 table-responsive">
 			<table class="table table-hover-css">
 				<thead>
 					<tr>
@@ -40,8 +41,13 @@ $this->registerJsFile('@web/js/bind-filters.js');
 				<p class="add-filters-css"><i class="glyphicon glyphicon-plus"></i> добавить фильтр</p>
 			</div>
 		</div>
-		<div class="col-md-12 text-right">
+		<div class="col-md-12 btn-wrap-css text-right">
 		  <div class="btn btn-success" id="btn-save-js">Сохранить</div>
+		</div>
+		<div class="col-md-12">
+		  <div class="alert alert-info" id="message-js">
+		    <p><strong>Внимание! </strong><span> Обратите внимание на правильность заполнения полей</span></p>
+		  </div>
 		</div>
 	</div>
 </div>
