@@ -11,7 +11,7 @@
         public $basePath = '@webroot';
         public $baseUrl = '@web';
         public $css = [
-            'css/libs.css',
+//            'css/libs.css',
             'css/main.css'
         ];
         public $js = [
@@ -19,7 +19,7 @@
         ];
         public $depends = [
 //            'yii\bootstrap\BootstrapAsset',
-            'yii\bootstrap\BootstrapPluginAsset',
+//            'yii\bootstrap\BootstrapPluginAsset',
 //			'yii\web\JqueryAsset'
         ];
     }

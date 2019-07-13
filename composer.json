@@ -20,7 +20,8 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "symfony/var-dumper": "4.2.x-dev",
         "creocoder/yii2-nested-sets": "^0.9.0",
-        "yii2tech/filedb": "^1.0"
+        "yii2tech/filedb": "^1.0",
+        "dmstr/yii2-adminlte-asset": "^2.6"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -42,5 +43,11 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm",
+            "bower-asset-library": "vendor/bower"
+        }
+    }
 }
