@@ -119,17 +119,20 @@
 
             if (Yii::$app->request->isAjax) {
 
-                $arr = [
-                    'vasa',
-                    'petya',
-                    'ghora',
-                    'masha',
-                    'pasha',
-                    'dasha',
-                    'kasha'
-                ];
+                $request = Json::decode(file_get_contents('php://input'));
 
-                return json_encode($arr);
+                if ($request['requestId'] == 'getFilters') {
+                    $arr = [
+                        'vasa',
+                        'petya',
+                        'ghora',
+                        'masha',
+                        'pasha',
+                        'dasha',
+                        'kasha'
+                    ];
+                    return json_encode($arr);
+                }
             }
 
             return $this->render('bind-filters');

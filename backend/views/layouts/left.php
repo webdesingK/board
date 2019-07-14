@@ -43,7 +43,8 @@
                             [
                                 'label' => 'Главная сайта',
                                 'icon' => 'desktop',
-                                'url' => '/'
+                                'url' => '/',
+                                'template' => '<a href="{url}" target="_blank">{icon} {label}</a>'
                             ],
                             [
                                 'label' => 'Главная админки',
