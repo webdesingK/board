@@ -15,23 +15,33 @@
     </div>
   </div>
   <div class="row well col-md-10">
-    <div class="col-md-5">
-      <strong class="alert alert-danger col-md-12 none">Введите название!!!</strong>
+    <div class="col-md-5 input-categories-css">
       <div class="form-group">
         <label for="nameTable" class="text-info">Название таблицы</label>
         <input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
       </div>
     </div>
     <div class="col-md-7 list-group-css">
-      <div class="col-md-11 form-group" id="add__list-js">
-        <div class="plug"></div>
-      </div>
-      <div class="filter__add col-md-12 text-success" id="filter__add-js">
+      <table class="table table-hover-css">
+        <thead>
+          <tr>
+            <th>Пункты</th>
+          </tr>
+        </thead>
+        <tbody id="add__list-js">
+        </tbody>
+      </table>
+      <div class="filter__add-css col-md-12 text-success" id="filter__add-js">
         <p><i class="glyphicon glyphicon-plus"></i> - добавить пункт</p>
       </div>
     </div>
-    <div class="btn-wrap col-md-12 text-right">
+    <div class="btn-wrap-css col-md-12 text-right">
       <div class="btn btn-success" id="btn-save-js">Сохранить</div>
+    </div>
+    <div class="col-md-12">
+      <div class="alert alert-info" id="message-js">
+        <p><strong>Внимание! </strong><span>Обратите внимание на правильность заполнения полей</span></p>
+      </div>
     </div>
   </div>
 </div>
