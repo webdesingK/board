@@ -121,7 +121,7 @@
 
                 $request = Json::decode(file_get_contents('php://input'));
 
-                if ($request['requestId'] == 'getAllFilterNames') {         // Названия таблиц фильтров
+                if ($request['requestId'] == 'getAllFilterNames') {
                     $arr = [
                         'vasa',
                         'petya',
@@ -133,11 +133,8 @@
                     ];
                     return json_encode($arr);
                 }
-
                 if ($request['requestId'] == 'getBindedFilters') {
-                    return [
-                        'request' => null
-                    ];
+                    return json_encode('false');
                 }
             }
 

@@ -1,0 +1,25 @@
+.add-filters-css {
+  font: bold 18px sans-serif;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.add-filters-css:hover {
+  text-shadow: 0 0 1px green;
+}
+
+.select-categories-css {
+  margin-top: 22px;
+}
+
+.table-hover-css {
+  margin-bottom: 15px !important;
+}
+
+.table-hover-css tr:hover {
+  background: white;
+}
+
+.btn-wrap-css {
+  margin-bottom: 20px;
+}

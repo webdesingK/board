@@ -1,111 +1,40 @@
-.wrapeer {
-  padding-left: 200px;
+.input-categories-css {
+  margin-top: 22px;
 }
 
-.wrap {
-  max-width: 1260px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 50px 20px;
+.input-group {
+  margin: 10px 0;
 }
 
-.wrap__left {
-  width: 30.83333%;
-  padding: 10px;
-  position: relative;
-  align-self: flex-end;
+.input-group:last-child {
+  margin: 0;
 }
 
-.wrap__left select {
-  width: 100%;
-  padding: 5px;
-  margin: 5px 0;
-  font: 18px sans-serif;
-  border: 1px solid #333;
-  outline: none;
-}
-
-.wrap__right {
-  width: 30.83333%;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
-  border: 1px solid #444;
-}
-
-.wrap__right-list {
-  width: 88%;
-  margin: 5px 0;
-}
-
-.wrap__right-add {
-  margin: 5px 0 5px auto;
-}
-
-.wrap input {
-  width: 80.83333%;
-  padding: 5px;
-  font: 18px sans-serif;
-  border: 1px solid #333;
-  outline: none;
-}
-
-.filter__add,
-.filter__remove {
-  display: inline-block;
-  text-align: center;
-  border: 1px solid #000;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  padding: 5px;
-  vertical-align: top;
-  line-height: 23px;
-  font-weight: bold;
-  font-size: 22px;
-  cursor: pointer;
-  color: green;
-}
-
-.filter__add:hover,
-.filter__remove:hover {
-  color: #000;
-  border-color: green;
-}
-
-.filter__remove {
-  color: red;
-}
-
-.filter__remove:hover {
-  border-color: red;
-}
-
-.btn-wrap {
-  width: 100%;
-  text-align: right;
-}
-
-.btn-save {
-  display: inline-block;
-  text-align: center;
-  margin-top: 20px;
-  border: 1px solid #333;
-  padding: 5px 10px;
-  font: bold 20px sans-serif;
-  color: green;
-  display: inline-block;
+.input-group-addon[title] {
   cursor: pointer;
 }
 
-.btn-save:hover {
-  box-shadow: inset 0 0 10px green;
+.input-group-addon[title]:hover {
+  box-shadow: inset 0 0 2px #a94442;
 }
 
-.name-error {
-  color: red;
-  text-decoration: underline;
-  margin-bottom: 5px;
-  font: bold 20px sans-serif;
+.filter__add-css p {
+  font: bold 18px sans-serif;
+  cursor: pointer;
+}
+
+.filter__add-css p:hover {
+  text-shadow: 0 0 1px #3c763d;
+}
+
+.btn-wrap-css {
+  margin-bottom: 20px;
+}
+
+.table-hover-css {
+  margin-bottom: 15px;
+}
+
+.table-hover-css tr:hover {
+  background: white;
 }

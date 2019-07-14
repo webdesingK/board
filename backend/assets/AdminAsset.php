@@ -11,7 +11,7 @@
         public $basePath = '@webroot';
         public $baseUrl = '@web';
         public $css = [
-//            'css/libs.css',
+            // 'css/libs.css',
             'css/main.css'
         ];
         public $js = [
