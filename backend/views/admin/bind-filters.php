@@ -19,9 +19,9 @@ $this->registerJsFile('@web/js/bind-filters.js');
 			<select class="form-control" id="select-categories-js">
 				<option disabled="disabled" selected="selected">Выбрать категорию</option>
 				<optgroup label="1 уровень категории">
-					<option value="id категории">трусы</option>
+					<option value="1">трусы</option>
 					<option value="id категории">одежда</option>
-					<option value="id категории" class="pl">одежда</option>
+					<option value="3" class="pl">одежда</option>
 					<option value="id категории" class="pl">одежда</option>
 				</optgroup>
 			</select>

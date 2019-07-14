@@ -22,7 +22,7 @@
 		xhr.open('POST', 'привязка-фильтров');
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		xhr.setRequestHeader('Content-type', 'application/json');
-		xhr.send(JSON.stringify({requestId: 'getFilters'}));
+		xhr.send(JSON.stringify({requestId: 'getAllFilterNames'}));
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState != 4) return;
@@ -38,6 +38,31 @@
 	select.addEventListener('change', function() {
 		select.parentNode.classList.remove('has-error');
 		outputings('info', ' Обратите внимание на правильность заполнения полей');
+		let data = {
+			requestId: 'getBindedFilters',
+			idCategory: select.value
+		};
+		let xhr = new XMLHttpRequest();
+		xhr.open('POST', 'привязка-фильтров');
+		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(data));
+
+		xhr.onreadystatechange = function() {
+			let str;
+			if (xhr.readyState != 4) return;
+			if (xhr.status == 200) {
+				str = JSON.parse(xhr.responseText);
+				if (str) {
+
+				console.log(typeof(str))
+				}
+			}
+			else {
+				outputings('danger', 'Проблема с сервером, не получили данные о массиве фильтров');
+			}
+		}
+
 	});
 
 	ajaxListFilter();
@@ -69,7 +94,7 @@
 			<th>
 				<div class="input-group">
 					<span class="input-group-addon">${count}</span>
-					<input type="text" class="form-control">
+					<input type="text" class="form-control" value="sdsd">
 				</div>
 			</th>
 			<th>
@@ -148,20 +173,20 @@
 		} else{
 			outputings('info', ' Обратите внимание на правильность заполнения полей');
 		}
-		let arr            = [],
+		let arr            = {},
 				arrList        = addList.querySelectorAll('tr'),
 				selectCategory = select.value.trim(),
 				data           = {};
 
 		for (let i = 0; i < arrList.length; i++) {
-			let name  = arrList[i].querySelector('input').value,
-					value = arrList[i].querySelector('select').value,
-					total = [name, value];
-					arr.push(total);
+			let url  = arrList[i].querySelector('input').value,
+					value = arrList[i].querySelector('select').value;
+					arr[url] = value;
 		}
-		data.push(['idCategory', selectCategory],arr);
-		console.log(data)
-			ajax(data);
+		data.requestId     = 'bindFilters';
+		data.categoryId    = selectCategory;
+		data.bindedFilters = arr;
+		ajax(data);
 	});
 
 	function succes(text) {
@@ -180,8 +205,7 @@
 		xhr.open('POST', 'привязка-фильтров');
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		xhr.setRequestHeader('Content-type', 'application/json');
-		data = JSON.stringify(data);
-		xhr.send(data);
+		xhr.send(JSON.stringify(data));
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState != 4) return;

@@ -121,7 +121,7 @@
 
                 $request = Json::decode(file_get_contents('php://input'));
 
-                if ($request['requestId'] == 'getFilters') {
+                if ($request['requestId'] == 'getAllFilterNames') {
                     $arr = [
                         'vasa',
                         'petya',
@@ -132,6 +132,9 @@
                         'kasha'
                     ];
                     return json_encode($arr);
+                }
+                if ($request['requestId'] == 'getBindedFilters') {
+                    return json_encode('false');
                 }
             }
 
