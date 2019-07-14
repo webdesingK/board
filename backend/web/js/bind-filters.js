@@ -149,7 +149,7 @@
 			outputings('info', 'Обратите внимание на правильность заполнения полей');
 			return false;
 		}
-	}
+	};
 
 	function succes(text) {
 		outputings('success', text);

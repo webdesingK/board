@@ -1,0 +1,40 @@
+.select-categories-css {
+  margin-top: 22px;
+}
+
+.input-group {
+  margin: 10px 0;
+}
+
+.input-group:last-child {
+  margin: 0;
+}
+
+.input-group-addon[title] {
+  cursor: pointer;
+}
+
+.input-group-addon[title]:hover {
+  box-shadow: inset 0 0 2px #a94442;
+}
+
+.filter__add-css {
+  font: bold 18px sans-serif;
+  cursor: pointer;
+}
+
+.filter__add-css:hover {
+  text-shadow: 0 0 1px #3c763d;
+}
+
+.btn-wrap-css {
+  margin-bottom: 20px;
+}
+
+.table-hover-css {
+  margin-bottom: 15px;
+}
+
+.table-hover-css tbody tr:hover {
+  background: white;
+}
