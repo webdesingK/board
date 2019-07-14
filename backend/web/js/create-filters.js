@@ -45,11 +45,16 @@
 			parent.remove();// удаляем вставленый инпут
 			zeroing();// и обнуляем счетчик
 		}
+		let tableList = addList.querySelectorAll('.input-group');// записываем динамически добавленные инпуты в переменную
+		for (var i = 0; i < tableList.length; i++) {// цикл для изминения счетчика при удалении какого либо пункта
+			tableList[i].firstElementChild.innerText = i + 1;
+			count = tableList.length + 1;
+		}
 	});
 
 	// вывод сообщения
 	function outputings(outp, text) {
-		message.classList.remove('alert-info', 'alert-success', 'alert-danger');// удаляем кланс 'info' 'succes'
+		message.className = message.className.replace(/alert-[\w]*/gi, '');
 		message.classList.add('alert-' + outp);// и добавляем класс 'danger'
 		message.querySelector('span').innerText = text;// и изминяем текст в блоке информации о предуприждении
 	};
@@ -57,7 +62,7 @@
 	function ifTablesName(el, text) {// функция проверки на пустоту инпута
 		if (!el.value) {// если инпут пустой
 			el.parentNode.classList.add('has-error');// добавляем класс error
-			outputings('danger',text);
+			outputings('warning',text);
 			btnFlag = true;// и разрешаем кнопке сохранить отработать еще раз
 		} else{// если инпут не пустой
 			el.parentNode.classList.remove('has-error');// удаляем класс error
@@ -80,7 +85,7 @@
 
 	tableName.addEventListener('keyup', ifChangesInput);// запускаем событие на проверку инпута название таблицы
 
-	function succes(text) {
+	function success(text) {
 		outputings('success', text);
 		tableName.value = '';
 		tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
@@ -92,13 +97,42 @@
 		zeroing();
 	};
 
+	function ajaxCallback(status, text) {
+		if (status) {
+			success(text);
+		} else{
+			outputings('danger', text);
+			btnFlag = true;
+		}
+	}
+
+	function ajax(data, callbackFunction) {
+		let xhr = new XMLHttpRequest();
+		xhr.open('POST', 'создание-фильтров');
+		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(JSON.stringify(data));
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState != 4) return;
+			if (xhr.status == 200) {
+				let resp = JSON.parse(xhr.responseText);
+				callbackFunction(resp.status, resp.text)
+			}
+			else {
+				btnFlag = true;
+				outputings('danger', 'Проблема с получение данных с сервера');
+			}
+		}
+	};
+
 	// клик на кнопку сохранить
 	btnSave.addEventListener('click', function() {
 		if (!btnFlag) return// проверка для избежания многократного клика на кнопку 'сохранить'
 		btnFlag = false;// запрещаем повторное нажатие кнопки 'сохранить'
 		let data = {// переменная для передачи на сервер
 			name: '',// имя название таблицы
-			arrList: []
+			arrList: {}
 		};
 		if (!tableName.value) {// проверяем если инпут название таблицы пустой
 			tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
@@ -114,42 +148,15 @@
 				return;// и останавливает далнейшее действвие кода
 			} else{// если не пустой инпут
 				tableList[i].removeEventListener('keyup', ifChangesInput);// и останавливаем событие
-				ifTablesName(tableList[i], ' Обратите внимание на правильность заполнения полей');// сообщаем об этом если ранее была ошибка
-				data.arrList.push(tableList[i].value);// и записываем в переменную для передачи на сервер
+				data.arrList[i] = tableList[i].value;// и записываем в переменную для передачи на сервер
 			}
 		}
 		if (addList.querySelectorAll('tr').length == 0) {// при сохранении, если ни добавили ни одного пункта 
 			outputings('danger', ' У Вас нет ни одного пункта');// сообщаем об этом
 			btnFlag = true;
 			return;
-		} else{
-			outputings('info', ' Обратите внимание на правильность заполнения полей');
 		}
-		ajax(data);
+		ajax(data, ajaxCallback);
 	});
 
-	function ajax(data) {
-		let xhr = new XMLHttpRequest();
-		xhr.open('POST', 'создание-фильтров');
-		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-		xhr.setRequestHeader('Content-type', 'application/json');
-		data = JSON.stringify(data);
-		xhr.send(data);
-
-		xhr.onreadystatechange = function() {
-			if (xhr.readyState != 4) return;
-			if (xhr.status == 200) {
-				let resp = JSON.parse(xhr.responseText);
-				if (resp.status) {
-					succes(resp.text);
-				} else{
-					outputings('danger', resp.text)
-				}
-			}
-			else {
-				btnFlag = true;
-				outputings('danger', 'Проблема с получение данных с сервера');
-			}
-		}
-	};
 })();

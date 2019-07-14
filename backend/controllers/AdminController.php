@@ -133,7 +133,7 @@
                     ];
                     return json_encode($arr);
                 }
-                if ($request['requestId'] == 'getBindedFilters') {
+                if ($request['requestId'] == 'getBondedFilters') {
                     return json_encode('false');
                 }
             }
