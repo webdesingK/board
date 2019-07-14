@@ -24,8 +24,8 @@
 
     <div class="header__wrap">
         <a href="/">Главная</a>
-        <a href="http://localhost:3000/админка">localhost-admin</a>
-        <a href="/админка">board-admin</a>
+        <a href="http://localhost:3000/админка" target="_blank">localhost-admin</a>
+        <a href="/админка" target="_blank">board-admin</a>
         <a href="/memcached" target="_blank">memcached</a>
         <div class="auth">
             <p id="auth">Вход</p>
