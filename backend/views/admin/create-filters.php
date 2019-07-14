@@ -8,39 +8,19 @@
 
 ?>
 
-<div class="container">
-	<div class="row col-md-10">
-		<div class="col-md-12 page-header">
-			<h1 class="text-primary">Создание фильтров</h1>
-		</div>
-	</div>
-  <div class="row well col-md-10">
-    <div class="col-md-5">
-      <div class="form-group input-categories-css">
-      	<label for="nameTable" class="text-info">Название таблицы</label>
-      	<input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
-      </div>
+<div class="wrapeer">
+    <div class="wrap">
+        <div class="wrap__left">
+            <div class="name-error none">Введите название!!!</div>
+            <input class="filter-name" type="text" placeholder="Название фильтра">
+        </div>
+        <div class="wrap__right">
+            <div class="wrap__right-add">
+                <div class="filter__add" title="добавить в список фильтра">✚</div>
+            </div>
+            <div class="btn-wrap">
+                <div class="btn-save">Сохранить</div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-7 table-responsive">
-      <table class="table table-hover-css">
-        <thead>
-          <tr>
-            <th>Список пунктов фильтра</th>
-          </tr>
-        </thead>
-        <tbody id="add__list-js"></tbody>
-      </table>
-      <div class="filter__add-css col-md-12 text-success" id="filter__add-js">
-      	<p><i class="glyphicon glyphicon-plus"></i> добавить пункт</p>
-      </div>
-    </div>
-    <div class="btn-wrap-css col-md-12 text-right">
-      <div class="btn btn-success" id="btn-save-js">Сохранить</div>
-    </div>
-    <div class="col-md-12">
-      <div class="alert alert-info" id="message-js">
-        <p><strong>Внимание! </strong><span> Обратите внимание на правильность заполнения полей</span></p>
-      </div>
-    </div>
-  </div>
 </div>

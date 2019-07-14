@@ -46,7 +46,7 @@ $this->registerJsFile('@web/js/bind-filters.js');
 		</div>
 		<div class="col-md-12">
 		  <div class="alert alert-info" id="message-js">
-		    <p><strong>Внимание! </strong><span> Обратите внимание на правильность заполнения полей</span></p>
+		    <p><strong>Внимание! </strong><span>Обратите внимание на правильность заполнения полей</span></p>
 		  </div>
 		</div>
 	</div>
