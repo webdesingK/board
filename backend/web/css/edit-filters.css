@@ -1,4 +1,4 @@
-.input-categories-css {
+.select-categories-css {
   margin-top: 22px;
 }
 
@@ -18,12 +18,12 @@
   box-shadow: inset 0 0 2px #a94442;
 }
 
-.filter__add-css p {
+.filter__add-css {
   font: bold 18px sans-serif;
   cursor: pointer;
 }
 
-.filter__add-css p:hover {
+.filter__add-css:hover {
   text-shadow: 0 0 1px #3c763d;
 }
 

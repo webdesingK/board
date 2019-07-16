@@ -16,7 +16,7 @@
   margin-bottom: 15px !important;
 }
 
-.table-hover-css tr:hover {
+.table-hover-css tbody tr:hover {
   background: white;
 }
 
