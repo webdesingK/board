@@ -73,6 +73,20 @@
 
 	for (let i = 0; i < select.length; i++) {
 		select[i].addEventListener('change', function() {
+			if (i == 0 && !select[1].classList.contains('none')) {
+				let option = select[1].querySelectorAll('option');
+				for (let q = 1; q < option.length; q++) {
+					option[q].remove();
+				}
+				select[1].value = select[1].firstElementChild.value;
+			} 
+			if (i == 1 && !select[2].classList.contains('none')) {
+				let option = select[2].querySelectorAll('option');
+				for (let q = 1; q < option.length; q++) {
+					option[q].remove();
+				}
+				select[2].value = select[2].firstElementChild.value;
+			} 
 			let data = {
 				requestId: 'getCategoriesLvl' + (i+2),
 				idCategory: this.value
@@ -152,10 +166,8 @@
 		if (obj.status) {
 			outputings('success', obj.text);
 			addFilter.classList.add('none');
-			let arr = addList.querySelectorAll('tr');
-			for (let i = 0; i < arr.length; i++) {
-				arr[i].remove();
-			}
+			addList.innerHTML = '';
+			btnSave.classList.add('none');
 			for (let i = 0; i < select.length; i++) {
 				if (i > 0) {
 					select[i].classList.add('none');

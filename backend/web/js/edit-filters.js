@@ -194,37 +194,29 @@
 			btnFlag = true;
 			return;
 		}
-
 		ajax(data, changeFilter);
-
 	});
 
-	function deleteFilters(obj) {
-		
+	function deleteFilters(obj) {	
 		let index = select.options.selectedIndex;
-
 		if (obj.status) {
 			select.querySelectorAll('option')[index].remove();
 			select.value = 'Выбрать фильтр';
+			addList.innerHTML = '';
 			outputings('success', obj.text);			
 		} else{
 			btnFlag = true;
 			outputings('danger', obj.text);
 		}
-
 	};
 
 	btnDelete.addEventListener('click', function () {
-		
 		if (ifSelected()) return;
-
 		let data = {
 			requestId: 'deleteFilter',
 			nameFilter: select.value
 		}
-
 		ajax(data, deleteFilters);
-
 	});
 
 })();
