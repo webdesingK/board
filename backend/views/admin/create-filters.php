@@ -31,7 +31,7 @@
       </tbody>
     </table>
     <div class="filter__add-css col-md-12 text-success" id="filter__add-js">
-      <p><i class="glyphicon glyphicon-plus"></i> - добавить пункт</p>
+      <p><i class="glyphicon glyphicon-plus"></i> Добавить пункт</p>
     </div>
   </div>
   <div class="btn-wrap-css col-md-12 text-right">

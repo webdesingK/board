@@ -129,14 +129,46 @@
         echo Html::beginTag('div', ['class' => 'content__filter-price multitype-filter']);
         echo Html::tag('p', 'Цена');
         echo Html::beginTag('div', ['class' => 'price-filter']);
-        echo Html::input('text', null, null, ['class' => 'price__filter-min', 'placeholder' => 'от']);
-        echo Html::input('text', null, null, ['class' => 'price__filter-max', 'placeholder' => 'до', 'data-max' => 7777777]);
+        echo Html::input('text', null, null, ['id' => 'price__filter-min', 'placeholder' => 'от']);
+        echo Html::input('text', null, null, ['id' => 'price__filter-max', 'placeholder' => 'до', 'data-max' => 7777777]);
         echo Html::endTag('div');
         echo Html::endTag('div');
     }
 
 // --------------------------- Цена конец
-
+    echo '<div class="filter-js multitype-filter">
+                <p>Размер<span class="arow-open">➤</span></p>
+                <ul class="none">
+                    <li>
+                        <label for="womens-40_42">40-42(XS)</label>
+                        <input type="checkbox" id="womens-40_42">
+                    </li>
+                    <li>
+                        <label for="womens-42_44">42-44(S)</label>
+                        <input type="checkbox" id="womens-42_44">
+                    </li>
+                    <li>
+                        <label for="womens-44_46">44-46(M)</label>
+                        <input type="checkbox" id="womens-44_46">
+                    </li>
+                    <li>
+                        <label for="womens-46_48">46-48(L)</label>
+                        <input type="checkbox" id="womens-46_48">
+                    </li>
+                    <li>
+                        <label for="womens-48_50">48-50(XL)</label>
+                        <input type="checkbox" id="womens-48_50">
+                    </li>
+                    <li>
+                        <label for="womens-50_52">50-52(XXL)</label>
+                        <input type="checkbox" id="womens-50_52">
+                    </li>
+                    <li>
+                        <label for="womens-52_54">52-54(XXXL) и больше</label>
+                        <input type="checkbox" id="womens-52_54">
+                    </li>
+                </ul>
+            </div>';
     echo Html::tag('div', 'Применить', ['class' => 'content__filter-btn multitype-filter']);
 
     echo Html::endTag('div');

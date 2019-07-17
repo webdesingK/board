@@ -112,6 +112,51 @@
         }
 
         public function actionEditFilters() {
+             if (Yii::$app->request->isAjax) {
+                $request = Json::decode(file_get_contents('php://input'));
+
+                    if ($request['requestId'] == 'getFilterTitles') {
+                        $result = [
+                            'status' => true,
+                            'text' => '
+        <tr>
+            <td>
+                <div class="input-group">
+                    <span class="input-group-addon">${count}</span>
+                    <input value="sdsj" type="text" class="form-control">
+                    <span class="input-group-addon" title="Удалить пункт"><i class="glyphicon glyphicon-remove-circle text-danger"></i></span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+          <td>
+                <div class="input-group">
+                    <span class="input-group-addon">${count}</span>
+                    <input value="sdsj" type="text" class="form-control">
+                    <span class="input-group-addon" title="Удалить пункт"><i class="glyphicon glyphicon-remove-circle text-danger"></i></span>
+                </div>
+          </td>
+        </tr>'
+                        ];
+                        return json_encode($result);
+                }
+
+                if ($request['requestId'] == 'editFilter') {
+                    $arr = [
+                        'status' => true,
+                        'text' => 'все хорошо'
+                    ];
+                    return json_encode($arr);
+                }
+                if ($request['requestId'] == 'deleteFilter') {
+                    $arr = [
+                        'status' => true,
+                        'text' => 'все хорошо'
+                    ];
+                    return json_encode($arr);
+                }
+
+            }
             return $this->render('edit-filters');
         }
 
@@ -133,8 +178,58 @@
                     ];
                     return json_encode($arr);
                 }
+                if ($request['requestId'] == 'saveBondedFilters') {
+                    $arr = [
+                        'status' => true,
+                        'text' => 'все хорошо'
+                    ];
+                    return json_encode($arr);
+                }
+                if ($request['requestId'] == 'getCategoriesLvl2') {
+                    $arr = [
+                        'status' => true,
+                        'text' => '<option value="2">трусы</option>
+            <option value="3">одежда</option>
+            <option value="4">одежда</option>
+            <option value="5">одежда</option>'
+                    ];
+                    return json_encode($arr);
+                }
+                if ($request['requestId'] == 'getCategoriesLvl3') {
+                    $arr = [
+                        'status' => true,
+                        'text' => '<option value="2">трусы</option>
+            <option value="3">одежда</option>
+            <option value="4">одежда</option>
+            <option value="5">одежда</option>'
+                    ];
+                    return json_encode($arr);
+                }
                 if ($request['requestId'] == 'getBondedFilters') {
-                    return json_encode('false');
+                    $arr = [
+                        'status' => true,
+                        'text' => ' <tr>
+            <th>
+                <div class="input-group">
+                    <span class="input-group-addon">${count}</span>
+                    <input type="text" value="вава" class="form-control">
+                </div>
+            </th>
+            <th>
+                <div class="input-group">
+                    <select class="form-control" id="select-filters-js">
+                        <option>1</option>
+                        <option selected="selected">размеры</option>
+                        <option>2</option>
+                    </select>
+                    <span class="input-group-addon" title="Удалить пункт">
+                        <i class="glyphicon glyphicon-remove-circle text-danger"></i>
+                    </span>
+                </div>
+            </th>
+        </tr>'
+                    ];
+                    return json_encode($arr);
                 }
             }
 

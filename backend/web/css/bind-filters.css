@@ -12,6 +12,10 @@
   margin-top: 22px;
 }
 
+.select-categories-css select {
+  margin-bottom: 17px;
+}
+
 .table-hover-css {
   margin-bottom: 15px !important;
 }
@@ -22,4 +26,8 @@
 
 .btn-wrap-css {
   margin-bottom: 20px;
+}
+
+#message-js {
+  font: 18px sans-serif;
 }
