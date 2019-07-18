@@ -6,6 +6,7 @@
 			addFilter   = document.querySelector('#add-filters-js'),// кнопка добавления пунктов
 			message     = document.querySelector('#message-js'),// блок для вывода информации
 			count       = 1,// счетчик для нумерации пункта фильтра 
+			animClass   = 'none',
 			btnFlag     = true,// флаг для избежания повторного клика на кнопку сохранения
 			listFilter;// для записи массива полученных с сервера наименования фильтров
 
@@ -54,10 +55,10 @@
 		if (obj.status) {
 			if (obj.index + 1 < select.length) {
 				select[obj.index + 1].insertAdjacentHTML('beforeEnd', obj.text);
-				select[obj.index + 1].classList.remove('none');				
+				select[obj.index + 1].classList.remove(animClass);				
 			} else{
-				btnSave.classList.remove('none');
-				addFilter.classList.remove('none');
+				btnSave.classList.remove(animClass);
+				addFilter.classList.remove(animClass);
 				if (obj.text) {
 					addList.innerHTML = obj.text;
 				} else{
@@ -71,21 +72,33 @@
 		}
 	};
 
+	function hideBtns() {
+		addFilter.classList.add(animClass);
+		addList.innerHTML = '';
+		btnSave.classList.add(animClass);
+	};
+
+	function delOption(el) {
+		hideBtns();
+		let option = el.querySelectorAll('option');
+		for (let q = 1; q < option.length; q++) {
+			option[q].remove();
+		}
+		el.value = el.firstElementChild.value;
+	}
+
 	for (let i = 0; i < select.length; i++) {
 		select[i].addEventListener('change', function() {
-			if (i == 0 && !select[1].classList.contains('none')) {
-				let option = select[1].querySelectorAll('option');
-				for (let q = 1; q < option.length; q++) {
-					option[q].remove();
+			outputings('info', 'Обратите внимание на правильность заполнения полей');
+			if (i == 0 && !select[1].classList.contains(animClass)) {
+				delOption(select[1]);
+				if (!select[2].classList.contains(animClass)) {
+					select[2].classList.add(animClass);
+					delOption(select[2]);
 				}
-				select[1].value = select[1].firstElementChild.value;
 			} 
-			if (i == 1 && !select[2].classList.contains('none')) {
-				let option = select[2].querySelectorAll('option');
-				for (let q = 1; q < option.length; q++) {
-					option[q].remove();
-				}
-				select[2].value = select[2].firstElementChild.value;
+			if (i == 1 && !select[2].classList.contains(animClass)) {
+				delOption(select[2]);
 			} 
 			let data = {
 				requestId: 'getCategoriesLvl' + (i+2),
@@ -161,20 +174,14 @@
 		count++;// и увеличиваем счетчик на 1
 	});
 
-
 	function saveBondedFilters(obj) {
 		if (obj.status) {
 			outputings('success', obj.text);
-			addFilter.classList.add('none');
-			addList.innerHTML = '';
-			btnSave.classList.add('none');
+			hideBtns();
 			for (let i = 0; i < select.length; i++) {
 				if (i > 0) {
-					select[i].classList.add('none');
-					let option = select[i].querySelectorAll('option');
-					for (let q = 1; q < option.length; q++) {
-						option[q].remove();
-					}				
+					select[i].classList.add(animClass);
+					delOption(select[i]);
 				}
 				select[i].value = select[i].firstElementChild.value;
 			}
