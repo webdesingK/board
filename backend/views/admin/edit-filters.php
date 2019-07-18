@@ -36,7 +36,7 @@ $this->registerJsFile('@web/js/edit-filters.js', ['depends' => 'backend\assets\A
 			</tbody>
 		</table>
 		<div class="col-md-12 text-success" id="filter__add-js">
-			<p class="filter__add-css"><i class="glyphicon glyphicon-plus"></i> добавить фильтр</p>
+			<p class="filter__add-css"><i class="glyphicon glyphicon-plus"></i> Добавить фильтр</p>
 		</div>
 	</div>
 	<div class="col-md-12 btn-wrap-css text-right">
