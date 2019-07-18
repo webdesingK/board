@@ -15,15 +15,18 @@ $this->registerJsFile('@web/js/bind-filters.js');
 <div class="row col-md-12">
 	<div class="col-md-5 select-categories-css">
 		<label class="text-info">Категории</label>
-		<select class="form-control" id="select-categories-js">
-			<option disabled="disabled" selected="selected">Выбрать категорию</option>
-
-			<optgroup label="1 уровень категории">
-				<option value="1">трусы</option>
-				<option value="id категории">одежда</option>
-				<option value="3" class="pl">одежда</option>
-				<option value="id категории" class="pl">одежда</option>
-			</optgroup>
+		<select class="form-control select">
+			<option disabled="disabled" selected="selected">Выбрать категорию 1 уровня</option>
+			<option value="2">трусы</option>
+			<option value="3">одежда</option>
+			<option value="4">одежда</option>
+			<option value="5">одежда</option>
+		</select>
+		<select class="form-control select none">
+			<option disabled="disabled" selected="selected">Выбрать категорию 2 уровня</option>
+		</select>
+		<select class="form-control select none">
+			<option disabled="disabled" selected="selected">Выбрать категорию 3 уровня</option>
 		</select>
 	</div>
 	<div class="col-md-7 table-responsive">
@@ -37,12 +40,12 @@ $this->registerJsFile('@web/js/bind-filters.js');
 			<tbody id="add-list-js">
 			</tbody>
 		</table>
-		<div class="col-md-12 text-success" id="add-filters-js">
-			<p class="add-filters-css"><i class="glyphicon glyphicon-plus"></i> добавить фильтр</p>
+		<div class="col-md-12 text-success none" id="add-filters-js">
+			<p class="add-filters-css"><i class="glyphicon glyphicon-plus"></i> Добавить фильтр</p>
 		</div>
 	</div>
 	<div class="col-md-12 btn-wrap-css text-right">
-	  <div class="btn btn-success" id="btn-save-js">Сохранить</div>
+	  <div class="btn btn-success none" id="btn-save-js">Сохранить</div>
 	</div>
 	<div class="col-md-12">
 	  <div class="alert alert-info" id="message-js">

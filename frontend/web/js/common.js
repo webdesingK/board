@@ -1,39 +1,35 @@
 $(document).ready(function() {
 
 	// filter сбор строки фильтров
-	$(function() {
+	(function() {
 
-		let btnFilter = $('.content__filter-btn'),
-				priceMin  = $('#price__filter-min'),
-				priceMax  = $('#price__filter-max'),
-				price     = $('#price__filter-min, #price__filter-max'),
-				checkType = $('.content__filter-type').find('input'),
-				filterStr = '',
-				options   = {
+		let btnFilter   = $('.content__filter-btn'),
+				priceMin    = document.querySelector('#price__filter-min'),
+				priceMax    = document.querySelector('#price__filter-max'),
+				title       = document.querySelector('title'),
+				price       = document.querySelectorAll('#price__filter-min, #price__filter-max'),
+				checkType   = $('.content__filter-type').find('input'),
+				filterStr   = '',
+				priceMaxNum = {
 					max: 12
 				};
 
 		function changeTitle() {
-
 			let url = decodeURI(location.pathname).slice(1).replace(/\/фильтры[^]*/gi, '');
-
-			let title = url;
-
-			$('title').text(decodeURI(title));
-
+			title.innerText = decodeURI(url);
 		};
 
 		// Функция загрузки контента
 		function getContent(url, addEntry) {
-			loads();
-			changeTitle(url);
+			// loads();
+			changeTitle();
 			$.ajax({
 
 				type: 'GET',
 				url: url,
 				success: function(resp) {
 			    $('.content__wrap').html(resp);
-			    endLoads();
+			    // endLoads();
 				},
 				error: function() {
 					console.error('error')
@@ -49,16 +45,16 @@ $(document).ready(function() {
 
 		window.addEventListener("popstate", function(e) {
 		    // Передаем текущий URL
-		    getContent(location.pathname, false);
+		    // getContent(location.pathname, false);
 		});
 
 		function isNumber(value) {
 			let val = value.replace(/\s/g, '');
 			if (val == '') {
 				return '';
-			} else if (val.length > options.max) {
+			} else if (val.length > priceMaxNum.max) {
 				if (!isNaN(val)) {
-					return Math.round(val.slice(0, options.max));
+					return Math.round(val.slice(0, priceMaxNum.max));
 				} else{
 					return val.replace(/\D/g, '');
 				}
@@ -68,22 +64,20 @@ $(document).ready(function() {
 			} else {
 				return val.replace(/\D/g, '');
 			}
-
 		};
 
-		price.keyup(function() {
+		for (let i = 0; i < price.length; i++) {
+			price[i].addEventListener('keyup', function() {
+				let val    = this.value.trim(),
+				    str    = isNumber(val) + '',
+				    result = str.replace(/(?=\B(?:\d{3})+(?!\d))/g, ' ');
+				this.value = result;
+			});
+		}
 
-			let val    = $(this).val().trim(),
-			    str    = isNumber(val) + '',
-			    result = str.replace(/(?=\B(?:\d{3})+(?!\d))/g, ' ');
-			$(this).val(result);
-
-		});
-
-		function priceMinMax() {
-
-			let min = +priceMin.val().replace(/\s/gi, ''),
-			    max = +priceMax.val().replace(/\s/gi, '');
+		function priceMinMax() {// возвращает строку 'цена=min-max', а если не прошла проверку, тогда пустую строку
+			let min = +priceMin.value.replace(/\s/gi, ''),
+			    max = +priceMax.value.replace(/\s/gi, '');
 			if (!min && !max || min == 0 && max == 0) {
 				return '';
 			} else if(!min || min == 0 && max) {
@@ -128,9 +122,7 @@ $(document).ready(function() {
 				return;
 			}
 
-			if (locHref == url) {
-				return;
-			}
+			if (locHref == url) return
 
 			if (/фильтры/gi.test(locHref)) {
 				url = url.replace(/\/фильтры[^]*/gi, '');
@@ -145,7 +137,7 @@ $(document).ready(function() {
 
 		});
 
-	});
+	})();
 
 });
 

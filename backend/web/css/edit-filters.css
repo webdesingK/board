@@ -38,3 +38,7 @@
 .table-hover-css tbody tr:hover {
   background: white;
 }
+
+#message-js {
+  font: 18px sans-serif;
+}

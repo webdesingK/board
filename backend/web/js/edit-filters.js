@@ -27,7 +27,7 @@
 
 	function ajax(data, callbackFunction) {
 		let xhr = new XMLHttpRequest();
-		xhr.open('POST', 'привязка-фильтров');
+		xhr.open('POST', 'редактирование-фильтров');
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		xhr.setRequestHeader('Content-type', 'application/json');
 		xhr.send(JSON.stringify(data));
@@ -70,8 +70,8 @@
 
 	// прием данных и их проверка при выборе фильтров в select
 	function nameFilters(obj) {
-		if (obj.responseText) {
-			addList.innerHTML = obj.responseText;
+		if (obj.status) {
+			addList.innerHTML = obj.text;
 		} else{
 			count = 1;
 			addList.innerHTML = inputList(count);
@@ -82,7 +82,7 @@
 		select.parentNode.classList.remove('has-error');
 		outputings('info', ' Обратите внимание на правильность заполнения полей');
 		let data = {
-			requestId: 'nameFilter',
+			requestId: 'getFilterTitles',
 			nameFilter: select.value
 		};
 		ajax(data, nameFilters);
@@ -152,7 +152,9 @@
 
 	function changeFilter(obj) {
 		if (obj.status) {
+			succes(obj.text);
 		} else{
+			btnFlag = true;
 			outputings('danger', obj.text);
 		}
 	}
@@ -171,8 +173,8 @@
 			return;
 		}
 		let data = {// переменная для передачи на сервер
-			requestId: 'changeFilter',
-			name: select.value,// имя название таблицы
+			requestId: 'editFilter',
+			name: select.value,// имя название фильтра
 			arrList: {}
 		};
 		let tableList = addList.querySelectorAll('.form-control');// записываем динамически добавленные инпуты в переменную
@@ -192,36 +194,29 @@
 			btnFlag = true;
 			return;
 		}
-
 		ajax(data, changeFilter);
-
 	});
 
-	function deleteFilters(obj) {
-		
+	function deleteFilters(obj) {	
 		let index = select.options.selectedIndex;
-
 		if (obj.status) {
 			select.querySelectorAll('option')[index].remove();
 			select.value = 'Выбрать фильтр';
+			addList.innerHTML = '';
 			outputings('success', obj.text);			
 		} else{
+			btnFlag = true;
 			outputings('danger', obj.text);
 		}
-
 	};
 
 	btnDelete.addEventListener('click', function () {
-		
 		if (ifSelected()) return;
-
 		let data = {
-			requestId: 'deleteFilters',
+			requestId: 'deleteFilter',
 			nameFilter: select.value
 		}
-
 		ajax(data, deleteFilters);
-
 	});
 
 })();

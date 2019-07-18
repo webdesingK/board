@@ -1,16 +1,16 @@
 (function () {
 	
-	let paddingLeft = document.querySelectorAll('.pl'),// padding left для вложенных категорий 3 уровня
-			select      = document.querySelector('#select-categories-js'),// выбор фильтров
+  let	select      = document.querySelectorAll('.select'),// выбор фильтров
 			btnSave     = document.querySelector('#btn-save-js'),// кнопка сохранения
 			addList     = document.querySelector('#add-list-js'),// блок куда вставлять новый инпут для записи пункта
 			addFilter   = document.querySelector('#add-filters-js'),// кнопка добавления пунктов
 			message     = document.querySelector('#message-js'),// блок для вывода информации
 			count       = 1,// счетчик для нумерации пункта фильтра 
+			animClass   = 'none',
 			btnFlag     = true,// флаг для избежания повторного клика на кнопку сохранения
 			listFilter;// для записи массива полученных с сервера наименования фильтров
 
-	function ajax(data, callbackFunction) {
+	function ajax(data, callbackFunction, index) {
 		let xhr = new XMLHttpRequest();
 		xhr.open('POST', 'привязка-фильтров');
 		xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -24,7 +24,8 @@
 				callbackFunction({
 					status: resp.status, 
 					text: resp.text,
-					responseText: resp
+					responseText: resp,
+					index: index
 				});
 			}
 			else {
@@ -35,9 +36,9 @@
 	};
 
 	// вывод сообщения
-	function outputings(outp, text) {
+	function outputings(nameClass, text) {
 		message.className = message.className.replace(/alert-[\w]*/gi, '');
-		message.classList.add('alert-' + outp);// и добавляем класс 'danger'
+		message.classList.add('alert-' + nameClass);// и добавляем класс 'danger'
 		message.querySelector('span').innerText = text;// и изминяем текст в блоке информации о предуприждении
 	};
 
@@ -50,25 +51,65 @@
 		ajax(data, getAllFilterNames);
 	})();
 
-	function getBondedFilters(obj) {
-		if (obj.responseText) {
-			addList.innerHTML = obj.responseText;
+	function getCategoriesLvl(obj) {
+		if (obj.status) {
+			if (obj.index + 1 < select.length) {
+				select[obj.index + 1].insertAdjacentHTML('beforeEnd', obj.text);
+				select[obj.index + 1].classList.remove(animClass);				
+			} else{
+				btnSave.classList.remove(animClass);
+				addFilter.classList.remove(animClass);
+				if (obj.text) {
+					addList.innerHTML = obj.text;
+				} else{
+					addList.innerHTML = inputList(count);
+					count = 1;
+					outputings('info', 'У этой категории нет привязанных фильтров');					
+				}
+			}
 		} else{
-			count = 1;
-			addList.innerHTML = inputList(count);
-			outputings('info', 'У этой категории нет привязанных фильтров');
+			outputings('danger', obj.text);
 		}
 	};
 
-	select.addEventListener('change', function() {
-		select.parentNode.classList.remove('has-error');
-		outputings('info', ' Обратите внимание на правильность заполнения полей');
-		let data = {
-			requestId: 'getBondedFilters',
-			idCategory: select.value
-		};
-		ajax(data, getBondedFilters);
-	});
+	function hideBtns() {
+		addFilter.classList.add(animClass);
+		addList.innerHTML = '';
+		btnSave.classList.add(animClass);
+	};
+
+	function delOption(el) {
+		hideBtns();
+		let option = el.querySelectorAll('option');
+		for (let q = 1; q < option.length; q++) {
+			option[q].remove();
+		}
+		el.value = el.firstElementChild.value;
+	}
+
+	for (let i = 0; i < select.length; i++) {
+		select[i].addEventListener('change', function() {
+			outputings('info', 'Обратите внимание на правильность заполнения полей');
+			if (i == 0 && !select[1].classList.contains(animClass)) {
+				delOption(select[1]);
+				if (!select[2].classList.contains(animClass)) {
+					select[2].classList.add(animClass);
+					delOption(select[2]);
+				}
+			} 
+			if (i == 1 && !select[2].classList.contains(animClass)) {
+				delOption(select[2]);
+			} 
+			let data = {
+				requestId: 'getCategoriesLvl' + (i+2),
+				idCategory: this.value
+			};
+			if (i == select.length - 1) {
+				data.requestId = 'getBondedFilters'
+			}
+			ajax(data, getCategoriesLvl, i);
+		});
+	}
 
 	function listFilters(arr) {// функция с одним параметром(массив с сервера, с названием фильтров)
 		let array = '';// для вывода 
@@ -77,12 +118,6 @@
 		}
 		return array;// возвращаем строку с option и названиями фильтров
 	};
-
-	// цикл для добавления отступов в select категорий
-	for (let i = 0; i < paddingLeft.length; i++) {
-		let text = paddingLeft[i].innerHTML;
-		paddingLeft[i].innerHTML = '&nbsp;&nbsp;' + text;
-	}
 
 	// функция для обнуления счетчика при клике на удаления инпутов добавления пунктов
 	function zeroing() {// с одним параметров(родительский элемент)
@@ -139,46 +174,32 @@
 		count++;// и увеличиваем счетчик на 1
 	});
 
-	function ifSelected() {
-		if (select.value == select.firstElementChild.value) {
-			select.parentNode.classList.add('has-error');
-			outputings('warning', 'Выбирите категорию');
-			return true;
-		} else{
-			select.parentNode.classList.remove('has-error');
-			outputings('info', 'Обратите внимание на правильность заполнения полей');
-			return false;
-		}
-	};
-
-	function succes(text) {
-		outputings('success', text);
-		tableName.value = '';
-		btnFlag = true;
-		let arr = addList.querySelectorAll('tr');
-		for (let i = 0; i < arr.length; i++) {
-			arr[i].remove();
-		}
-		zeroing();
-	};
-
 	function saveBondedFilters(obj) {
 		if (obj.status) {
-			succes(obj.text);
+			outputings('success', obj.text);
+			hideBtns();
+			for (let i = 0; i < select.length; i++) {
+				if (i > 0) {
+					select[i].classList.add(animClass);
+					delOption(select[i]);
+				}
+				select[i].value = select[i].firstElementChild.value;
+			}
+			count = 1;
+			btnFlag = true;
 		} else{
 			outputings('danger', obj.text);
+			btnFlag = true;
 		}
 	}
 
 	btnSave.addEventListener('click', function() {
-		if (!btnFlag) return// проверка для избежания многократного клика на кнопку 'сохранить'
-		if (ifSelected()) return;
+		if (!btnFlag) return;// проверка для избежания многократного клика на кнопку 'сохранить'
 		let tableList = addList.querySelectorAll('tr');// записываем динамически добавленные инпуты в переменную
 		for (var i = 0; i < tableList.length; i++) {// цикл
 			if (!tableList[i].querySelector('input').value) {
 				tableList[i].querySelector('input').parentNode.classList.add('has-error');
 				outputings('warning', ' У Вас не заполнен URL');// сообщаем об этом
-				btnFlag = true;
 				return;// и останавливает далнейшее действвие кода
 			} else{
 				tableList[i].querySelector('input').parentNode.classList.remove('has-error');
@@ -186,31 +207,29 @@
 			if (tableList[i].querySelector('select').value == tableList[i].querySelector('select').firstElementChild.value) {
 				tableList[i].querySelector('select').parentNode.classList.add('has-error');
 				outputings('warning', ' У Вас не выбран фильтр');// сообщаем об этом
-				btnFlag = true;
 				return;
 			} else{
 				tableList[i].querySelector('select').parentNode.classList.remove('has-error');
-
 			}
 		}
 		if (addList.querySelectorAll('tr').length == 0) {// при сохранении, если ни добавили ни одного пункта 
 			outputings('warning', ' У Вас нет ни одного пункта');// сообщаем об этом
-			btnFlag = true;
 			return;
 		}
 		let arr            = {},
 				arrList        = addList.querySelectorAll('tr'),
-				selectCategory = select.value.trim(),
+				selectCategory = select[select.length - 1].value,
 				data           = {};
 
 		for (let i = 0; i < arrList.length; i++) {
 			let url  = arrList[i].querySelector('input').value,
 					value = arrList[i].querySelector('select').value;
-					arr[url] = value;
+			arr[url] = value;
 		}
 		data.requestId     = 'saveBondedFilters';
 		data.categoryId    = selectCategory;
 		data.bondedFilters = arr;
+		btnFlag = false;
 		ajax(data, saveBondedFilters);
 	});
 
