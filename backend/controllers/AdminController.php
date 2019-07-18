@@ -104,7 +104,7 @@
 
             if (Yii::$app->request->isAjax) {
                 $request = Json::decode(file_get_contents('php://input'));
-                $result = Filters::createFilter($request);
+                $result = Filters::create($request);
                 return json_encode($result);
             }
 
