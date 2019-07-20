@@ -1,0 +1,63 @@
+@import _mixin
+
+.page-header
+	border-bottom-color: #999
+.slide__top
+	height: 40px
+	border-top: 1px solid red
+	border-bottom: 1px solid red
+	display: flex
+	align-items: center
+	&-categories
+		flex: 1 
+		height: 30px
+		margin-left: 30px
+		overflow: hidden
+		position: relative
+		&:after, &:before
+			content: ''
+			position: absolute
+			display: block
+			top: 0
+			height: 100%
+			width: 20px
+			z-index: 10
+		&:before
+			left: 0
+			background: linear-gradient(90deg,#ECF0F5,hsla(0,0%,100%,0))
+		&:after
+			right: 0px
+			background: linear-gradient(-90deg,#ECF0F5,hsla(0,0%,100%,0))
+	&-list
+		display: flex
+		padding: 0
+		padding-right: 50px
+		position: absolute
+		left: 0
+		li
+			padding: 0px 20px
+			list-style-type: none
+			display: inline-block
+		a
+			font: 18px sans-serif
+			height: 30px
+			display: inline-block
+			line-height: 30px
+			color: #222
+			white-space: nowrap
+			&:hover
+				color: #00c0ef
+	&-arrow
+		white-space: nowrap
+		i
+			color: #777
+			font-size: 15pt
+.arrow
+	&__left
+		display: inline-block
+	&__right
+		display: inline-block
+.btn-categories
+	flex: 0
+.left
+	transition: left .3s ease-in
