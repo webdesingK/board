@@ -105,59 +105,44 @@
             if (Yii::$app->request->isAjax) {
                 $request = Json::decode(file_get_contents('php://input'));
                 $result = Filters::create($request);
-                return json_encode($result);
+                return Json::encode($result);
             }
 
-            return $this->render('create-filters');
+            return $this->render('create-filters/create-filters');
         }
 
         public function actionEditFilters() {
-             if (Yii::$app->request->isAjax) {
+
+            if (Yii::$app->request->isAjax) {
+
                 $request = Json::decode(file_get_contents('php://input'));
 
-                    if ($request['requestId'] == 'getFilterTitles') {
-                        $result = [
-                            'status' => true,
-                            'text' => '
-        <tr>
-            <td>
-                <div class="input-group">
-                    <span class="input-group-addon">${count}</span>
-                    <input value="sdsj" type="text" class="form-control">
-                    <span class="input-group-addon" title="Удалить пункт"><i class="glyphicon glyphicon-remove-circle text-danger"></i></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-          <td>
-                <div class="input-group">
-                    <span class="input-group-addon">${count}</span>
-                    <input value="sdsj" type="text" class="form-control">
-                    <span class="input-group-addon" title="Удалить пункт"><i class="glyphicon glyphicon-remove-circle text-danger"></i></span>
-                </div>
-          </td>
-        </tr>'
-                        ];
-                        return json_encode($result);
+                if ($request['requestId'] == 'getFilterTitles') {
+
+                    $result = Filters::getTitles($request['nameFilter']);
+
+                    if ($result['status']) {
+                        $titlesHtml = $this->renderPartial('edit-filters/filter-titles', [
+                            'titles' => $result['titles']
+                        ]);
+                        $result['text'] = $titlesHtml;
+                        unset($result['titles']);
+                    }
+
+                    return Json::encode($result);
                 }
 
                 if ($request['requestId'] == 'editFilter') {
-                    $arr = [
-                        'status' => true,
-                        'text' => 'все хорошо'
-                    ];
-                    return json_encode($arr);
+                    $result = Filters::edit($request);
+                    return Json::encode($result);
                 }
                 if ($request['requestId'] == 'deleteFilter') {
-                    $arr = [
-                        'status' => true,
-                        'text' => 'все хорошо'
-                    ];
-                    return json_encode($arr);
+                    $result = Filters::delete($request);
+                    return Json::encode($result);
                 }
 
             }
-            return $this->render('edit-filters');
+            return $this->render('edit-filters/edit-filters');
         }
 
         public function actionBindFilters() {
@@ -167,73 +152,43 @@
                 $request = Json::decode(file_get_contents('php://input'));
 
                 if ($request['requestId'] == 'getAllFilterNames') {
-                    $arr = [
-                        'vasa',
-                        'petya',
-                        'ghora',
-                        'masha',
-                        'pasha',
-                        'dasha',
-                        'kasha'
-                    ];
-                    return json_encode($arr);
+                    $result = Filters::getNames();
+                    return Json::encode($result);
                 }
-                if ($request['requestId'] == 'saveBondedFilters') {
-                    $arr = [
-                        'status' => true,
-                        'text' => 'все хорошо'
-                    ];
-                    return json_encode($arr);
-                }
-                if ($request['requestId'] == 'getCategoriesLvl2') {
-                    $arr = [
-                        'status' => true,
-                        'text' => '<option value="2">трусы</option>
-            <option value="3">одежда</option>
-            <option value="4">одежда</option>
-            <option value="5">одежда</option>'
-                    ];
-                    return json_encode($arr);
-                }
-                if ($request['requestId'] == 'getCategoriesLvl3') {
-                    $arr = [
-                        'status' => true,
-                        'text' => '<option value="2">трусы</option>
-            <option value="3">одежда</option>
-            <option value="4">одежда</option>
-            <option value="5">одежда</option>'
-                    ];
-                    return json_encode($arr);
+                if ($request['requestId'] == 'getCategoriesLvl2' || $request['requestId'] == 'getCategoriesLvl3') {
+
+                    $result = Categories::getChildren($request['idCategory']);
+
+                    if ($result['status']) {
+                        $childrenHtml = $this->renderPartial('bind-filters/children-categories', [
+                            'children' => $result['children']
+                        ]);
+                        $result['text'] = $childrenHtml;
+                        unset($result['children']);
+                    }
+
+                    return Json::encode($result);
                 }
                 if ($request['requestId'] == 'getBondedFilters') {
-                    $arr = [
-                        'status' => true,
-                        'text' => ' <tr>
-            <th>
-                <div class="input-group">
-                    <span class="input-group-addon">${count}</span>
-                    <input type="text" value="вава" class="form-control">
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
-                    <select class="form-control" id="select-filters-js">
-                        <option>1</option>
-                        <option selected="selected">размеры</option>
-                        <option>2</option>
-                    </select>
-                    <span class="input-group-addon" title="Удалить пункт">
-                        <i class="glyphicon glyphicon-remove-circle text-danger"></i>
-                    </span>
-                </div>
-            </th>
-        </tr>'
-                    ];
-                    return json_encode($arr);
+                    $result = Filters::getBondedFilters($request['idCategory']);
+
+                    if ($result['status']) {
+                        $bondedFiltersHtml = $this->renderPartial('bind-filters/bonded-filters', [
+                            'bondedFilters' => $result['formattedFilters']
+                        ]);
+                        $result['text'] = $bondedFiltersHtml;
+                        unset($result['formattedFilters']);
+                    }
+
+                    return Json::encode($result);
+                }
+                if ($request['requestId'] == 'saveBondedFilters') {
+                    $result = Filters::saveBondedFilters($request);
+                    return Json::encode($result);
                 }
             }
 
-            return $this->render('bind-filters');
+            return $this->render('bind-filters/bind-filters');
         }
 
     }

@@ -5,6 +5,8 @@ $this->title = 'Привязка фильтров';
 $this->registerCssFile('@web/css/bind-filters.css');
 $this->registerJsFile('@web/js/bind-filters.js');
 
+use backend\models\Categories;
+
 ?>
 
 <div class="row col-md-12">
@@ -17,10 +19,14 @@ $this->registerJsFile('@web/js/bind-filters.js');
 		<label class="text-info">Категории</label>
 		<select class="form-control select">
 			<option disabled="disabled" selected="selected">Выбрать категорию 1 уровня</option>
-			<option value="2">трусы</option>
-			<option value="3">одежда</option>
-			<option value="4">одежда</option>
-			<option value="5">одежда</option>
+
+            <?php
+                $categoriesFirstLvl = Categories::getFirstLvl();
+            ?>
+            <?php foreach($categoriesFirstLvl as $item): ?>
+			    <option value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+            <?php endforeach ?>
+
 		</select>
 		<select class="form-control select none">
 			<option disabled="disabled" selected="selected">Выбрать категорию 2 уровня</option>
