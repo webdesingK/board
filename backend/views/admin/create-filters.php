@@ -19,6 +19,18 @@
       <label for="nameTable" class="text-info">Название фильтра</label>
       <input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
     </div>
+    <div class="form-group">
+      <label for="nameTable" class="text-info">Выбирите категорию</label>
+      <select class="form-control" id="select-catigories">
+        <option value="1">Lorem.</option>
+        <option value="2">Fugiat!</option>
+        <option value="3">Error?</option>
+        <option value="4">Dolore.</option>
+        <option value="5">Enim.</option>
+        <option value="6">Dignissimos.</option>
+        <option value="7">Suscipit!</option>
+      </select>
+    </div>
   </div>
   <div class="col-md-7 list-group-css">
     <table class="table table-hover-css">

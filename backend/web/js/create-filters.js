@@ -4,6 +4,7 @@
 			addFilter  = document.querySelector('#filter__add-js'),// кнопка добавления пунктов
 			addList    = document.querySelector('#add__list-js'),// блок куда вставлять новый инпут для записи пункта
 			tableName  = document.querySelector('#table__name-js'),// инпут для ввода название таблицы
+			selectCat  = document.querySelector('#select-catigories'),// инпут для ввода название таблицы
 			message    = document.querySelector('#message-js'),// блок для вывода информации
 			count      = 1,// счетчик для нумерации пункта фильтра 
 			btnFlag    = true;// флаг для избежания повторного клика на кнопку сохранения
@@ -132,6 +133,7 @@
 		btnFlag = false;// запрещаем повторное нажатие кнопки 'сохранить'
 		let data = {// переменная для передачи на сервер
 			name: '',// имя название таблицы
+			idCategories: selectCat.value,
 			arrList: {}
 		};
 		if (!tableName.value) {// проверяем если инпут название таблицы пустой
