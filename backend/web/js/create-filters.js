@@ -133,7 +133,7 @@
 		btnFlag = false;// запрещаем повторное нажатие кнопки 'сохранить'
 		let data = {// переменная для передачи на сервер
 			name: '',// имя название таблицы
-			idCategories: selectCat.value,
+			idCategory: selectCat.value,
 			arrList: {}
 		};
 		if (!tableName.value) {// проверяем если инпут название таблицы пустой
