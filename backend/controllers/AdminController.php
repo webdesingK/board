@@ -208,6 +208,15 @@
                 if ($request['requestId'] == 'getBondedFilters') {
                     $arr = [
                         'status' => true,
+                        'arrOption' => [
+                        'vasa',
+                        'petya',
+                        'ghora',
+                        'masha',
+                        'pasha',
+                        'dasha',
+                        'kasha'
+                    ],
                         'text' => ' <tr>
             <th>
                 <div class="input-group">
