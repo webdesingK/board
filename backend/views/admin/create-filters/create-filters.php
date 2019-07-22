@@ -1,5 +1,7 @@
 <?php
 
+    use backend\models\Categories;
+
     $this->title = 'Создание фильтров';
 
     //$this->registerCssFile('@web/css/main.css');
@@ -18,6 +20,18 @@
     <div class="form-group">
       <label for="nameTable" class="text-info">Название фильтра</label>
       <input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
+    </div>
+    <div class="form-group">
+      <label for="nameTable" class="text-info">Выберите категорию</label>
+      <select class="form-control" id="select-catigories">
+          <option disabled="disabled" selected="selected">Выбрать категорию</option>
+          <?php
+              $categoriesFirstLvl = Categories::getFirstLvl();
+          ?>
+          <?php foreach($categoriesFirstLvl as $item): ?>
+              <option value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+          <?php endforeach ?>
+      </select>
     </div>
   </div>
   <div class="col-md-7 list-group-css">

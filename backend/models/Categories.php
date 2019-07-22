@@ -229,4 +229,14 @@
                 ];
             }
         }
+
+        static public function getAllParents($id) {
+            try {
+                $child = self::find()->where(['id' => $id])->one();
+                return $child->parents()->select('name')->andWhere('id > 1')->asArray()->all();
+            }
+            catch (\Throwable $e) {
+
+            }
+        }
     }

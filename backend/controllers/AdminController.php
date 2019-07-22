@@ -174,10 +174,10 @@
 
                     if ($result['status']) {
                         $bondedFiltersHtml = $this->renderPartial('bind-filters/bonded-filters', [
-                            'bondedFilters' => $result['formattedFilters']
+                            'bondedFilters' => $result['filters']
                         ]);
                         $result['text'] = $bondedFiltersHtml;
-                        unset($result['formattedFilters']);
+                        unset($result['filters']);
                     }
 
                     return Json::encode($result);

@@ -16,7 +16,7 @@
 
             $translator = new Translit();
 
-            $rusTableName = $data['name'];
+            $rusTableName = trim($data['name']);
 
             $latinTableName = $translator->translit($rusTableName, false, 'ru-en');
             $latinTableName = BaseInflector::variablize($latinTableName);
@@ -32,7 +32,7 @@
 
                 if (!empty($qb
                     ->select('rus')
-                    ->from('translatedNames')
+                    ->from('filtersData')
                     ->where('rus = :rus')
                     ->addParams([':rus' => $rusTableName])
                     ->all($filtersDb))) {
@@ -57,22 +57,24 @@
 
                 $filtersDb
                     ->createCommand()
-                    ->insert('translatedNames', [
+                    ->insert('filtersData', [
                         'rus' => $rusTableName,
-                        'lat' => $latinTableName
+                        'lat' => $latinTableName,
+                        'idMainCategory' => $data['idCategories'],
                     ])
                     ->execute();
 
                 return [
                     'status' => true,
-                    'text' => 'Фильтр \'' . $rusTableName . '\' успешно создан'
+                    'text' => "Фильтр '$rusTableName' успешно создан"
                 ];
 
             }
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
+//                    'text' => 'Ошибка базы данных'
                 ];
             }
 
@@ -83,7 +85,7 @@
             try {
                 $names = (new Query())
                     ->select('rus')
-                    ->from('translatedNames')
+                    ->from('filtersData')
                     ->all(Yii::$app->get('filtersDb'));
             }
             catch (\Throwable $e) {
@@ -144,7 +146,8 @@
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+//                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
                 ];
             }
 
@@ -155,7 +158,7 @@
                 if ($type == 'lat') {
                     $tableName = (new Query())
                         ->select('lat')
-                        ->from('translatedNames')
+                        ->from('filtersData')
                         ->where('rus = :rus')
                         ->addParams([':rus' => $name])
                         ->one(Yii::$app->get('filtersDb'));
@@ -164,7 +167,7 @@
                 if ($type == 'rus') {
                     $tableName = (new Query())
                         ->select('rus')
-                        ->from('translatedNames')
+                        ->from('filtersData')
                         ->where('lat = :lat')
                         ->addParams([':rus' => $name])
                         ->one(Yii::$app->get('filtersDb'));
@@ -180,14 +183,61 @@
             $tableName = self::getFilterName($data['nameFilter'], 'lat');
             $filtersDb = Yii::$app->get('filtersDb');
             try {
+
+                $idFilter = (new Query())
+                    ->select('id')
+                    ->from('filtersData')
+                    ->where(['lat' => $tableName])
+                    ->one($filtersDb);
+
+                $bondedCategories = (new Query())
+                    ->select('idCategory')
+                    ->from('bondedFiltersIds')
+                    ->where(['idFilter' => $idFilter['id']])
+                    ->all($filtersDb);
+
+                $bondedCategories = ArrayHelper::getColumn($bondedCategories, 'idCategory');
+
+                if (!empty($bondedCategories)) {
+                    $bondedCategories = (new Query())
+                        ->select(['id', 'name'])
+                        ->from('board.categories')
+                        ->where(['id' => $bondedCategories])
+                        ->all($filtersDb);
+
+                    $responseStr = "Нельзя удалить привязанный фильтр. Сначала отвяжи его от следующих категорий:\n";
+
+                    foreach ($bondedCategories as $category) {
+                        $parents = Categories::getAllParents($category['id']);
+                        $responseStr .= $parents[0]['name'] . " - " . $parents[1]['name'] . " - " . $category['name'] . "\n";
+                    }
+
+                    return [
+                        'status' => false,
+                        'text' => $responseStr
+                    ];
+                }
+
                 $filtersDb
                     ->createCommand()
                     ->dropTable($tableName)
                     ->execute();
+
                 $filtersDb
                     ->createCommand()
-                    ->delete('translatedNames', ['lat' => $tableName])
+                    ->delete('filtersData', ['lat' => $tableName])
                     ->execute();
+                $countRow = (new Query())
+                    ->from('filtersData')
+                    ->count('*', $filtersDb);
+
+                if ($countRow == 0) {
+                    $filtersDb
+                        ->createCommand()
+                        ->truncateTable('filtersData')
+                        ->execute();
+                }
+
                 return [
                     'status' => true,
                     'text' => 'Фильтр \'' . $data['nameFilter'] . '\' успешно удален'
@@ -196,7 +246,8 @@
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+//                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
                 ];
             }
         }
@@ -206,36 +257,35 @@
             try {
                 $bondedFilters = (new Query())
                     ->select('filter')
-                    ->from('bondedFilters')
+                    ->from('bondedFiltersData')
                     ->where('idCategory = :idCategory')
                     ->addParams([':idCategory' => $idCategory])
                     ->one($filtersDb);
                 if ($bondedFilters) {
                     $bondedFilters = unserialize($bondedFilters['filter']);
-                    $filterLatNames = array_values($bondedFilters);
-                    $filterUrls = array_keys($bondedFilters);
-                    $filterRusNames = (new Query())
-                        ->select('rus')
-                        ->from('translatedNames')
-                        ->where(['lat' => $filterLatNames])
-                        ->all($filtersDb);
-                    $count = count($filterUrls);
-                    for ($i = 0; $i < $count; $i++) {
-                        $formattedFilters[$filterUrls[$i]] = $filterRusNames[$i]['rus'];
+                    foreach ($bondedFilters as $key => $value) {
+                        $rusName = (new Query())
+                            ->select('rus')
+                            ->from('filtersData')
+                            ->where('lat = :lat')
+                            ->addParams([':lat' => $value])
+                            ->one($filtersDb);
+                        $urlsAndRusNames[$key] = $rusName['rus'];
                     }
                 }
                 else {
-                    $formattedFilters = [];
+                    $urlsAndRusNames = [];
                 }
                 return [
                     'status' => true,
-                    'formattedFilters' => $formattedFilters
+                    'filters' => $urlsAndRusNames
                 ];
             }
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+//                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
                 ];
             }
 
@@ -244,30 +294,55 @@
         static public function saveBondedFilters(array $data) {
 
             $filterRusNames = array_values($data['bondedFilters']);
-            $filterUrls = array_keys($data['bondedFilters']);
             $filtersDb = Yii::$app->get('filtersDb');
-            $count = count($data['bondedFilters']);
 
             try {
-                $filterLatNames = (new Query())
-                    ->select('lat')
-                    ->from('translatedNames')
+
+                foreach ($data['bondedFilters'] as $key => $value) {
+                    $latName = (new Query())
+                        ->select('lat')
+                        ->from('filtersData')
+                        ->where('rus = :rus')
+                        ->addParams([':rus' => $value])
+                        ->one($filtersDb);
+                    $urlsAndLatNames[$key] = $latName['lat'];
+                }
+
+                $filtersIds = (new Query())
+                    ->select('id')
+                    ->from('filtersData')
                     ->where(['rus' => $filterRusNames])
                     ->all($filtersDb);
-                for ($i = 0; $i < $count; $i++) {
-                    $filters[$filterUrls[$i]] = $filterLatNames[$i]['lat'];
+
+                $filtersDb
+                    ->createcommand()
+                    ->delete('bondedFiltersIds', 'idCategory = :idCategory')
+                    ->bindValue(':idCategory', $data['categoryId'])
+                    ->execute();
+
+                foreach ($filtersIds as $filtersId) {
+                    $ids[] = [
+                        (int)$data['categoryId'],
+                        (int)$filtersId['id']
+                    ];
                 }
-                $filters = serialize($filters);
+
+                $filtersDb
+                    ->createCommand()
+                    ->batchInsert('bondedFiltersIds', ['idCategory', 'idFilter'], $ids)
+                    ->execute();
+
+                $urlsAndLatNames = serialize($urlsAndLatNames);
 
                 $countRow = (new Query())
-                    ->from('bondedFilters')
+                    ->from('bondedFiltersData')
                     ->where('idCategory = :idCategory')
                     ->addParams([':idCategory' => $data['categoryId']])
                     ->count('*', $filtersDb);
                 if ($countRow > 0) {
                     $filtersDb
                         ->createCommand()
-                        ->update('bondedFilters', ['filter' => $filters], 'idCategory = ' . $data['categoryId'])
+                        ->update('bondedFiltersData', ['filter' => $urlsAndLatNames], 'idCategory = ' . $data['categoryId'])
                         ->execute();
                     return [
                         'status' => true,
@@ -277,9 +352,9 @@
                 else {
                     $filtersDb
                         ->createCommand()
-                        ->insert('bondedFilters', [
+                        ->insert('bondedFiltersData', [
                             'idCategory' => $data['categoryId'],
-                            'filter' => $filters
+                            'filter' => $urlsAndLatNames
                         ])
                         ->execute();
                     return [
@@ -292,7 +367,7 @@
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
                 ];
             }
         }
