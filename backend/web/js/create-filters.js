@@ -4,6 +4,7 @@
 			addFilter  = document.querySelector('#filter__add-js'),// кнопка добавления пунктов
 			addList    = document.querySelector('#add__list-js'),// блок куда вставлять новый инпут для записи пункта
 			tableName  = document.querySelector('#table__name-js'),// инпут для ввода название таблицы
+			tableUrl   = document.querySelector('#table__url-js'),// инпут для ввода название таблицы
 			selectCat  = document.querySelector('#select-catigories'),// инпут для ввода название таблицы
 			message    = document.querySelector('#message-js'),// блок для вывода информации
 			count      = 1,// счетчик для нумерации пункта фильтра 
@@ -133,14 +134,21 @@
 		btnFlag = false;// запрещаем повторное нажатие кнопки 'сохранить'
 		let data = {// переменная для передачи на сервер
 			name: '',// имя название таблицы
+			url: tableUrl.value,// url
 			idCategory: selectCat.value,
 			arrList: {}
 		};
 		if (!tableName.value) {// проверяем если инпут название таблицы пустой
 			tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
-			return ifTablesName(tableName, ' Заполните название таблицы');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
+			return ifTablesName(tableName, ' Заполните название фильтра');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
 		} else{// если инпут названия таблицы не пустой
 			data.name = tableName.value;// значит записываем его в обьект для передачи на сервер
+		}
+		if (!tableUrl.value) {// проверяем если инпут название таблицы пустой
+			tableUrl.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
+			return ifTablesName(tableUrl, ' Заполните название URL адресса');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
+		} else{// если инпут названия таблицы не пустой
+			data.name = tableUrl.value;// значит записываем его в обьект для передачи на сервер
 		}
 		let tableList = addList.querySelectorAll('.form-control');// записываем динамически добавленные инпуты в переменную
 		for (var i = 0; i < tableList.length; i++) {// цикл

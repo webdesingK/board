@@ -208,7 +208,7 @@
                 if ($request['requestId'] == 'getBondedFilters') {
                     $arr = [
                         'status' => true,
-                        'arrOption' => [
+                        'namesOptions' => [
                         'vasa',
                         'petya',
                         'ghora',
@@ -217,26 +217,27 @@
                         'dasha',
                         'kasha'
                     ],
-                        'text' => ' <tr>
-            <th>
+                        'idsOptions' => [
+                        '1',
+                        '2',
+                        '3',
+                        '4',
+                        '5',
+                        '6',
+                        '7'
+                    ],
+                        'text' => '
                 <div class="input-group">
-                    <span class="input-group-addon">${count}</span>
-                    <input type="text" value="вава" class="form-control">
-                </div>
-            </th>
-            <th>
-                <div class="input-group">
+                    <span class="input-group-addon counts">1</span>
                     <select class="form-control" id="select-filters-js">
-                        <option>1</option>
-                        <option selected="selected">размеры</option>
-                        <option>2</option>
+                        <option value="1">1</option>
+                        <option value="2" selected="selected">размеры</option>
+                        <option value="3">2</option>
                     </select>
                     <span class="input-group-addon" title="Удалить пункт">
                         <i class="glyphicon glyphicon-remove-circle text-danger"></i>
                     </span>
-                </div>
-            </th>
-        </tr>'
+                </div>'
                     ];
                     return json_encode($arr);
                 }
