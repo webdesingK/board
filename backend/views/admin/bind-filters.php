@@ -54,3 +54,14 @@ $this->registerJsFile('@web/js/bind-filters.js');
 	</div>
 </div>
 
+<!-- <div class="input-group">
+    <span class="input-group-addon counts">1</span>
+    <select class="form-control" id="select-filters-js">
+        <option value="1">1</option>
+        <option value="2" selected="selected">размеры</option>
+        <option value="3">2</option>
+    </select>
+    <span class="input-group-addon" title="Удалить пункт">
+        <i class="glyphicon glyphicon-remove-circle text-danger"></i>
+    </span>
+</div> -->

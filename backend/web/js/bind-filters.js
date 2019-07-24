@@ -9,6 +9,7 @@
 			animClass   = 'none',
 			filterFlag  = false,
 			btnFlag     = true,// флаг для избежания повторного клика на кнопку сохранения
+			idsFilter,// для записи массива полученных с сервера наименования фильтров
 			listFilter;// для записи массива полученных с сервера наименования фильтров
 
 	function ajax(data, callbackFunction, index) {
@@ -25,7 +26,8 @@
 				callbackFunction({
 					status: resp.status, 
 					text: resp.text,
-					arrOption: resp.arrOption,
+					namesOptions: resp.namesOptions,
+					idsOptions: resp.idsOptions,
 					index: index
 				});
 			}
@@ -49,8 +51,9 @@
 				select[obj.index + 1].insertAdjacentHTML('beforeEnd', obj.text);
 				select[obj.index + 1].classList.remove(animClass);				
 			} else{
-				if (obj.arrOption.length != 0) {
-					listFilter = obj.arrOption;
+				if (obj.namesOptions.length != 0) {
+					listFilter = obj.namesOptions;
+					idsFilter = obj.idsOptions;
 					btnSave.classList.remove(animClass);
 					addFilter.classList.remove(animClass);
 					if (obj.text) {
@@ -118,7 +121,7 @@
 	function listFilters(arr) {// функция с одним параметром(массив с сервера, с названием фильтров)
 		let array = '';// для вывода 
 		for (let i = 0; i < arr.length; i++) { 
-			array += '<option>' + arr[i] + '</option>';// конкатенируем в переменную option с названием фильтра
+			array += '<option value="' + idsFilter[i] + '">' + arr[i] + '</option>';// конкатенируем в переменную option с названием фильтра
 		}
 		return array;// возвращаем строку с option и названиями фильтров
 	};
@@ -132,26 +135,17 @@
 
 	function inputList(count) {
 		return `
-		<tr>
-			<th>
-				<div class="input-group">
-					<span class="input-group-addon">${count}</span>
-					<input type="text" class="form-control">
-				</div>
-			</th>
-			<th>
-				<div class="input-group">
-					<select class="form-control" id="select-filters-js">
-						<option disabled="disabled" selected="selected">Выбрать фильтр</option>
-						${listFilters(listFilter)}
-					</select>
-					<span class="input-group-addon" title='Удалить пункт'>
-						<i class="glyphicon glyphicon-remove-circle text-danger"></i>
-					</span>
-				</div>
-			</th>
-		</tr>
-	`;
+			<div class="input-group col-md-12">
+				<span class="input-group-addon counts">${count}</span>
+				<select class="form-control" id="select-filters-js">
+					<option disabled="disabled" selected="selected">Выбрать фильтр</option>
+					${listFilters(listFilter)}
+				</select>
+				<span class="input-group-addon" title='Удалить пункт'>
+					<i class="glyphicon glyphicon-remove-circle text-danger"></i>
+				</span>
+			</div>
+	 `;
 	}
 
 	// функция делегированного удаления инпутов добавления пунктов
@@ -170,7 +164,7 @@
 			btnSave.innerText = 'Удалить все привязки';
 		}
 		for (var i = 0; i < tableList.length; i++) {// цикл для изминения счетчика при удалении какого либо пункта
-			tableList[i].firstElementChild.querySelector('span').innerText = i + 1;
+			tableList[i].querySelector('.counts').innerText = i + 1;
 			count = tableList.length + 1;
 		}
 	});
@@ -211,13 +205,6 @@
 		if (!btnFlag) return;// проверка для избежания многократного клика на кнопку 'сохранить'
 		let tableList = addList.querySelectorAll('tr');// записываем динамически добавленные инпуты в переменную
 		for (var i = 0; i < tableList.length; i++) {// цикл
-			if (!tableList[i].querySelector('input').value) {
-				tableList[i].querySelector('input').parentNode.classList.add('has-error');
-				outputings('warning', ' У Вас не заполнен URL');// сообщаем об этом
-				return;// и останавливает далнейшее действвие кода
-			} else{
-				tableList[i].querySelector('input').parentNode.classList.remove('has-error');
-			}
 			if (tableList[i].querySelector('select').value == tableList[i].querySelector('select').firstElementChild.value) {
 				tableList[i].querySelector('select').parentNode.classList.add('has-error');
 				outputings('warning', ' У Вас не выбран фильтр');// сообщаем об этом
@@ -239,13 +226,12 @@
 				data           = {};
 
 		for (let i = 0; i < arrList.length; i++) {
-			let url   = arrList[i].querySelector('input').value.trim(),
-					value = arrList[i].querySelector('select').value;
-			arr[url]  = value;
+			let value = arrList[i].querySelector('select').value;
+			arr[i]  = value;
 		}
 		data.requestId     = 'saveBondedFilters';
 		data.idCategory    = selectCategory;
-		data.bondedFilters = arr;
+		data.idsFilters    = arr;
 		btnFlag = false;
 		ajax(data, saveBondedFilters);
 	});

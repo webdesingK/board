@@ -4,7 +4,8 @@
 			addFilter  = document.querySelector('#filter__add-js'),// кнопка добавления пунктов
 			addList    = document.querySelector('#add__list-js'),// блок куда вставлять новый инпут для записи пункта
 			tableName  = document.querySelector('#table__name-js'),// инпут для ввода название таблицы
-			selectCat  = document.querySelector('#select-catigories'),// инпут для ввода название таблицы
+			tableUrl   = document.querySelector('#table__url-js'),// инпут для ввода название таблицы
+			selectCat  = document.querySelector('#select-catigories'),// выбор категории
 			message    = document.querySelector('#message-js'),// блок для вывода информации
 			count      = 1,// счетчик для нумерации пункта фильтра 
 			btnFlag    = true;// флаг для избежания повторного клика на кнопку сохранения
@@ -89,6 +90,8 @@
 	function success(text) {
 		outputings('success', text);
 		tableName.value = '';
+		tableUrl.value = '';
+		selectCat = selectCat.firstElementChild.value;
 		tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
 		btnFlag = true;
 		let arr = addList.querySelectorAll('tr');
@@ -133,14 +136,28 @@
 		btnFlag = false;// запрещаем повторное нажатие кнопки 'сохранить'
 		let data = {// переменная для передачи на сервер
 			name: '',// имя название таблицы
-			idCategory: selectCat.value,
+			url: '',// url
+			idCategory: '',
 			arrList: {}
 		};
 		if (!tableName.value) {// проверяем если инпут название таблицы пустой
 			tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
-			return ifTablesName(tableName, ' Заполните название таблицы');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
+			return ifTablesName(tableName, ' Заполните название фильтра');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
 		} else{// если инпут названия таблицы не пустой
 			data.name = tableName.value;// значит записываем его в обьект для передачи на сервер
+		}
+		if (!tableUrl.value) {// проверяем если инпут название URL
+			tableUrl.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
+			return ifTablesName(tableUrl, ' Заполните название URL адресса');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
+		} else{// если инпут названия URL не пустой
+			data.url = tableUrl.value;// значит записываем его в обьект для передачи на сервер
+		}
+		if (selectCat.value == selectCat.firstElementChild.value) {// проверяем если выбор категории
+			btnFlag =true;
+			return outputings('danger', ' Выбирите категорию');// и останавливаем дальнейщего кода и выводим предупреждение о пустоте
+		} else{// если инпут названия URL не пустой
+			outputings('info', ' Обратите внимание на правильность заполнения полей');
+			data.idCategory = selectCat.value;// значит записываем его в обьект для передачи на сервер
 		}
 		let tableList = addList.querySelectorAll('.form-control');// записываем динамически добавленные инпуты в переменную
 		for (var i = 0; i < tableList.length; i++) {// цикл

@@ -86,8 +86,16 @@
   flex: 0;
 }
 
-.slow {
-  transition: left .5s linear;
+.slow1 {
+  transition: left 1s ease-out;
+}
+
+.slow2 {
+  transition: left .7s ease-out;
+}
+
+.slow3 {
+  transition: left .5s ease-out;
 }
 
 .returnSpeed {

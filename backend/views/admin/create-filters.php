@@ -16,12 +16,17 @@
 <div class="row col-md-10">
   <div class="col-md-5 input-categories-css">
     <div class="form-group">
-      <label for="nameTable" class="text-info">Название фильтра</label>
-      <input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
+      <label class="text-info">Название фильтра</label>
+      <input class="form-control col-md-12" id="table__name-js" type="text">
+    </div>
+    <div class="form-group">
+      <label class="text-info">URL</label>
+      <input class="form-control col-md-12" id="table__url-js" type="text">
     </div>
     <div class="form-group">
       <label for="nameTable" class="text-info">Выбирите категорию</label>
       <select class="form-control" id="select-catigories">
+        <option disabled="disabled" selected="selected" >Выбирите категорию</option>
         <option value="1">Lorem.</option>
         <option value="2">Fugiat!</option>
         <option value="3">Error?</option>
