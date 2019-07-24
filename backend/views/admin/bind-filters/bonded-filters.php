@@ -1,8 +1,5 @@
 <?php
 
-    use backend\models\Filters;
-
-    $filterNames = Filters::getNames();
     $count = 1;
 ?>
 

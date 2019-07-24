@@ -151,10 +151,10 @@
 
                 $request = Json::decode(file_get_contents('php://input'));
 
-                if ($request['requestId'] == 'getAllFilterNames') {
-                    $result = Filters::getNames();
-                    return Json::encode($result);
-                }
+//                if ($request['requestId'] == 'getAllFilterNames') {
+//                    $result = Filters::getNames();
+//                    return Json::encode($result);
+//                }
                 if ($request['requestId'] == 'getCategoriesLvl2' || $request['requestId'] == 'getCategoriesLvl3') {
 
                     $result = Categories::getChildren($request['idCategory']);
@@ -170,10 +170,11 @@
                     return Json::encode($result);
                 }
                 if ($request['requestId'] == 'getBondedFilters') {
-                    $result = Filters::getBondedFilters($request['idCategory']);
+                    $result = Filters::getBondedFilters($request);
 
                     if ($result['status']) {
                         $bondedFiltersHtml = $this->renderPartial('bind-filters/bonded-filters', [
+                            'filterNames' => $result['arrOption'],
                             'bondedFilters' => $result['filters']
                         ]);
                         $result['text'] = $bondedFiltersHtml;

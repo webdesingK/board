@@ -24,12 +24,13 @@
             ['class' => 'yii\grid\SerialColumn'],
 
             'name',
-            'shortUrl',
-            'fullUrl',
+//            'shortUrl',
+//            'fullUrl',
 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'visibleButtons' => [
+                    'update' => false,
                     'delete' => false
                 ]
             ],

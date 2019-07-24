@@ -18,49 +18,48 @@
 
             $rusTableName = trim($data['name']);
 
-            $latinTableName = $translator->translit($rusTableName, false, 'ru-en');
-            $latinTableName = BaseInflector::variablize($latinTableName);
+            $latTableName = $translator->translit($rusTableName, false, 'ru-en');
+            $latTableName = BaseInflector::variablize($latTableName);
 
             foreach ($data['arrList'] as $datum) {
-                $titles[] = [$datum];
+                $titles[] = [(string)$datum];
             }
-
-            $qb = new Query();
-            $filtersDb = Yii::$app->get('filtersDb');
 
             try {
 
-                if (!empty($qb
+                $db = Yii::$app->db;
+
+                if (!empty((new Query())
                     ->select('rus')
-                    ->from('filtersData')
+                    ->from('filters.filtersData')
                     ->where('rus = :rus')
                     ->addParams([':rus' => $rusTableName])
-                    ->all($filtersDb))) {
+                    ->all())) {
                     return [
                         'status' => false,
                         'text' => 'Такой фильтр уже существует'
                     ];
                 }
 
-                $filtersDb
+                $db
                     ->createCommand()
-                    ->createTable($latinTableName, [
+                    ->createTable('filters.' . $latTableName, [
                         'id' => 'pk',
                         'title' => 'string'
                     ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB')
                     ->execute();
 
-                $filtersDb
+                $db
                     ->createCommand()
-                    ->batchInsert($latinTableName, ['title'], $titles)// $titles - не привязанные параметры (чистые данные) Уязвимое место !!! (Возможно ошибаюсь, нет опыта по batchInsert)
+                    ->batchInsert('filters.' . $latTableName, ['title'], $titles)// $titles - не привязанные параметры (чистые данные) Уязвимое место !!! (Возможно ошибаюсь, нет опыта по batchInsert)
                     ->execute();
 
-                $filtersDb
+                $db
                     ->createCommand()
-                    ->insert('filtersData', [
+                    ->insert('filters.filtersData', [
                         'rus' => $rusTableName,
-                        'lat' => $latinTableName,
-                        'idMainCategory' => $data['idCategories'],
+                        'lat' => $latTableName,
+                        'idParentCategory' => $data['idCategory'],
                     ])
                     ->execute();
 
@@ -80,12 +79,14 @@
 
         }
 
-        static public function getNames() {
+        static public function getNames(int $idParentCategory) {
 
             try {
                 $names = (new Query())
                     ->select('rus')
                     ->from('filtersData')
+                    ->where('idParentCategory = :id')
+                    ->addParams([':id' => $idParentCategory])
                     ->all(Yii::$app->get('filtersDb'));
             }
             catch (\Throwable $e) {
@@ -205,7 +206,12 @@
                         ->where(['id' => $bondedCategories])
                         ->all($filtersDb);
 
-                    $responseStr = "Нельзя удалить привязанный фильтр. Сначала отвяжи его от следующих категорий:\n";
+                    if (count($bondedCategories) > 1) {
+                        $responseStr = "Нельзя удалить привязанный фильтр. Сначала отвяжи его от следующих категорий:\n";
+                    }
+                    else {
+                        $responseStr = "Нельзя удалить привязанный фильтр. Сначала отвяжи его от следующей категории:\n";
+                    }
 
                     foreach ($bondedCategories as $category) {
                         $parents = Categories::getAllParents($category['id']);
@@ -252,14 +258,14 @@
             }
         }
 
-        static public function getBondedFilters($idCategory) {
+        static public function getBondedFilters($data) {
             $filtersDb = Yii::$app->get('filtersDb');
             try {
                 $bondedFilters = (new Query())
                     ->select('filter')
                     ->from('bondedFiltersData')
                     ->where('idCategory = :idCategory')
-                    ->addParams([':idCategory' => $idCategory])
+                    ->addParams([':idCategory' => $data['idCategory']])
                     ->one($filtersDb);
                 if ($bondedFilters) {
                     $bondedFilters = unserialize($bondedFilters['filter']);
@@ -278,6 +284,7 @@
                 }
                 return [
                     'status' => true,
+                    'arrOption' => self::getNames($data['idParentCategory']),
                     'filters' => $urlsAndRusNames
                 ];
             }
@@ -293,10 +300,53 @@
 
         static public function saveBondedFilters(array $data) {
 
-            $filterRusNames = array_values($data['bondedFilters']);
             $filtersDb = Yii::$app->get('filtersDb');
 
             try {
+
+                if (empty($data['bondedFilters'])) {
+                    $filtersDb
+                        ->createCommand()
+                        ->delete('bondedFiltersIds', 'idCategory = :id')
+                        ->bindValue(':id', $data['idCategory'])
+                        ->execute();
+                    $filtersDb
+                        ->createCommand()
+                        ->delete('bondedFiltersData', 'idCategory = :id')
+                        ->bindValue('id', $data['idCategory'])
+                        ->execute();
+                    $category = Categories::getCategoryById($data['idCategory']);
+                    $parents = Categories::getAllParents($category->id);
+
+                    $countRow = (new Query())
+                        ->from('bondedFiltersData')
+                        ->count('*', $filtersDb);
+
+                    if ($countRow == 0) {
+                        $filtersDb
+                            ->createCommand()
+                            ->truncateTable('bondedFiltersData')
+                            ->execute();
+                    }
+
+                    $countRow = (new Query())
+                        ->from('bondedFiltersIds')
+                        ->count('*', $filtersDb);
+
+                    if ($countRow == 0) {
+                        $filtersDb
+                            ->createCommand()
+                            ->truncateTable('bondedFiltersIds')
+                            ->execute();
+                    }
+
+                    return [
+                        'status' => true,
+                        'text' => 'Все фильтры отвязаны от категории: ' . $parents[0]['name'] . ' - ' . $parents[1]['name'] . ' - ' . $category->name
+                    ];
+                }
+
+                $filterRusNames = array_values($data['bondedFilters']);
 
                 foreach ($data['bondedFilters'] as $key => $value) {
                     $latName = (new Query())
@@ -317,12 +367,12 @@
                 $filtersDb
                     ->createcommand()
                     ->delete('bondedFiltersIds', 'idCategory = :idCategory')
-                    ->bindValue(':idCategory', $data['categoryId'])
+                    ->bindValue(':idCategory', $data['idCategory'])
                     ->execute();
 
                 foreach ($filtersIds as $filtersId) {
                     $ids[] = [
-                        (int)$data['categoryId'],
+                        (int)$data['idCategory'],
                         (int)$filtersId['id']
                     ];
                 }
@@ -337,29 +387,29 @@
                 $countRow = (new Query())
                     ->from('bondedFiltersData')
                     ->where('idCategory = :idCategory')
-                    ->addParams([':idCategory' => $data['categoryId']])
+                    ->addParams([':idCategory' => $data['idCategory']])
                     ->count('*', $filtersDb);
                 if ($countRow > 0) {
                     $filtersDb
                         ->createCommand()
-                        ->update('bondedFiltersData', ['filter' => $urlsAndLatNames], 'idCategory = ' . $data['categoryId'])
+                        ->update('bondedFiltersData', ['filter' => $urlsAndLatNames], 'idCategory = ' . $data['idCategory'])
                         ->execute();
                     return [
                         'status' => true,
-                        'text' => 'Обновление прошло успешно'
+                        'text' => 'Обновление фильтра прошло успешно'
                     ];
                 }
                 else {
                     $filtersDb
                         ->createCommand()
                         ->insert('bondedFiltersData', [
-                            'idCategory' => $data['categoryId'],
+                            'idCategory' => $data['idCategory'],
                             'filter' => $urlsAndLatNames
                         ])
                         ->execute();
                     return [
                         'status' => true,
-                        'text' => 'Привязка прошла успешно'
+                        'text' => 'Привязка фильтра прошла успешно'
                     ];
                 }
 

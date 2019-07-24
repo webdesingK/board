@@ -36,7 +36,7 @@
          * @return ActiveDataProvider
          */
         public function search($params) {
-            $query = Categories::find();
+            $query = Categories::find()->orderBy('lft ASC');
 
             // add conditions that should always apply here
 

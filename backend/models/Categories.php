@@ -232,8 +232,17 @@
 
         static public function getAllParents($id) {
             try {
-                $child = self::find()->where(['id' => $id])->one();
+                $child = self::findOne((int)$id);
                 return $child->parents()->select('name')->andWhere('id > 1')->asArray()->all();
+            }
+            catch (\Throwable $e) {
+
+            }
+        }
+
+        static public function getCategoryById($id) {
+            try {
+                return self::findOne((int)$id);
             }
             catch (\Throwable $e) {
 

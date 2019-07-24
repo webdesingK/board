@@ -25,11 +25,12 @@
                 'class' => 'yii\grid\SerialColumn',
             ],
             'name',
-            'url',
+//            'url',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'visibleButtons' => [
                     'delete' => false,
+                    'update' => false
                 ]
             ],
         ],
