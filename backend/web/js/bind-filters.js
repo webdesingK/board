@@ -1,14 +1,14 @@
 (function () {
 	
-  let	select      = document.querySelectorAll('.select'),// выбор фильтров
-			btnSave     = document.querySelector('#btn-save-js'),// кнопка сохранения
-			addList     = document.querySelector('#add-list-js'),// блок куда вставлять новый инпут для записи пункта
-			addFilter   = document.querySelector('#add-filters-js'),// кнопка добавления пунктов
-			message     = document.querySelector('#message-js'),// блок для вывода информации
-			count       = 1,// счетчик для нумерации пункта фильтра 
-			animClass   = 'none',
-			filterFlag  = false,
-			btnFlag     = true,// флаг для избежания повторного клика на кнопку сохранения
+  let	select       = document.querySelectorAll('.select'),// выбор фильтров
+			btnSave      = document.querySelector('#btn-save-js'),// кнопка сохранения
+			addList      = document.querySelector('#add-list-js'),// блок куда вставлять новый инпут для записи пункта
+			addFilter    = document.querySelector('#add-filters-js'),// кнопка добавления пунктов
+			message      = document.querySelector('#message-js'),// блок для вывода информации
+			count        = 1,// счетчик для нумерации пункта фильтра 
+			animClass    = 'none',
+			filterFlag   = false,
+			btnFlag      = true,// флаг для избежания повторного клика на кнопку сохранения
 			idsFilter,// для записи массива полученных с сервера наименования фильтров
 			listFilter;// для записи массива полученных с сервера наименования фильтров
 
@@ -135,9 +135,9 @@
 
 	function inputList(count) {
 		return `
-			<div class="input-group col-md-12">
-				<span class="input-group-addon counts">${count}</span>
-				<select class="form-control" id="select-filters-js">
+			<div class="input-group">
+				<span class="input-group-addon">${count}</span>
+				<select class="form-control select-filter">
 					<option disabled="disabled" selected="selected">Выбрать фильтр</option>
 					${listFilters(listFilter)}
 				</select>
@@ -151,27 +151,27 @@
 	// функция делегированного удаления инпутов добавления пунктов
 	addList.addEventListener('click', function(e) {// принимаем event
 		let target = e.target,// записываем в переменную елемент по которому кликнули
-			  parent = target.closest('tr');// а также ищем родителя, который в дольнейшем будем удалять
+			  parent = target.closest('.input-group');// а также ищем родителя, который в дольнейшем будем удалять
 		if (target.getAttribute('title') == 'Удалить пункт' || // если кликнули по тегу с title = Удалить пункт
 				target.parentNode.getAttribute('title') == 'Удалить пункт') {// или кликнули по тегу у которога родитель с title = Удалить пункт
 			parent.remove();// удаляем вставленый инпут
 			zeroing();// и обнуляем счетчик
 		}
-		let tableList = addList.querySelectorAll('tr');// записываем динамически добавленные инпуты в переменную
+		let tableList = addList.querySelectorAll('.input-group');// записываем динамически добавленные инпуты в переменную
 		if (filterFlag && tableList.length == 0) {
 			btnSave.classList.remove('btn-succes');
 			btnSave.classList.add('btn-danger');
 			btnSave.innerText = 'Удалить все привязки';
 		}
 		for (var i = 0; i < tableList.length; i++) {// цикл для изминения счетчика при удалении какого либо пункта
-			tableList[i].querySelector('.counts').innerText = i + 1;
+			tableList[i].firstElementChild.innerText = i + 1;
 			count = tableList.length + 1;
 		}
 	});
 
 	// при клики на кнопку добавления пунктов
 	addFilter.addEventListener('click', function() {
-		let tableListLength = addList.querySelectorAll('tr').length;
+		let tableListLength = addList.querySelectorAll('.input-group').length;
 		count = tableListLength + 1;
 		addList.insertAdjacentHTML('beforeEnd', inputList(count));// вставляем в блок инпут для добавления пункта 
 		count++;// и увеличиваем счетчик на 1
@@ -203,7 +203,7 @@
 
 	btnSave.addEventListener('click', function() {
 		if (!btnFlag) return;// проверка для избежания многократного клика на кнопку 'сохранить'
-		let tableList = addList.querySelectorAll('tr');// записываем динамически добавленные инпуты в переменную
+		let tableList = addList.querySelectorAll('.input-group');// записываем динамически добавленные инпуты в переменную
 		for (var i = 0; i < tableList.length; i++) {// цикл
 			if (tableList[i].querySelector('select').value == tableList[i].querySelector('select').firstElementChild.value) {
 				tableList[i].querySelector('select').parentNode.classList.add('has-error');
@@ -213,15 +213,26 @@
 				tableList[i].querySelector('select').parentNode.classList.remove('has-error');
 			}
 		}
-		if (filterFlag && addList.querySelectorAll('tr').length == 0) {
+		if (filterFlag && tableList.length == 0) {
 			filterFlag = false;
-		}	else if (addList.querySelectorAll('tr').length == 0) {// при сохранении, если ни добавили ни одного пункта 
+		}	else if (tableList.length == 0) {// при сохранении, если ни добавили ни одного пункта 
 			outputings('warning', ' У Вас нет ни одного пункта');// сообщаем об этом
 			return;
 		}
 
+		let selectFilter = document.querySelectorAll('.select-filter');// выбор фильтров
+		for (let i = 0; i < selectFilter.length; i++) {
+			if (selectFilter[i].value == 'Выбрать фильтр') {
+				btnFlag = true;
+				selectFilter[i].closest('.input-group').classList.add('has-error');
+				return outputings('warning', 'Выбирите фильр');
+			} else{
+				outputings('info', 'Обратите внимание на правильность заполнения полей');
+			}
+		}
+
 		let arr            = {},
-				arrList        = addList.querySelectorAll('tr'),
+				arrList        = addList.querySelectorAll('.input-group'),
 				selectCategory = select[select.length - 1].value,
 				data           = {};
 

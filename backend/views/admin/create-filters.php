@@ -26,7 +26,7 @@
     <div class="form-group">
       <label for="nameTable" class="text-info">Выбирите категорию</label>
       <select class="form-control" id="select-catigories">
-        <option disabled="disabled" selected="selected" >Выбирите категорию</option>
+        <option disabled="disabled" selected="selected">Выбирите категорию</option>
         <option value="1">Lorem.</option>
         <option value="2">Fugiat!</option>
         <option value="3">Error?</option>
