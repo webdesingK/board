@@ -1,7 +1,5 @@
 <?php
 
-    use backend\models\Categories;
-
     $this->title = 'Создание фильтров';
 
     //$this->registerCssFile('@web/css/main.css');
@@ -18,19 +16,24 @@
 <div class="row col-md-10">
   <div class="col-md-5 input-categories-css">
     <div class="form-group">
-      <label for="nameTable" class="text-info">Название фильтра</label>
-      <input class="form-control col-md-12" id="table__name-js" type="text" id="nameTable">
+      <label class="text-info">Название фильтра</label>
+      <input class="form-control col-md-12" id="table__name-js" type="text">
     </div>
     <div class="form-group">
-      <label for="nameTable" class="text-info">Выберите категорию</label>
+      <label class="text-info">URL</label>
+      <input class="form-control col-md-12" id="table__url-js" type="text">
+    </div>
+    <div class="form-group">
+      <label for="nameTable" class="text-info">Выбирите категорию</label>
       <select class="form-control" id="select-catigories">
-          <option disabled="disabled" selected="selected">Выбрать категорию</option>
-          <?php
-              $categoriesFirstLvl = Categories::getFirstLvl();
-          ?>
-          <?php foreach($categoriesFirstLvl as $item): ?>
-              <option value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
-          <?php endforeach ?>
+        <option disabled="disabled" selected="selected" >Выбирите категорию</option>
+        <option value="1">Lorem.</option>
+        <option value="2">Fugiat!</option>
+        <option value="3">Error?</option>
+        <option value="4">Dolore.</option>
+        <option value="5">Enim.</option>
+        <option value="6">Dignissimos.</option>
+        <option value="7">Suscipit!</option>
       </select>
     </div>
   </div>
