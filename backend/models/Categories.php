@@ -3,6 +3,9 @@
 
     namespace backend\models;
 
+    use yii\db\Exception;
+    use yii\web\ServerErrorHttpException;
+
     class Categories extends \common\models\categories\Categories {
 
         /**
@@ -208,7 +211,7 @@
                 return self::find()->select(['id', 'name'])->where(['depth' => 1])->asArray()->all();
             }
             catch (\Throwable $e) {
-
+                throw new ServerErrorHttpException('Что пошло не так ....');
             }
         }
 

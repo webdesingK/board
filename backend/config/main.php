@@ -42,7 +42,7 @@ return [
 //            ],
 //        ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'admin/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
