@@ -6,8 +6,6 @@
     $this->registerJsFile('@web/js/create-filters.js', ['depends' => 'backend\assets\AppAsset']);
     $this->registerCssFile('@web/css/create-filters.css', ['depends' => 'backend\assets\AppAsset']);
 
-$categories = \backend\models\Categories::getFirstLvl();
-
 ?>
 
 <div class="row col-md-10">
@@ -28,10 +26,14 @@ $categories = \backend\models\Categories::getFirstLvl();
     <div class="form-group">
       <label for="nameTable" class="text-info">Выбирите категорию</label>
       <select class="form-control" id="select-catigories">
-        <option disabled="disabled" selected="selected" >Выберите категорию</option>
-          <?php foreach($categories as $category): ?>
-        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
-          <?php endforeach ?>
+        <option disabled="disabled" selected="selected">Выбирите категорию</option>
+        <option value="1">Lorem.</option>
+        <option value="2">Fugiat!</option>
+        <option value="3">Error?</option>
+        <option value="4">Dolore.</option>
+        <option value="5">Enim.</option>
+        <option value="6">Dignissimos.</option>
+        <option value="7">Suscipit!</option>
       </select>
     </div>
   </div>

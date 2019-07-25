@@ -35,17 +35,8 @@ use backend\models\Categories;
 			<option disabled="disabled" selected="selected">Выбрать категорию 3 уровня</option>
 		</select>
 	</div>
-	<div class="col-md-7 table-responsive">
-		<table class="table table-hover-css">
-			<thead>
-				<tr>
-					<th class="col-md-6">Url</th>
-					<th class="col-md-6">Название фильтра</th>
-				</tr>
-			</thead>
-			<tbody id="add-list-js">
-			</tbody>
-		</table>
+	<div class="col-md-7">
+		<div class="col-md-12" id="add-list-js"></div>
 		<div class="col-md-12 text-success none" id="add-filters-js">
 			<p class="add-filters-css"><i class="glyphicon glyphicon-plus"></i> Добавить фильтр</p>
 		</div>
@@ -61,8 +52,8 @@ use backend\models\Categories;
 </div>
 
 <!-- <div class="input-group">
-    <span class="input-group-addon counts">1</span>
-    <select class="form-control" id="select-filters-js">
+    <span class="input-group-addon ">1</span>
+    <select class="form-control select-filter">
         <option value="1">1</option>
         <option value="2" selected="selected">размеры</option>
         <option value="3">2</option>
