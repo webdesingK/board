@@ -44,6 +44,7 @@
   padding: 0;
   position: absolute;
   left: 0;
+  transition: left .5s;
 }
 
 .slide__top-list li {
@@ -69,16 +70,20 @@
   white-space: nowrap;
 }
 
+.slide__top-arrow > div {
+  cursor: pointer;
+}
+
 .slide__top-arrow i {
   color: #777;
   font-size: 15pt;
 }
 
-.arrow__left {
+.arrow__prev {
   display: inline-block;
 }
 
-.arrow__right {
+.arrow__next {
   display: inline-block;
 }
 
@@ -100,4 +105,8 @@
 
 .returnSpeed {
   transition: left .2s ease-in;
+}
+
+.inactive-arrow i {
+  color: #cccccc;
 }

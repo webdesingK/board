@@ -91,7 +91,7 @@
 		outputings('success', text);
 		tableName.value = '';
 		tableUrl.value = '';
-		selectCat = selectCat.firstElementChild.value;
+		selectCat.value = selectCat.firstElementChild.value;
 		tableName.addEventListener('keyup', ifChangesInput);// запускаем событие 'keyup'
 		btnFlag = true;
 		let arr = addList.querySelectorAll('tr');
