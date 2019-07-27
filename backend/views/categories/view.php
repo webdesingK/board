@@ -43,15 +43,16 @@
                     if (!empty($idsFilters)) {
                         $filterData = $filters->getFiltersDataByIds($idsFilters);
                         $count = count($filterData);
+                        $str = '';
                         foreach ($filterData as $key => $filterDatum) {
                             if ($count > 1) {
-                                $str = ++$key . ') Название фильтра: ' . $filterDatum['rusName'] . ';';
+                                $str .= ++$key . ') Название фильтра: ' . $filterDatum['rusName'] . ';';
                             }
                             else {
-                                $str = ' Название фильтра: ' . $filterDatum['rusName'] . ';';
+                                $str .= ' Название фильтра: ' . $filterDatum['rusName'] . ';';
 
                             }
-                            $str .= ' URL: ' . $filterDatum['url'] . '<br>';
+                            $str .= 'URL: ' . $filterDatum['url'] . '<br>';
                         }
                     }
                     return $str;
