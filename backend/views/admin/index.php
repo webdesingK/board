@@ -35,10 +35,10 @@ $this->registerJsFile('@web/js/sandbox.js', ['depends' => 'backend\assets\AppAss
 		</ul>
 	</div>
 	<div class="slide__top-arrow">
-		<div class="arrow__left">
+		<div class="arrow__prev" id="arrow-prev-slide-top-js">
 			<i class="glyphicon glyphicon-chevron-left"></i>
 		</div>
-		<div class="arrow__right">
+		<div class="arrow__next inactive-arrow" id="arrow-next-slide-top-js">
 			<i class="glyphicon glyphicon-chevron-right"></i>
 		</div>
 	</div>

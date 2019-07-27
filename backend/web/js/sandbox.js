@@ -4,6 +4,8 @@
 			ul             = document.querySelector('.slide__top-list'),
 			li             = document.querySelectorAll('.slide__top-list li'),
 			wrapper        = document.querySelector('body'),
+			prev           = document.querySelector('#arrow-prev-slide-top-js'),
+			next           = document.querySelector('#arrow-next-slide-top-js'),
 			changeCoords   = 0,
 			slow           = 0,
 			flagStartSlide = false,
@@ -20,11 +22,18 @@
 				returnClass: 'returnSpeed'
 			};
 
+	window.addEventListener('resize', function () {
+		rightReturn = container.clientWidth - ul.clientWidth;
+		if (parseInt(ul.style.left) < rightReturn) {
+			ul.style.left = rightReturn + 'px';
+		}
+	});
+
 	function coords(e, self) {
 		let rect = self.getBoundingClientRect(),
 				x    = Math.round(e.pageX - rect.left);
 				return x;
-	}
+	};
 
 	function offsetSlide(e) {
 		window.getSelection().removeAllRanges();
@@ -115,9 +124,16 @@
 		let result = parseInt(ul.style.left) - (difference * minus);
 		if (result > 0) {
 			result = 0;
+			changeViewArrow(prev, 'add');
+			changeViewArrow(next, 'remove');
 		} else if(result < rightReturn) {
 			result = rightReturn;
-		} 
+			changeViewArrow(prev, 'remove');
+			changeViewArrow(next, 'add');
+		} else{
+			changeViewArrow(prev, 'add');
+			changeViewArrow(next, 'add');
+		}
 		ul.classList.add('slow' + animClass);
 		ul.style.left = result + 'px';
 	};
@@ -154,5 +170,54 @@
 			exitMouseUl(e, this);
 		}
 	});
+
+	// кнопки слайдера
+
+	function changeViewArrow(el, remove) {
+		if (remove == 'remove') {
+			el.classList.add('inactive-arrow');
+			el.removeEventListener('click', arrowShift);
+		} else if (remove == 'add'){
+			el.classList.remove('inactive-arrow');
+			el.addEventListener('click', arrowShift);
+		}
+	}
+
+	function arrowShift() {
+		ul.className = ul.className.replace(/slow[\w]*/gi, '');
+		next.classList.remove('inactive-arrow');
+		let parent   = container.getBoundingClientRect(),
+				ulLeftAr = parseInt(ul.style.left);
+				if (isNaN(ulLeftAr)) ulLeftAr = 0;
+		for (let i = 0; i < li.length; i++) {
+			let element = li[i].getBoundingClientRect(),
+					left    = Math.round(element.left - parent.left),
+					right   = Math.round((element.left + li[i].clientWidth) - parent.left);
+			if (left <= 0 && right > 0) {
+				if (this.classList.contains('arrow__prev')) {
+					changeViewArrow(next, 'add');
+					ul.style.left = ulLeftAr - right + 'px';
+					if (ulLeftAr - right <= rightReturn) {
+						ul.style.left = rightReturn + 'px';
+						changeViewArrow(this, 'remove');
+					}
+				} else{
+					if (left < 0 && right > 0) {
+						ul.style.left = ulLeftAr - left + 'px';
+						changeViewArrow(prev, 'add');
+					} else if(left == 0 && ulLeftAr != 0) {
+						ul.style.left = ulLeftAr + li[i-1].clientWidth + 'px';
+					}
+					if (i == 1) {
+						changeViewArrow(this, 'remove');
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	prev.addEventListener('click', arrowShift);
+	next.addEventListener('click', arrowShift);
 
 })();
