@@ -33,6 +33,7 @@
 		padding: 0
 		position: absolute
 		left: 0
+		transition: left .5s
 		li
 			padding: 0px 20px
 			list-style-type: none
@@ -48,13 +49,15 @@
 				color: #00c0ef
 	&-arrow
 		white-space: nowrap
+		& > div
+			cursor: pointer
 		i
 			color: #777
 			font-size: 15pt
 .arrow
-	&__left
+	&__prev
 		display: inline-block
-	&__right
+	&__next
 		display: inline-block
 .btn-categories
 	flex: 0
@@ -66,3 +69,5 @@
 	transition: left .5s ease-out
 .returnSpeed
 	transition: left .2s ease-in
+.inactive-arrow i
+	color: lighten(#333, 60%)
