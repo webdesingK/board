@@ -2,6 +2,7 @@
 
     namespace backend\controllers;
 
+    use backend\models\Filters;
     use Yii;
     use backend\models\crud\Categories;
     use backend\models\crud\CategoriesSearch;
@@ -37,10 +38,14 @@
         public function actionIndex() {
             $searchModel = new CategoriesSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $categories = new Categories();
+            $filters = new Filters();
 
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'categories' => $categories,
+                'filters' => $filters
             ]);
         }
 
@@ -51,8 +56,12 @@
          * @throws NotFoundHttpException if the model cannot be found
          */
         public function actionView($id) {
+
+            $filters = new Filters();
+
             return $this->render('view', [
                 'model' => $this->findModel($id),
+                'filters' => $filters
             ]);
         }
 

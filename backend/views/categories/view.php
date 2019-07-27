@@ -1,23 +1,24 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\DetailView;
+    use yii\helpers\Html;
+    use yii\widgets\DetailView;
+    use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\crud\Categories */
+    /* @var $this yii\web\View */
+    /* @var $model backend\models\crud\Categories */
+    /* @var $filters backend\models\Filters */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Categories', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+    $this->title = $model->name;
+
 ?>
+
 <div class="categories-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Просмотр списка', ['index'], ['class' => 'btn btn-primary']) ?>
-<!--    <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?> -->
+        <?= Html::a('Все категории', ['index'], ['class' => 'btn btn-primary']) ?>
+        <!--    <?= Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?> -->
     </p>
 
     <?= DetailView::widget([
@@ -31,6 +32,31 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'shortUrl',
             'fullUrl',
+            [
+                'label' => 'Привязанные фильтры',
+                'format' => 'html',
+                'value' => function ($model) use ($filters) {
+                    $id = $model->getAttribute('id');
+                    $idsFilters = ArrayHelper::getColumn($filters->getFiltersIdsBycategoryId($id), 'idFilter');
+                    $str = 'Пусто';
+
+                    if (!empty($idsFilters)) {
+                        $filterData = $filters->getFiltersDataByIds($idsFilters);
+                        $count = count($filterData);
+                        foreach ($filterData as $key => $filterDatum) {
+                            if ($count > 1) {
+                                $str = ++$key . ') Название фильтра: ' . $filterDatum['rusName'] . ';';
+                            }
+                            else {
+                                $str = ' Название фильтра: ' . $filterDatum['rusName'] . ';';
+
+                            }
+                            $str .= ' URL: ' . $filterDatum['url'] . '<br>';
+                        }
+                    }
+                    return $str;
+                }
+            ]
         ],
     ]) ?>
 

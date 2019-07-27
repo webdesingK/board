@@ -211,12 +211,14 @@
                 return self::find()->select(['id', 'name'])->where(['depth' => 1])->asArray()->all();
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что пошло не так ....');
+                throw new ServerErrorHttpException('Что пошло не так ...');
             }
         }
 
         static public function getChildren($id) {
+
             try {
+
                 $parent = self::find()->where('id = :id')->addParams([':id' => $id])->one();
                 $children = $parent->children(1)->select(['id', 'name'])->asArray()->all();
 
@@ -228,7 +230,8 @@
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
+//                    'text' => 'Ошибка базы данных'
                 ];
             }
         }
@@ -239,7 +242,7 @@
                 return $child->parents()->select('name')->andWhere('id > 1')->asArray()->all();
             }
             catch (\Throwable $e) {
-
+                throw new ServerErrorHttpException('Что то пошло не так ...');
             }
         }
 
@@ -248,7 +251,7 @@
                 return self::findOne((int)$id);
             }
             catch (\Throwable $e) {
-
+                throw new ServerErrorHttpException('Что то пошло не так ...');
             }
         }
     }

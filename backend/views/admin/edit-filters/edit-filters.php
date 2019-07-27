@@ -20,7 +20,7 @@
         <select class="form-control" id="select-categories-js">
             <option disabled="disabled" selected="selected">Выбрать фильтр</option>
             <?php
-                $filterNames = Filters::getNames();
+                $filterNames = Filters::getFilterData('rusName');
             ?>
             <?php foreach ($filterNames as $filterName): ?>
                 <option><?= $filterName ?></option>

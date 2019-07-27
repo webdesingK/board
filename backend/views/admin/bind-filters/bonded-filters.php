@@ -5,30 +5,21 @@
 
 <?php foreach ($bondedFilters as $key => $filter): ?>
 
-    <tr>
-        <th>
-            <div class="input-group">
-                <span class="input-group-addon"><?= $count++ ?></span>
-                <input type="text" class="form-control" value="<?= $key ?>">
-            </div>
-        </th>
-        <th>
-            <div class="input-group">
-                <select class="form-control" id="select-filters-js">
-                    <option disabled="disabled" selected="selected">Выбрать фильтр</option>
-                    <?php foreach ($filterNames as $filterName): ?>
-                        <?php if ($filterName == $filter): ?>
-                            <option selected="selected"><?= $filterName ?></option>
-                        <?php else: ?>
-                            <option><?= $filterName ?></option>
-                        <?php endif ?>
-                    <?php endforeach ?>
-                </select>
-                <span class="input-group-addon" title="Удалить пункт">
-                        <i class="glyphicon glyphicon-remove-circle text-danger"></i>
-                    </span>
-            </div>
-        </th>
-    </tr>
+    <div class="input-group">
+        <span class="input-group-addon "><?= $count++ ?></span>
+        <select class="form-control select-filter">
+            <option disabled="disabled">Выберите фитьтр</option>
+            <?php foreach ($allFilters as $oneFilter): ?>
+                <?php if ($filter['rusName'] == $oneFilter['rusName']): ?>
+                    <option value="<?= $oneFilter['id'] ?>" selected="selected"><?= $oneFilter['rusName'] ?></option>
+                <?php else: ?>
+                    <option value="<?= $oneFilter['id'] ?>"><?= $oneFilter['rusName'] ?></option>
+                <?php endif ?>
+            <?php endforeach ?>
+        </select>
+        <span class="input-group-addon" title="Удалить пункт">
+        <i class="glyphicon glyphicon-remove-circle text-danger"></i>
+    </span>
+    </div>
 
 <?php endforeach ?>
