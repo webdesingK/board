@@ -53,6 +53,8 @@ return [
                 'создание-фильтров' => 'admin/create-filters',
                 'редактирование-фильтров' => 'admin/edit-filters',
                 'привязка-фильтров' => 'admin/bind-filters',
+                'категории-фильтры' => 'admin/categories-filters',
+                'фильтры-категории' => 'admin/filters-categories',
                 'просмотр-городов' => 'cities/index',
                 'просмотр-категорий' => 'categories/index'
             ],

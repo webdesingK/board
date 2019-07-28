@@ -4,6 +4,7 @@
 
     use backend\models\Categories;
     use backend\models\Cities;
+    use backend\models\categoriesFilters\CategoriesSearch;
     use backend\models\Filters;
     use yii\helpers\Json;
     use yii\web\Controller;
@@ -195,6 +196,27 @@
             }
 
             return $this->render('bind-filters/bind-filters');
+        }
+
+        public function actionCategoriesFilters() {
+
+            $searchModel = new CategoriesSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $categories = new Categories();
+            $categoriesFilters = new \backend\models\categoriesFilters\Categories();
+            $filters = new Filters();
+
+            return $this->render('categories-filters', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'categories' => $categories,
+                'categoriesFilters' => $categoriesFilters,
+                'filters' => $filters
+            ]);
+        }
+
+        public function actionFiltersCategories() {
+            return $this->render('filters-categories');
         }
 
     }

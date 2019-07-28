@@ -4,7 +4,6 @@
 
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
-    use backend\models\crud\Categories;
 
     /**
      * CategoriesSearch represents the model behind the search form of `backend\models\crud\Categories`.
@@ -36,7 +35,7 @@
          * @return ActiveDataProvider
          */
         public function search($params) {
-            $query = Categories::find()->orderBy('lft ASC');
+            $query = Categories::find()->where('depth < 4')->orderBy('lft ASC');
 
             // add conditions that should always apply here
 
@@ -61,9 +60,9 @@
                 'active' => $this->active,
             ]);
 
-            $query->andFilterWhere(['like', 'name', $this->name])
-                ->andFilterWhere(['like', 'shortUrl', $this->shortUrl])
-                ->andFilterWhere(['like', 'fullUrl', $this->fullUrl]);
+            $query->andFilterWhere(['like', 'name', $this->name]);
+//                ->andFilterWhere(['like', 'shortUrl', $this->shortUrl])
+//                ->andFilterWhere(['like', 'fullUrl', $this->fullUrl]);
 
             return $dataProvider;
         }

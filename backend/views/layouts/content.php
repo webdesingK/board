@@ -1,7 +1,8 @@
 <?php
-use yii\widgets\Breadcrumbs;
-use dmstr\widgets\Alert;
-use yii\helpers\Html;
+
+    use yii\widgets\Breadcrumbs;
+    use dmstr\widgets\Alert;
+    use yii\helpers\Html;
 
 ?>
 <div class="content-wrapper">

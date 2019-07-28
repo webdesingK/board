@@ -25,14 +25,7 @@
             return 'categories';
         }
 
-        public function getData() {
-            try {
-                return self::find()->select(['id', 'name'])->asArray()->all();
-            }
-            catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
-            }
-        }
+
 
         /**
          * {@inheritdoc}
@@ -55,7 +48,7 @@
                 'rgt' => 'Rgt',
                 'depth' => 'Depth',
                 'active' => 'Active',
-                'name' => 'Name',
+                'name' => 'Название категории',
                 'shortUrl' => 'Short Url',
                 'fullUrl' => 'Full Url',
             ];

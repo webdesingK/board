@@ -220,7 +220,7 @@
                     $idsBondedCategories = ArrayHelper::getColumn($bondedCategories, 'idCategory');
 
                     $bondedCategoriesData = (new Query())
-                        ->select(['id', 'name'])
+                        ->select(['id', 'name', 'fullUrl'])
                         ->from('board.categories')
                         ->where(['id' => $idsBondedCategories])
                         ->all();
@@ -233,8 +233,14 @@
                     }
 
                     foreach ($bondedCategoriesData as $category) {
-                        $parents = Categories::getAllParents($category['id']);
-                        $responseStr .= $parents[0]['name'] . " / " . $parents[1]['name'] . " / " . $category['name'] . "\n";
+                        $fullName = substr($category['fullUrl'], 1);
+                        $pattern = '/\//';
+                        $replace = ' / ';
+                        $fullName = preg_replace($pattern, $replace, $fullName);
+                        $pattern = '/-/';
+                        $replace = ' ';
+                        $fullName = preg_replace($pattern, $replace, $fullName);
+                        $responseStr .= "$fullName \n";
                     }
 
                     return [
@@ -340,16 +346,45 @@
                     ->bindValue(':id', $data['idCategory'])
                     ->execute();
 
+                $category = Categories::getCategoryById($data['idCategory']);
+                $fullName = substr($category['fullUrl'], 1);
+                $pattern = '/\//';
+                $replace = ' / ';
+                $fullName = preg_replace($pattern, $replace, $fullName);
+                $pattern = '/-/';
+                $replace = ' ';
+                $fullName = preg_replace($pattern, $replace, $fullName);
+
                 if (isset($ids)) {
                     $db
                         ->createCommand()
                         ->batchInsert('filters.filtersCategories', ['idFilter', 'idCategory'], $ids)
                         ->execute();
 
-                    $str = 'Привязка прошла успешно';
+
+                    $filterNames = (new Query())
+                        ->select('rusName')
+                        ->from('filters.filters')
+                        ->where(['id' => $data['idsFilters']])
+                        ->all();
+
+                    $count = count($filterNames);
+
+                    $str = '';
+
+                    if ($count > 1) {
+                        $str = 'К категории ' . $fullName . ' успешно привязаны следующие фильтра: ' . "\n";
+                    }
+                    else {
+                        $str = 'К категории ' . $fullName . ' успешно привязан фильтр: ' . "\n";
+                    }
+
+                    foreach ($filterNames as $filterName) {
+                        $str .= ' - ' . $filterName['rusName'] . "\n";
+                    }
                 }
                 else {
-                    $str = 'Отвязка прошла успешно';
+                    $str = 'От категории ' . $fullName . ' успешно отвязаны все фильтры';
                 }
 
                 return [
@@ -361,14 +396,15 @@
             catch (\Throwable $e) {
                 return [
                     'status' => false,
-                    'text' => 'Ошибка базы данных'
+//                    'text' => 'Ошибка базы данных'
+                    'text' => $e->getMessage()
                 ];
             }
         }
 
         // ------------- методы для views Просмотра данных о категориях ----------//
 
-        public function getFiltersIdsBycategoryId($id) {
+        public function getFiltersIdsByCategoryId($id) {
             try {
                 return (new Query())
                     ->select('idFilter')

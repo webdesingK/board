@@ -236,22 +236,31 @@
             }
         }
 
-        static public function getAllParents($id) {
+        static public function getCategoryById($id) {
             try {
-                $child = self::findOne((int)$id);
-                return $child->parents()->select('name')->andWhere('id > 1')->asArray()->all();
+                return self::find()->where('id = :id')->addParams([':id' => $id])->asArray()->one();
             }
             catch (\Throwable $e) {
                 throw new ServerErrorHttpException('Что то пошло не так ...');
             }
         }
 
-        static public function getCategoryById($id) {
+        static public function getNameById($id) {
             try {
-                return self::findOne((int)$id);
+                return self::find()->select('name')->where('id = :id')->addParams([':id' => $id])->asArray()->one();
+            }
+            catch (\Throwable $e) {
+                throw new ServerErrorHttpException('Что пошло не так ...');
+            }
+        }
+
+        public function getAllData($columns) {
+            try {
+                return self::find()->select($columns)->asArray()->all();
             }
             catch (\Throwable $e) {
                 throw new ServerErrorHttpException('Что то пошло не так ...');
             }
         }
+
     }

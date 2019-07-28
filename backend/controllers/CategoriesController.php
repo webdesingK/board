@@ -38,9 +38,8 @@
         public function actionIndex() {
             $searchModel = new CategoriesSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            $categories = new Categories();
             $filters = new Filters();
-
+            $categories = new \backend\models\Categories();
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
