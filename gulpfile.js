@@ -8,7 +8,7 @@ const notify   = require('gulp-notify');
 let paths = {
 	sync: 'board/admin',
 	//sync: 'board',
-	module: 'backend',
+	module: 'adminPanel',
 	//module: 'frontend',
 }
 

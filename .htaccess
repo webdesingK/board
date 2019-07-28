@@ -1,7 +1,17 @@
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} ^/админка
-RewriteRule ^админка(\/?.*)$ backend/web/$1 [L]
+###############################################
+#### Убираем повторяющиеся слеши (/) в URL ####
+###############################################
+RewriteCond %{THE_REQUEST} //
+   # Проверяем, повторяется ли слеш (//) более двух раз.
+RewriteCond %{QUERY_STRING} !http(s|)://
+  # Убедимся что это не урл в  GET
+RewriteRule .* /$0 [R=302,L]
+   # Исключаем все лишние слеши.
+
+RewriteCond %{REQUEST_URI} ^/admin-panel
+RewriteRule ^admin-panel(\/?.*)$ adminPanel/web/$1 [L]
 
 #RewriteCond %{REQUEST_URI} ^/memcached
 #RewriteRule ^memcached(\/?.*)$ memcached/$1 [L]

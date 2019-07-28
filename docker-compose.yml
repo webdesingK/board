@@ -13,7 +13,7 @@ services:
       - ./:/app
 
   backend:
-    build: backend
+    build: adminPanel
     ports:
       - 21080:80
     volumes:
