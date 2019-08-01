@@ -4,7 +4,7 @@
 
     use yii\data\ActiveDataProvider;
 
-    class CategorySearch extends CategoryFilters {
+    class CategoriesSearch extends CategoryFilters {
 
         public function rules() {
             return [

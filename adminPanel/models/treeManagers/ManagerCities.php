@@ -3,10 +3,10 @@
 
     namespace adminPanel\models\treeManagers;
 
+    use common\models\cities\Cities;
     use yii\web\ServerErrorHttpException;
-    use common\models\categories\Categories;
 
-    class TreeCategories extends Categories {
+    class ManagerCities extends Cities {
 
         /**
          * @var $postData null
@@ -23,10 +23,9 @@
 
         public function rules() {
             return [
-                ['name', 'required'],
-                ['name', 'string'],
-                ['active', 'integer'],
-                [['shortUrl', 'fullUrl'], 'safe']
+                [['name', 'url', 'parent_id'], 'required'],
+                [['name', 'url'], 'string'],
+                [['parent_id', 'active'], 'integer'],
             ];
         }
 
@@ -38,26 +37,13 @@
         public function createNode() {
 
             try {
-                $parentNode = self::find()->where('id = :id')->addParams([':id' => $this->postData['id']])->one();
-                $shortUrl = preg_replace('/\s/', '-', $this->postData['name']);
-
-                if ($parentNode->depth == 0) {
-                    $fullUrl = '/' . $shortUrl;
-                }
-                elseif ($parentNode->depth < 3) {
-                    $fullUrl = $parentNode->fullUrl . '/' . $shortUrl;
-                }
-                else {
-                    $shortUrl = null;
-                    $fullUrl = null;
-                }
-
                 $dataForTable = [
+                    'parent_id' => $this->postData['id'],
                     'name' => $this->postData['name'],
-                    'fullUrl' => $fullUrl,
-                    'shortUrl' => $shortUrl,
+                    'url' => preg_replace('/\s/', '-', $this->postData['name']),
                     'active' => 1
                 ];
+                $parentNode = self::find()->where('id = :id')->addParams([':id' => $dataForTable['parent_id']])->one();
                 if ($parentNode->active == 0) {
                     $dataForTable['active'] = 0;
                 }
@@ -71,7 +57,7 @@
                 return false;
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
         }
 
@@ -81,31 +67,17 @@
          */
 
         public function renameNode() {
-
             try {
                 $node = self::find()->where('id = :id')->addParams([':id' => $this->postData['id']])->one();
-                $parent = $node->parents(1)->one();
-                $shortUrl = null;
-                $fullUrl = null;
-                if ($parent && $parent->depth < 3) {
-                    $shortUrl = preg_replace('/\s/', '-', $this->postData['newName']);
-                    if ($parent->fullUrl) {
-                        $fullUrl = $parent->fullUrl . '/' . $shortUrl;
-                    }
-                    else {
-                        $fullUrl = '/' . $shortUrl;
-                    }
-                }
                 $node->name = $this->postData['newName'];
-                $node->shortUrl = $shortUrl;
-                $node->fullUrl = $fullUrl;
+                $node->url = preg_replace('/\s/', '-', $this->postData['newName']);
                 if ($node->update()) {
                     return true;
                 }
                 return false;
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
         }
 
@@ -128,7 +100,7 @@
                 return $result;
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
         }
 
@@ -145,7 +117,7 @@
                 return false;
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
         }
 
@@ -163,7 +135,7 @@
                 return false;
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
         }
 
@@ -173,9 +145,9 @@
          */
 
         public function createArray() {
-
             try {
-                $allCategories = self::find()->select(['id', 'depth', 'name', 'active'])->orderBy('lft ASC')->asArray()->all();
+
+                $allCategories = self::find()->select(['id', 'parent_id', 'depth', 'name', 'active'])->orderBy('lft ASC')->asArray()->all();
 
                 foreach ($allCategories as $key => $category) {
 
@@ -203,9 +175,17 @@
                 }
 
                 return $allCategories;
+
             }
             catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
+                self::serverError();
             }
+        }
+
+        /**
+         * @throws ServerErrorHttpException
+         */
+        private function serverError() {
+            throw new ServerErrorHttpException('Что то пошло не так ...');
         }
     }

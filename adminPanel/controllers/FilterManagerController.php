@@ -5,18 +5,20 @@
     use Yii;
     use yii\helpers\Json;
     use yii\web\Controller;
-    use adminPanel\models\filters\Filters;
+    use adminPanel\models\filters\ManagerFilters;
     use adminPanel\models\filters\Categories;
-    use backend\models\categoriesFilters\CategorySearch;
+    use backend\models\categoriesFilters\CategoriesSearch;
     use adminPanel\models\filters\FiltersCategories;
 
     class FilterManagerController extends Controller {
 
         public function actionCreateFilters() {
 
+            $managerFilters = new ManagerFilters();
+
             if (Yii::$app->request->isAjax) {
                 $request = Json::decode(file_get_contents('php://input'));
-                $result = Filters::create($request);
+                $result = $managerFilters->create($request);
                 return Json::encode($result);
             }
 
@@ -29,7 +31,7 @@
 
         public function actionEditFilters() {
 
-            $filters = new Filters();
+            $filters = new ManagerFilters();
 
             if (Yii::$app->request->isAjax) {
 
@@ -69,7 +71,7 @@
         public function actionBindFilters() {
 
             $categories = new Categories();
-            $filters = new Filters();
+            $filters = new ManagerFilters();
 
             if (Yii::$app->request->isAjax) {
 
@@ -117,10 +119,10 @@
 
         public function actionCategoryFilters() {
 
-            $searchModel = new CategorySearch();
+            $searchModel = new CategoriesSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             $filtersCategories = new FiltersCategories();
-            $filters = new Filters();
+            $filters = new ManagerFilters();
 
             return $this->render('category-filters', [
                 'searchModel' => $searchModel,

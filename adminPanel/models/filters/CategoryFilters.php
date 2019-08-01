@@ -15,7 +15,7 @@
         }
 
         static public function getIds() {
-            $filters = new Filters();
+            $filters = new ManagerFilters();
             return array_unique(ArrayHelper::getColumn($filters->getFiltersCategoriesIds(), 'idCategory'));
         }
 

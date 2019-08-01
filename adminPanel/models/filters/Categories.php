@@ -73,4 +73,8 @@
             }
         }
 
+        static public function test($data) {
+            return self::findOne($data);
+        }
+
     }

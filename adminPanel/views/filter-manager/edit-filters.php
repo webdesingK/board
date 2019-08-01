@@ -2,7 +2,7 @@
 
     /**
      * @var $this yii\web\View
-     * @var $filters adminPanel\models\filters\Filters
+     * @var $filters adminPanel\models\filters\ManagerFilters
      */
 
     $this->title = 'Редактирование фильтров';
