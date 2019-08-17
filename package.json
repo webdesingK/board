@@ -1,33 +1,11 @@
 {
-<<<<<<< HEAD
-  "name": "bootstrap_gulp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "browser-sync": "^2.26.3",
-    "gulp": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-group-css-media-queries": "^1.2.2",
-    "gulp-notify": "^3.2.0",
-    "gulp-sass": "^4.0.2"
-  }
-=======
   "name": "gulp-lessons",
   "version": "1.0.0",
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
     "browser-sync": "^2.26.3",
-    "del": "^3.0.0",
-    "gulp": "^4.0.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-sass": "^4.0.2"
+    "gulp": "^4.0.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -35,5 +13,4 @@
   },
   "author": "",
   "license": "ISC"
->>>>>>> 17e7ba351d684cdf4285284f60593d466cc2069b
 }

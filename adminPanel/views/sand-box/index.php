@@ -11,6 +11,7 @@
     use yii\helpers\Html;
 
     //    $this->registerJsFile('@web/js/test.js', ['depends' => 'adminPanel\assets\AppAsset']);
+
 ?>
 
 

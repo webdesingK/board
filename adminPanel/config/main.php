@@ -54,13 +54,6 @@
                     'action' => UrlNormalizer::ACTION_REDIRECT_TEMPORARY
                 ],
             ],
-            'assetManager' => [
-                'bundles' => [
-                    'adminPanel\assets\AppAsset' => [
-                        'skin' => 'skin-purple',
-                    ],
-                ],
-            ],
         ],
         'name' => 'AdminPanel',
         'params' => $params,
