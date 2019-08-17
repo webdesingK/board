@@ -139,6 +139,11 @@
                                 'icon' => 'dashboard',
                                 'url' => ['/debug'],
                                 'template' => '<a href="{url}" target="_blank">{icon} {label}</a>'
+                            ],
+                            [
+                                'label' => 'Песочница',
+                                'icon' => 'code',
+                                'url' => ['/sand-box']
                             ]
                         ]
                     ]

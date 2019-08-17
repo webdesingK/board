@@ -22,7 +22,8 @@
         "creocoder/yii2-nested-sets": "^0.9.0",
         "yii2tech/filedb": "^1.0",
         "dmstr/yii2-adminlte-asset": "^2.6",
-        "dastanaron/yii2-translit": "1.0.0"
+        "dastanaron/yii2-translit": "1.0.0",
+        "yiisoft/yii2-imagine": "~2.2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

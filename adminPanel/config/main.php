@@ -21,9 +21,9 @@
                 'csrfParam' => '_csrf-adminPanel',
                 'baseUrl' => '/admin-panel',
                 'enableCsrfValidation' => false,
-                'parsers' => [
-                    'application/json' => 'yii\web\JsonParser',
-                ]
+//                'parsers' => [
+//                    'application/json' => 'yii\web\JsonParser',
+//                ]
             ],
             'user' => [
                 'identityClass' => 'common\models\User',

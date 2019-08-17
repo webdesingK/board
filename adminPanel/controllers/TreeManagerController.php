@@ -3,8 +3,8 @@
 
     namespace adminPanel\controllers;
 
-    use adminPanel\models\treeManagers\ManagerCategories;
-    use adminPanel\models\treeManagers\ManagerCities;
+    use adminPanel\models\treeManagers\Categories;
+    use adminPanel\models\treeManagers\Cities;
     use Yii;
     use yii\web\Controller;
 
@@ -17,7 +17,7 @@
 
         public function actionCategoriesManager() {
 
-            $model = new ManagerCategories;
+            $model = new Categories;
 
             if (Yii::$app->request->isAjax) {
                 $model->postData = Yii::$app->request->post();
@@ -54,7 +54,9 @@
 
             }
 
-            return $this->render('categories-manager', compact('model'));
+            return $this->render('categories-manager', [
+                'model' => $model
+            ]);
         }
 
         /**
@@ -64,7 +66,7 @@
 
         public function actionCitiesManager() {
 
-            $model = new ManagerCities();
+            $model = new Cities();
 
             if (Yii::$app->request->isAjax) {
                 $model->postData = Yii::$app->request->post();

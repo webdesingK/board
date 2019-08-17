@@ -2,7 +2,7 @@
 
     /**
      * @var $this yii\web\View
-     * @var $filters adminPanel\models\filters\ManagerFilters
+     * @var $filters adminPanel\models\filtersManager\Filters
      */
 
     $this->title = 'Редактирование фильтров';
@@ -23,7 +23,7 @@
         <select class="form-control" id="select-categories-js">
             <option disabled="disabled" selected="selected">Выбрать фильтр</option>
             <?php
-                $filterNames = $filters::getFilterData('rusName');
+                $filterNames = $filters->allRusNames;
             ?>
             <?php foreach ($filterNames as $filterName): ?>
                 <option><?= $filterName ?></option>

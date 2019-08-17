@@ -12,7 +12,7 @@ class m190510_174607_create_cities_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%cities}}', [
+         $this->createTable('{{%cities}}', [
             'id' => $this->primaryKey()->unsigned(),
             'lft' => $this->smallInteger()->notNull()->unsigned(),
             'rgt' => $this->smallInteger()->notNull()->unsigned(),

@@ -21,10 +21,10 @@ return [
                 ]
             ]
         ],
-        'filedb' => [
-            'class' => 'yii2tech\filedb\Connection',
-            'path' => '@app/file-db',
-        ],
+        // 'filedb' => [
+        //     'class' => 'yii2tech\filedb\Connection',
+        //     'path' => '@app/file-db',
+        // ],
     ],
     'language' => 'ru-RU',
     'timeZone' => 'Europe/Moscow'

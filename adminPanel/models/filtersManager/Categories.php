@@ -1,7 +1,7 @@
 <?php
 
 
-    namespace adminPanel\models\filters;
+    namespace adminPanel\models\filtersManager;
 
     use yii\web\ServerErrorHttpException;
 
@@ -9,16 +9,10 @@
 
         /**
          * @return array|\yii\db\ActiveRecord[]
-         * @throws ServerErrorHttpException
          */
 
         public function getFirstLvl() {
-            try {
-                return self::find()->select(['id', 'name'])->where(['depth' => 1])->asArray()->all();
-            }
-            catch (\Throwable $e) {
-                throw new ServerErrorHttpException('Что то пошло не так ...');
-            }
+            return static::find()->select(['id', 'name'])->where(['depth' => 1])->asArray()->all();
         }
 
         /**
@@ -30,7 +24,7 @@
 
             try {
 
-                $parent = self::find()->where('id = :id')->addParams([':id' => $id])->one();
+                $parent = static::findOne(['id' => (int)$id]);
                 $children = $parent->children(1)->select(['id', 'name'])->asArray()->all();
 
                 return [

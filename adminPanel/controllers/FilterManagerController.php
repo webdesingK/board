@@ -2,11 +2,12 @@
 
     namespace adminPanel\controllers;
 
+    use adminPanel\models\filtersManager\Filters;
+    use adminPanel\models\filtersManager\FiltersManager;
     use Yii;
     use yii\helpers\Json;
     use yii\web\Controller;
-    use adminPanel\models\filters\ManagerFilters;
-    use adminPanel\models\filters\Categories;
+    use adminPanel\models\filtersManager\Categories;
     use backend\models\categoriesFilters\CategoriesSearch;
     use adminPanel\models\filters\FiltersCategories;
 
@@ -14,15 +15,14 @@
 
         public function actionCreateFilters() {
 
-            $managerFilters = new ManagerFilters();
+            $categories = new Categories();
+            $managerFilters = new FiltersManager();
 
             if (Yii::$app->request->isAjax) {
                 $request = Json::decode(file_get_contents('php://input'));
                 $result = $managerFilters->create($request);
                 return Json::encode($result);
             }
-
-            $categories = new Categories();
 
             return $this->render('create-filters', [
                 'categories' => $categories
@@ -31,7 +31,8 @@
 
         public function actionEditFilters() {
 
-            $filters = new ManagerFilters();
+            $filtersManager = new FiltersManager();
+            $filters = new Filters();
 
             if (Yii::$app->request->isAjax) {
 
@@ -39,7 +40,7 @@
 
                 if ($request['requestId'] == 'getFilterTitles') {
 
-                    $result = $filters->getTitles($request['nameFilter']);
+                    $result = $filtersManager->getTitles($request['nameFilter']);
 
                     if ($result['status']) {
                         $titlesHtml = $this->renderPartial('filter-titles', [
@@ -53,7 +54,7 @@
                 }
 
                 if ($request['requestId'] == 'editFilter') {
-                    $result = $filters->edit($request);
+                    $result = $filtersManager->edit($request);
                     return Json::encode($result);
                 }
                 if ($request['requestId'] == 'deleteFilter') {
@@ -71,7 +72,7 @@
         public function actionBindFilters() {
 
             $categories = new Categories();
-            $filters = new ManagerFilters();
+//            $filters = new ManagerFilters();
 
             if (Yii::$app->request->isAjax) {
 
@@ -117,7 +118,7 @@
             ]);
         }
 
-        public function actionCategoryFilters() {
+        public function actionViewCategoryFilters() {
 
             $searchModel = new CategoriesSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -133,6 +134,10 @@
 
         public function actionFilterCategories() {
             return $this->render('filters-categories');
+        }
+
+        public function actionViewFilterCategories() {
+
         }
 
     }

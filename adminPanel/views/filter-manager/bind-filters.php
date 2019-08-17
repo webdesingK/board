@@ -2,7 +2,7 @@
 
     /**
      * @var $this yii\web\View
-     * @var $categories adminPanel\models\filters\Categories
+     * @var $categories adminPanel\models\filtersManager\Categories
      */
 
     $this->title = 'Привязка фильтров';
@@ -26,8 +26,8 @@
             <?php
                 $categoriesFirstLvl = $categories->firstLvl;
             ?>
-            <?php foreach ($categoriesFirstLvl as $item): ?>
-                <option value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+            <?php foreach ($categoriesFirstLvl as $category): ?>
+                <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
             <?php endforeach ?>
 
         </select>

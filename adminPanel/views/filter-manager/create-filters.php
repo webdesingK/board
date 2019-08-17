@@ -2,13 +2,14 @@
 
     /**
      * @var $this yii\web\View
-     * @var $categories adminPanel\models\filters\Categories
+     * @var $categories adminPanel\models\filtersManager\Categories
      */
 
     $this->title = 'Создание фильтров';
 
     $this->registerJsFile('@web/js/create-filters.js', ['depends' => 'adminPanel\assets\AppAsset']);
     $this->registerCssFile('@web/css/create-filters.css', ['depends' => 'adminPanel\assets\AppAsset']);
+
 
 ?>
 

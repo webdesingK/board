@@ -44,3 +44,43 @@
         </div>
     </div>
 </div>
+
+<br><br><br><br><br>
+<hr>
+
+<?php
+
+    use yii\widgets\ActiveForm;
+
+?>
+<!---->
+<?php //$form = ActiveForm::begin([
+    ////    'id' => 'vasa',
+    //    'options' => [
+    ////        'class' => 'vasa',
+    ////        'data-attr' => 'vasa'
+    //    ]
+    //]) ?>
+<!---->
+<? //= $form->field($model, 'imageFiles[]')->fileInput([
+    ////    'class' => 'vasa',
+    ////    'id' => 'vasa',
+    ////    'data-attr' => 'vasa'
+    //]) ?>
+<!---->
+<? //= $form->field($model, 'imageFiles[]')->fileInput([
+    ////    'class' => 'vasa',
+    ////    'id' => 'vasa',
+    ////    'data-attr' => 'vasa'
+    //]) ?>
+<!---->
+<? //= $form->field($model, 'imageFiles[]')->fileInput([
+    ////    'class' => 'vasa',
+    ////    'id' => 'vasa',
+    ////    'data-attr' => 'vasa'
+    //]) ?>
+
+<!--<button class="btn btn-primary">Отправить</button>-->
+
+<?php //ActiveForm::end() ?>
+

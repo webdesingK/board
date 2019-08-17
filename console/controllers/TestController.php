@@ -32,7 +32,8 @@ class TestController extends Controller {
                 ->execute();
             $db
                 ->createCommand()
-                ->createTable('filters.filtersCategories', [
+                ->createTable('filters.filters_categories', [
+                    'id' => $migration->primaryKey()->unsigned(),
                     'idFilter' => $migration->smallInteger()->unsigned(),
                     'idCategory' => $migration->smallInteger()->unsigned(),
                 ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB')

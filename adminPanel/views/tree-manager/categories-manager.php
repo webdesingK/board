@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @var $this yii\web\View
+ * @var $model adminPanel\models\treeManagers\Categories
+ */
+
 $this->title = 'Мененджер категорий';
 
 use yii\helpers\Html;

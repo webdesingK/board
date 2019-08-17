@@ -1,28 +1,16 @@
 <?php
 
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $name string */
-/* @var $message string */
-/* @var $exception Exception */
+    /* @var $this yii\web\View */
 
-$this->title = $name;
+    $this->title = Yii::$app->params['serverErrorMessage'];
 ?>
 <section class="content">
 
     <div class="error-page">
-        <h2 class="headline text-info"><i class="fa fa-warning text-yellow"></i></h2>
-
-        <div class="error-content">
-            <h3><?= $name ?></h3>
-
-            <p>
-                <?= nl2br(Html::encode($message)) ?>
-            </p>
-
-
-        </div>
+        <h1><i class="fa fa-warning text-yellow"></i></h1>
+        <?= Html::encode(Yii::$app->params['serverErrorMessage']) ?>
     </div>
 
 </section>

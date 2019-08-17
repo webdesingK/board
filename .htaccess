@@ -13,8 +13,8 @@ RewriteRule .* /$0 [R=302,L]
 RewriteCond %{REQUEST_URI} ^/admin-panel
 RewriteRule ^admin-panel(\/?.*)$ adminPanel/web/$1 [L]
 
-#RewriteCond %{REQUEST_URI} ^/memcached
-#RewriteRule ^memcached(\/?.*)$ memcached/$1 [L]
+RewriteCond %{REQUEST_URI} ^/memcached
+RewriteRule ^memcached(\/?.*)$ memcached/$1 [L]
 
 RewriteCond %{REQUEST_URI} ^/
 RewriteRule (\/?.*) frontend/web/$1 [L]

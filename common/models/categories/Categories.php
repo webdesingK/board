@@ -7,6 +7,23 @@
 
     class Categories extends ActiveRecord {
 
+        public $depth;
+        /**
+         * @var $active integer
+         */
+        public $active;
+        /**
+         * @var $name string
+         */
+        public $name;
+        /**
+         * @var $shortUrl string
+         */
+        public $shortUrl;
+        /**
+         * @var $fullUrl string
+         */
+        public $fullUrl;
         /**
          * {@inheritdoc}
          */
