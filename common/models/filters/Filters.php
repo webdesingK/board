@@ -45,12 +45,15 @@
         }
 
 //        public function attributeLabels() {
-//
+
 //            return [
-//                'rusName' => 'Название фильтра',
+//                'rusName' => 'name-vasa',
 //                'url' => 'URL',
 //                'idParentCategory' => 'Категория'
 //            ];
-//
+
 //        }
+        public function formName() {
+            return 'Vasa';
+        }
     }

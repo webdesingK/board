@@ -13,19 +13,36 @@
 
     class FilterManagerController extends Controller {
 
-        public function actionCreateFilters() {
+        public function actionCreateFilter() {
 
+            $session = Yii::$app->session;
+
+            $filters = new Filters();
             $categories = new Categories();
             $managerFilters = new FiltersManager();
 
             if (Yii::$app->request->isAjax) {
-                $request = Json::decode(file_get_contents('php://input'));
-                $result = $managerFilters->create($request);
-                return Json::encode($result);
+                $request = Yii::$app->request->post();
+                if ($request['request'] == 'add') {
+                    return $this->renderPartial('input', [
+                        'filters' => $filters,
+                        'session' => $session
+                    ]);
+                }
             }
 
-            return $this->render('create-filters', [
-                'categories' => $categories
+            if ($session->has('idTitle')) {
+                $session->remove('idTitle');
+            }
+//            if (Yii::$app->request->isAjax) {
+//                $request = Json::decode(file_get_contents('php://input'));
+//                $result = $managerFilters->create($request);
+//                return Json::encode($result);
+//            }
+
+            return $this->render('create-filter', [
+                'categories' => $categories,
+                'filters' => $filters
             ]);
         }
 

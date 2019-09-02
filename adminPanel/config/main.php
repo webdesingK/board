@@ -20,7 +20,7 @@
             'request' => [
                 'csrfParam' => '_csrf-adminPanel',
                 'baseUrl' => '/admin-panel',
-                'enableCsrfValidation' => false,
+//                'enableCsrfValidation' => false,
 //                'parsers' => [
 //                    'application/json' => 'yii\web\JsonParser',
 //                ]

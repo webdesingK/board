@@ -13,13 +13,13 @@ return [
         'assetManager' => [
 //            'appendTimestamp' => true,                 // временная метка для файлов ресурсов
 //            'linkAssets' => true,                    // вкл ссылки на внешние файлы ресурсов
-            'bundles' => [
-                'yii\web\JqueryAsset' => [
-                    'js' => [
-                        'jquery.min.js'
-                    ]
-                ]
-            ]
+//            'bundles' => [
+//                'yii\web\JqueryAsset' => [
+//                    'js' => [
+//                        'jquery.min.js'
+//                    ]
+//                ]
+//            ]
         ],
         // 'filedb' => [
         //     'class' => 'yii2tech\filedb\Connection',

@@ -37,7 +37,7 @@ function browserSyncReload(done) {
 function watchFile() {
 	// watch(paths.module + '/web/sass', sassFile);
 	watch(paths.module + '/views/**/*.php', browserSyncReload);
-	watch(paths.module + '/web/*', browserSyncReload);
+	watch(paths.module + '/web/**', browserSyncReload);
 	// watch('common/**/*.php', browserSyncReload);
 }
 
